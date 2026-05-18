@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+build.log
+build_err.txt
+mylint.txt
+vite_out.txt

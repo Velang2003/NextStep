@@ -1,0 +1,3530 @@
+[
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is the correct way to create a functional component in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "function MyComponent() { return <div>Hello</div>; }",
+      "b": "component MyComponent() { return <div>Hello</div>; }",
+      "c": "class MyComponent { render() { return <div>Hello</div>; } }",
+      "d": "const MyComponent = <div>Hello</div>;"
+    },
+    "correct_answer": "a",
+    "explanation": "A functional component in React is a plain JavaScript function that returns JSX. Option A is the correct syntax. Option C is a class component but is missing 'extends React.Component'."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What does JSX stand for?",
+    "code_snippet": "",
+    "options": {
+      "a": "JavaScript XML",
+      "b": "Java Syntax Extension",
+      "c": "JSON XML Syntax",
+      "d": "JavaScript Extra"
+    },
+    "correct_answer": "a",
+    "explanation": "JSX stands for JavaScript XML. It is a syntax extension for JavaScript that allows you to write HTML-like code inside JavaScript files, which React then transforms into React.createElement() calls."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "Which hook is used to manage local state in a functional component?",
+    "code_snippet": "",
+    "options": {
+      "a": "useEffect",
+      "b": "useContext",
+      "c": "useState",
+      "d": "useReducer"
+    },
+    "correct_answer": "c",
+    "explanation": "useState is the primary hook for managing local state in functional components. It returns a state value and a setter function. useEffect is for side effects, useContext for context, and useReducer for complex state logic."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What will be rendered by this component?",
+    "code_snippet": "function Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n<Greeting name=\"Alice\" />",
+    "options": {
+      "a": "Hello, {name}!",
+      "b": "Hello, Alice!",
+      "c": "Hello, undefined!",
+      "d": "A syntax error is thrown."
+    },
+    "correct_answer": "b",
+    "explanation": "The component receives 'name' as a prop with the value 'Alice'. Curly braces {} in JSX evaluate JavaScript expressions, so {name} renders 'Alice', producing 'Hello, Alice!'."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "How do you correctly apply a CSS class to a JSX element?",
+    "code_snippet": "",
+    "options": {
+      "a": "<div class=\"container\">",
+      "b": "<div className=\"container\">",
+      "c": "<div cssClass=\"container\">",
+      "d": "<div style=\"container\">"
+    },
+    "correct_answer": "b",
+    "explanation": "In JSX, you must use 'className' instead of 'class' because 'class' is a reserved keyword in JavaScript. React maps 'className' to the HTML 'class' attribute when rendering to the DOM."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is a prop in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "A mutable internal state of a component",
+      "b": "A read-only input passed from a parent component to a child component",
+      "c": "A global variable accessible across all components",
+      "d": "A lifecycle method in class components"
+    },
+    "correct_answer": "b",
+    "explanation": "Props (short for properties) are read-only inputs passed from a parent component to a child. They allow data to flow downward in the component tree. Unlike state, props cannot be modified by the receiving component."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What does the following code output on initial render?",
+    "code_snippet": "const [count, setCount] = useState(0);\nconsole.log(count);",
+    "options": {
+      "a": "undefined",
+      "b": "null",
+      "c": "0",
+      "d": "1"
+    },
+    "correct_answer": "c",
+    "explanation": "useState(0) initializes the state variable 'count' with a value of 0. On the initial render, count is 0, so console.log(count) outputs 0."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "Which of the following is the correct way to handle a button click event in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "<button onclick={handleClick}>Click</button>",
+      "b": "<button onClick={handleClick()}>Click</button>",
+      "c": "<button onClick={handleClick}>Click</button>",
+      "d": "<button on-click={handleClick}>Click</button>"
+    },
+    "correct_answer": "c",
+    "explanation": "In React, event handlers use camelCase (onClick, not onclick or on-click). The handler is passed as a reference — not invoked — so it should be {handleClick}, not {handleClick()} which would call it immediately on render."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is the purpose of the key prop when rendering a list of elements?",
+    "code_snippet": "items.map(item => <li key={item.id}>{item.name}</li>)",
+    "options": {
+      "a": "It provides a CSS identifier for each list item.",
+      "b": "It helps React identify which items have changed, been added, or removed.",
+      "c": "It is required by HTML for list elements.",
+      "d": "It sets the tab order of list items."
+    },
+    "correct_answer": "b",
+    "explanation": "The key prop is a special identifier that helps React's reconciliation algorithm efficiently update the DOM by tracking which items in a list have changed, been added, or been removed. It should be a stable, unique value."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "How do you render nothing (empty output) from a React component?",
+    "code_snippet": "",
+    "options": {
+      "a": "return undefined;",
+      "b": "return 0;",
+      "c": "return null;",
+      "d": "return false;"
+    },
+    "correct_answer": "c",
+    "explanation": "Returning null from a React component renders nothing to the DOM. Returning undefined throws an error. Returning 0 renders the number '0'. Returning false renders nothing in JSX expressions but returning it directly from a component can cause issues."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is the virtual DOM in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "A server-side representation of the DOM",
+      "b": "A lightweight in-memory representation of the real DOM used to optimize updates",
+      "c": "A browser API provided by Chrome",
+      "d": "A direct manipulation of the DOM using JavaScript"
+    },
+    "correct_answer": "b",
+    "explanation": "The Virtual DOM is a lightweight JavaScript representation of the real DOM tree kept in memory. React uses it to compute the minimum number of changes needed and then batch-updates the real DOM, making UI updates more efficient."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is the entry point typically used to render a React app into the HTML page?",
+    "code_snippet": "",
+    "options": {
+      "a": "ReactDOM.paint()",
+      "b": "React.render()",
+      "c": "ReactDOM.createRoot().render()",
+      "d": "document.write()"
+    },
+    "correct_answer": "c",
+    "explanation": "Since React 18, the standard way to mount a React app is ReactDOM.createRoot(document.getElementById('root')).render(<App />). The older ReactDOM.render() is deprecated in React 18+."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What is the correct syntax to embed a JavaScript expression inside JSX?",
+    "code_snippet": "",
+    "options": {
+      "a": "{{ expression }}",
+      "b": "${expression}",
+      "c": "{expression}",
+      "d": "<!--expression-->"
+    },
+    "correct_answer": "c",
+    "explanation": "In JSX, you embed JavaScript expressions using single curly braces: {expression}. Double curly braces {{ }} are used only for inline style objects (the outer braces are JSX expression syntax, the inner are the object literal)."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "Which of the following correctly passes an inline style to a JSX element?",
+    "code_snippet": "",
+    "options": {
+      "a": "<div style=\"color: red;\">",
+      "b": "<div style={color: 'red'}>",
+      "c": "<div style={{ color: 'red' }}>",
+      "d": "<div css={{ color: 'red' }}>"
+    },
+    "correct_answer": "c",
+    "explanation": "In JSX, inline styles are passed as a JavaScript object inside double curly braces. The outer {} is the JSX expression container, and the inner {} is the JavaScript object. CSS property names must be camelCased (e.g., backgroundColor instead of background-color)."
+  },
+  {
+    "skill": "React",
+    "difficulty": "easy",
+    "question": "What happens when you update state using the setter function from useState?",
+    "code_snippet": "",
+    "options": {
+      "a": "Only the specific DOM node changes, without re-rendering.",
+      "b": "The component and its children re-render with the new state value.",
+      "c": "The entire application re-renders from the root.",
+      "d": "State is updated but the component does not re-render."
+    },
+    "correct_answer": "b",
+    "explanation": "Calling a state setter function tells React that the state has changed, triggering a re-render of that component and its child components. React does not re-render the entire app — only the affected subtree."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the output of this component on the first click of the button?",
+    "code_snippet": "const [count, setCount] = useState(0);\n\nfunction handleClick() {\n  setCount(count + 1);\n  setCount(count + 1);\n}\n\nreturn <button onClick={handleClick}>{count}</button>;",
+    "options": {
+      "a": "2",
+      "b": "1",
+      "c": "0",
+      "d": "It throws an error."
+    },
+    "correct_answer": "b",
+    "explanation": "Both setCount calls use the same stale value of 'count' (0) from the current render's closure. React batches these updates, and both resolve to setCount(0 + 1) = 1. To correctly increment twice, use the functional form: setCount(prev => prev + 1)."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "When does the callback inside useEffect with an empty dependency array run?",
+    "code_snippet": "useEffect(() => {\n  console.log('runs');\n}, []);",
+    "options": {
+      "a": "After every render",
+      "b": "Only once, after the initial render (mount)",
+      "c": "Before the component mounts",
+      "d": "Every time any state changes"
+    },
+    "correct_answer": "b",
+    "explanation": "An empty dependency array [] tells React to run the effect only once — after the initial render. This is equivalent to componentDidMount in class components. It will not re-run on subsequent renders."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the purpose of the cleanup function returned from useEffect?",
+    "code_snippet": "useEffect(() => {\n  const timer = setInterval(() => console.log('tick'), 1000);\n  return () => clearInterval(timer);\n}, []);",
+    "options": {
+      "a": "It runs before the initial render.",
+      "b": "It prevents the component from re-rendering.",
+      "c": "It runs when the component unmounts or before the effect re-runs, to avoid memory leaks.",
+      "d": "It cancels the useState initialization."
+    },
+    "correct_answer": "c",
+    "explanation": "The function returned from useEffect is the cleanup function. It runs when the component unmounts or before the effect runs again due to a dependency change. It's used to clear timers, cancel subscriptions, or remove event listeners to prevent memory leaks."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does the following component render?",
+    "code_snippet": "function App() {\n  const isLoggedIn = false;\n  return (\n    <div>\n      {isLoggedIn ? <p>Welcome back!</p> : <p>Please log in.</p>}\n    </div>\n  );\n}",
+    "options": {
+      "a": "Welcome back!",
+      "b": "Please log in.",
+      "c": "Nothing — it renders an empty div.",
+      "d": "Both paragraphs are rendered."
+    },
+    "correct_answer": "b",
+    "explanation": "The ternary operator checks isLoggedIn, which is false. Since the condition is false, the expression evaluates to the 'else' branch: <p>Please log in.</p>."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "Which statement about React component names is correct?",
+    "code_snippet": "",
+    "options": {
+      "a": "Component names must start with a lowercase letter.",
+      "b": "Component names can be any valid JavaScript identifier.",
+      "c": "Component names must start with an uppercase letter.",
+      "d": "Component names must end in 'Component'."
+    },
+    "correct_answer": "c",
+    "explanation": "React requires component names to start with an uppercase letter. If a name starts with lowercase, React treats it as a plain HTML tag, not a custom component. For example, <myComponent /> would be treated as an unknown HTML element."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the correct way to update an object in state without mutating it?",
+    "code_snippet": "const [user, setUser] = useState({ name: 'Alice', age: 25 });",
+    "options": {
+      "a": "user.age = 26; setUser(user);",
+      "b": "setUser({ ...user, age: 26 });",
+      "c": "setUser(Object.assign(user, { age: 26 }));",
+      "d": "user = { ...user, age: 26 };"
+    },
+    "correct_answer": "b",
+    "explanation": "State should never be mutated directly. The correct approach is to create a new object using the spread operator {...user, age: 26}, which copies all existing properties and overrides the 'age' field. Option A mutates the existing object before passing it. Option C also mutates with Object.assign. Option D reassigns a const variable."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does React.Fragment (or <>) allow you to do?",
+    "code_snippet": "",
+    "options": {
+      "a": "Create a new root DOM node for the component",
+      "b": "Group multiple elements without adding an extra DOM node",
+      "c": "Apply styles to multiple elements at once",
+      "d": "Lazy-load child components"
+    },
+    "correct_answer": "b",
+    "explanation": "React.Fragment (shorthand: <></>) lets you group multiple JSX elements without introducing an extra DOM wrapper like a <div>. This is useful to satisfy JSX's single-root requirement without polluting the DOM structure."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the issue with this code?",
+    "code_snippet": "function List({ items }) {\n  return (\n    <ul>\n      {items.map((item, index) => (\n        <li key={index}>{item}</li>\n      ))}\n    </ul>\n  );\n}",
+    "options": {
+      "a": "The map function is not allowed in JSX.",
+      "b": "Using index as key can cause bugs when the list order changes or items are added/removed.",
+      "c": "The key prop must be a number, not a string.",
+      "d": "There is no issue with this code."
+    },
+    "correct_answer": "b",
+    "explanation": "Using an array index as the key prop is an anti-pattern. If items are reordered, inserted, or deleted, indices shift — causing React to incorrectly reuse component instances, leading to subtle state and rendering bugs. Always prefer a stable, unique identifier like item.id."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is 'prop drilling' in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "Passing props to deeply nested components through many intermediate layers that don't need them",
+      "b": "Using the spread operator to pass all props to a child",
+      "c": "A technique for optimizing prop comparison",
+      "d": "Drilling into a prop object to access nested properties"
+    },
+    "correct_answer": "a",
+    "explanation": "Prop drilling refers to the process of passing data through multiple levels of components that don't use the data themselves — just to get it to a deeply nested child. It can be solved using Context API, state management libraries, or component composition."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does the useEffect dependency array control?",
+    "code_snippet": "",
+    "options": {
+      "a": "The order in which effects are executed",
+      "b": "The list of state variables that can be used in the effect",
+      "c": "Which values, when changed, will cause the effect to re-run",
+      "d": "The number of times the effect is allowed to run"
+    },
+    "correct_answer": "c",
+    "explanation": "The dependency array tells React which values to watch. If any value in the array changes between renders, the effect re-runs. An empty array means run once on mount. Omitting the array means run after every render."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "Which of the following is a correct way to conditionally render a component?",
+    "code_snippet": "",
+    "options": {
+      "a": "{if (show) return <Modal />}",
+      "b": "{show && <Modal />}",
+      "c": "<Modal show={show} />",
+      "d": "{show then <Modal />}"
+    },
+    "correct_answer": "b",
+    "explanation": "The short-circuit evaluation {show && <Modal />} is a common React pattern. If 'show' is true, <Modal /> is rendered. If false, nothing renders. Option A uses an if statement directly in JSX which is invalid. Option D uses invalid syntax."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the output of the following code on the initial render?",
+    "code_snippet": "function App() {\n  const [text, setText] = useState('');\n  return <input value={text} onChange={e => setText(e.target.value)} />;\n}",
+    "options": {
+      "a": "An uncontrolled input with no value",
+      "b": "A controlled input bound to the 'text' state, initially empty",
+      "c": "An error because value cannot be an empty string",
+      "d": "A read-only input that cannot be changed"
+    },
+    "correct_answer": "b",
+    "explanation": "This is a controlled component pattern. The input's value is driven by React state ('text'), and the onChange handler updates state on every keystroke. Initially, text is '' so the input is empty but fully editable."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the children prop in React?",
+    "code_snippet": "function Card({ children }) {\n  return <div className=\"card\">{children}</div>;\n}\n\n<Card><p>Hello!</p></Card>",
+    "options": {
+      "a": "A special prop that contains all other props passed to the component",
+      "b": "The content placed between the opening and closing tags of a component",
+      "c": "A prop used to list child component names",
+      "d": "An array of all child DOM nodes"
+    },
+    "correct_answer": "b",
+    "explanation": "The children prop automatically holds whatever is placed between a component's opening and closing tags. In this example, <p>Hello!</p> is the children, and it will be rendered inside the <div className=\"card\"> wrapper."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is wrong with calling a hook inside a condition?",
+    "code_snippet": "function App() {\n  if (loggedIn) {\n    const [data, setData] = useState(null); // ❌\n  }\n}",
+    "options": {
+      "a": "Nothing — hooks can be called anywhere inside a component.",
+      "b": "Hooks must always be called in the same order; conditionals break this rule and cause React errors.",
+      "c": "useState cannot be used with null as the initial value.",
+      "d": "The hook will be ignored silently."
+    },
+    "correct_answer": "b",
+    "explanation": "React relies on the order of hook calls to associate each hook with its state. Calling hooks inside conditions, loops, or nested functions can change the call order between renders, breaking the internal linked list React uses to track hook state."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does the spread operator do in this JSX pattern?",
+    "code_snippet": "const props = { id: '1', className: 'box' };\nreturn <div {...props} />;",
+    "options": {
+      "a": "It creates a copy of the div element.",
+      "b": "It passes all properties of the 'props' object as individual props to the div.",
+      "c": "It merges the props object into the component's state.",
+      "d": "It throws an error because spread is not allowed in JSX."
+    },
+    "correct_answer": "b",
+    "explanation": "The JSX spread syntax {...props} unpacks all key-value pairs from the object and passes them as individual props. The result is equivalent to <div id='1' className='box' />. It's useful for forwarding props but should be used carefully to avoid passing unexpected attributes."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is a controlled component in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "A component that controls the rendering of its parent",
+      "b": "A form element whose value is driven by React state",
+      "c": "A component wrapped with React.memo",
+      "d": "A component that only accepts read-only props"
+    },
+    "correct_answer": "b",
+    "explanation": "A controlled component is a form element (like <input>, <textarea>, <select>) whose value is controlled entirely by React state. Changes are handled via an onChange event that updates the state, making React the single source of truth for the input's value."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What will this component render if 'count' is 0?",
+    "code_snippet": "function App() {\n  const count = 0;\n  return <div>{count && <p>Count is positive</p>}</div>;\n}",
+    "options": {
+      "a": "Nothing inside the div",
+      "b": "<p>Count is positive</p>",
+      "c": "The number 0",
+      "d": "An empty string"
+    },
+    "correct_answer": "c",
+    "explanation": "This is a common React gotcha. When 'count' is 0, the expression 0 && <p>...</p> short-circuits and returns 0 — which is a falsy number but still a renderable value in JSX. React renders the number 0 to the screen. Use count > 0 && ... or !!count && ... to avoid this."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the purpose of the useRef hook?",
+    "code_snippet": "",
+    "options": {
+      "a": "To create a ref that triggers a re-render when updated",
+      "b": "To persist a mutable value across renders without causing a re-render",
+      "c": "To reference the parent component's props",
+      "d": "To store values that are reset on every render"
+    },
+    "correct_answer": "b",
+    "explanation": "useRef returns a mutable ref object whose .current property persists across renders without triggering a re-render when changed. It's commonly used to directly access DOM elements or to store mutable values like timers and previous state."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does lifting state up mean in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "Moving state from a class component to a functional component",
+      "b": "Moving state from a child component to a common parent so it can be shared",
+      "c": "Initializing state at the top of the file",
+      "d": "Promoting a prop to become part of the component's state"
+    },
+    "correct_answer": "b",
+    "explanation": "Lifting state up means moving state from a child component to a shared parent ancestor so that multiple child components can access and update the same state. The parent then passes the state down as props and provides callback handlers for updates."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "Which of the following best describes React's one-way data flow?",
+    "code_snippet": "",
+    "options": {
+      "a": "Data can only flow from child to parent via callbacks.",
+      "b": "Data flows from parent to child through props; children cannot directly modify parent state.",
+      "c": "All components share a global state object.",
+      "d": "Data can freely flow in any direction between components."
+    },
+    "correct_answer": "b",
+    "explanation": "React enforces a unidirectional (one-way) data flow: data flows down from parent to child via props. Children cannot directly mutate parent state. To send data up, children call callback functions passed as props by the parent."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What will happen if you forget to include a dependency in useEffect's dependency array?",
+    "code_snippet": "const [query, setQuery] = useState('');\n\nuseEffect(() => {\n  fetchData(query); // query is used but NOT in dep array\n}, []);",
+    "options": {
+      "a": "React throws a runtime error.",
+      "b": "The effect runs on every render.",
+      "c": "The effect only runs once with the initial value of query and will never re-run when query changes.",
+      "d": "React auto-detects the missing dependency and adds it."
+    },
+    "correct_answer": "c",
+    "explanation": "If 'query' is not listed in the dependency array, the effect captures the initial value of 'query' via closure and never re-runs when it changes. This is called a stale closure bug. The ESLint plugin eslint-plugin-react-hooks warns about missing dependencies."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does React.StrictMode do?",
+    "code_snippet": "",
+    "options": {
+      "a": "It prevents all console.log statements from running in production.",
+      "b": "It double-invokes certain functions in development to help detect side effects.",
+      "c": "It enforces TypeScript type checking.",
+      "d": "It prevents updates to state after component unmount."
+    },
+    "correct_answer": "b",
+    "explanation": "React.StrictMode is a development tool that intentionally double-invokes functions like render, useState initializers, and useEffect setups/cleanups to help you detect unexpected side effects. It has no effect in production builds."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the correct way to render a list of items in React?",
+    "code_snippet": "const fruits = ['Apple', 'Banana', 'Cherry'];",
+    "options": {
+      "a": "return <ul>fruits</ul>;",
+      "b": "return <ul>{fruits}</ul>;",
+      "c": "return <ul>{fruits.map(f => <li key={f}>{f}</li>)}</ul>;",
+      "d": "return <ul for={fruit in fruits}><li>{fruit}</li></ul>;"
+    },
+    "correct_answer": "c",
+    "explanation": "To render a list in React, you use .map() to transform the array into an array of JSX elements, each with a unique key prop. JSX does not support for loops or for-of syntax directly inside the return statement."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the default behavior of React when a parent component re-renders?",
+    "code_snippet": "",
+    "options": {
+      "a": "Only the parent re-renders, children are unaffected.",
+      "b": "All child components also re-render by default.",
+      "c": "Child components only re-render if their props changed.",
+      "d": "React checks the virtual DOM and only re-renders changed nodes."
+    },
+    "correct_answer": "b",
+    "explanation": "By default, when a parent component re-renders, all of its child components also re-render, regardless of whether their props changed. To prevent this, you can use React.memo to memoize child components so they only re-render when their props actually change."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does the following useState initialization do?",
+    "code_snippet": "const [data, setData] = useState(() => expensiveComputation());",
+    "options": {
+      "a": "It calls expensiveComputation on every render.",
+      "b": "It calls expensiveComputation only on the initial render (lazy initialization).",
+      "c": "It throws an error because useState doesn't accept functions.",
+      "d": "It schedules expensiveComputation to run asynchronously."
+    },
+    "correct_answer": "b",
+    "explanation": "When you pass a function to useState (not the result), React calls it only once during the initial render — this is called lazy state initialization. It's used to avoid re-running expensive computations on every re-render."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "How do you prevent the default form submission behavior in a React form handler?",
+    "code_snippet": "function handleSubmit(e) {\n  // What goes here?\n  console.log('submitted');\n}",
+    "options": {
+      "a": "e.stopImmediatePropagation()",
+      "b": "e.preventDefault()",
+      "c": "e.cancelDefault()",
+      "d": "return false;"
+    },
+    "correct_answer": "b",
+    "explanation": "e.preventDefault() prevents the browser's default behavior for the event — in the case of a form, it stops the page from reloading. In React, unlike plain HTML, 'return false' does not prevent default behavior; you must explicitly call e.preventDefault()."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the correct definition of a custom hook in React?",
+    "code_snippet": "",
+    "options": {
+      "a": "A class that extends React.Hook",
+      "b": "A JavaScript function whose name starts with 'use' and can call other hooks",
+      "c": "A built-in React API for managing global state",
+      "d": "A component that only returns other hooks"
+    },
+    "correct_answer": "b",
+    "explanation": "A custom hook is simply a JavaScript function whose name begins with 'use' (e.g., useFetch, useLocalStorage). It can call other hooks internally. This naming convention allows React's linter to enforce the rules of hooks on custom hooks."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does this code do?",
+    "code_snippet": "const inputRef = useRef(null);\n\n<input ref={inputRef} />\n\nfunction focusInput() {\n  inputRef.current.focus();\n}",
+    "options": {
+      "a": "It watches the input's value with a ref.",
+      "b": "It directly accesses and focuses the input DOM node imperatively.",
+      "c": "It creates a controlled input component.",
+      "d": "It triggers a re-render whenever the input changes."
+    },
+    "correct_answer": "b",
+    "explanation": "useRef with ref={inputRef} on an element gives you a direct reference to the underlying DOM node via inputRef.current. Calling inputRef.current.focus() programmatically focuses the input element. This is one of the primary use cases for useRef — imperative DOM access."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "Which statement correctly describes the Context API?",
+    "code_snippet": "",
+    "options": {
+      "a": "It is used to manage asynchronous state updates.",
+      "b": "It enables components to share values without explicitly passing props through every level.",
+      "c": "It replaces useState for all state management needs.",
+      "d": "It is only available in class components."
+    },
+    "correct_answer": "b",
+    "explanation": "The React Context API provides a way to pass data through the component tree without prop drilling. A Provider component wraps the tree and supplies the value, while any descendant can consume it using useContext — no matter how deeply nested."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What will this code log after the button is clicked once?",
+    "code_snippet": "const [count, setCount] = useState(0);\n\nfunction handleClick() {\n  setCount(prev => prev + 1);\n  setCount(prev => prev + 1);\n  setCount(prev => prev + 1);\n}\n\nconsole.log(count); // after one click",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "0"
+    },
+    "correct_answer": "c",
+    "explanation": "When using the functional updater form setCount(prev => prev + 1), React queues each update and chains them correctly. Unlike passing values directly, each functional update receives the latest queued state — so 0 → 1 → 2 → 3, resulting in count being 3."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the purpose of React.memo?",
+    "code_snippet": "",
+    "options": {
+      "a": "It memoizes the return value of an expensive function.",
+      "b": "It prevents a functional component from re-rendering if its props have not changed.",
+      "c": "It caches API responses between component renders.",
+      "d": "It memorizes the last state value before an update."
+    },
+    "correct_answer": "b",
+    "explanation": "React.memo is a higher-order component that wraps a functional component and performs a shallow comparison of its props. If the props haven't changed since the last render, React skips re-rendering the component, which can improve performance."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What is the difference between useEffect and useLayoutEffect?",
+    "code_snippet": "",
+    "options": {
+      "a": "useLayoutEffect runs before the browser paints; useEffect runs after.",
+      "b": "useEffect runs before the browser paints; useLayoutEffect runs after.",
+      "c": "useLayoutEffect is only available in class components.",
+      "d": "There is no difference; they are aliases."
+    },
+    "correct_answer": "a",
+    "explanation": "useLayoutEffect fires synchronously after all DOM mutations but before the browser paints the screen. useEffect fires after the browser has painted. useLayoutEffect is useful for reading layout/DOM measurements to avoid visual flicker, but useEffect is preferred for most side effects."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What will the following component display?",
+    "code_snippet": "function App() {\n  const [show, setShow] = useState(true);\n  return (\n    <div>\n      <button onClick={() => setShow(!show)}>Toggle</button>\n      {show && <p>Visible</p>}\n    </div>\n  );\n}",
+    "options": {
+      "a": "Always shows 'Visible' regardless of clicks.",
+      "b": "Shows 'Visible' initially; clicking Toggle hides and shows it alternately.",
+      "c": "Hides 'Visible' initially; clicking Toggle shows it.",
+      "d": "Throws an error due to the inline arrow function in onClick."
+    },
+    "correct_answer": "b",
+    "explanation": "show is initialized as true, so <p>Visible</p> renders on mount. Each click toggles 'show' between true and false using !show. When show is false, the short-circuit prevents rendering the paragraph. When true, it renders again."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "Which of the following would cause a React component to re-render?",
+    "code_snippet": "",
+    "options": {
+      "a": "Changing a local variable inside the component function",
+      "b": "Calling a state setter function with a new value",
+      "c": "Reading from a useRef object",
+      "d": "Changing a variable outside the component"
+    },
+    "correct_answer": "b",
+    "explanation": "Only state changes (via state setters), context changes, or parent re-renders trigger a component to re-render. Mutating local variables, reading refs, or changing external variables without state do not trigger re-renders."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What must every React component's JSX return have?",
+    "code_snippet": "",
+    "options": {
+      "a": "At least one HTML div element as the root",
+      "b": "A single root element (though it can be a Fragment)",
+      "c": "A minimum of two child elements",
+      "d": "An element with a className prop"
+    },
+    "correct_answer": "b",
+    "explanation": "JSX expressions must have a single root element. You can't return two sibling elements without wrapping them. However, the root doesn't have to be a real DOM element — you can use React.Fragment (<></>) to wrap elements without adding a DOM node."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "How would you pass a function as a prop to update the parent's state from a child?",
+    "code_snippet": "// Parent\nconst [value, setValue] = useState('');\nreturn <Child onChange={setValue} />;",
+    "options": {
+      "a": "The child cannot modify the parent state.",
+      "b": "The child calls props.onChange(newValue) to invoke the parent's setValue.",
+      "c": "The child uses setState() to update the parent.",
+      "d": "The child uses useContext to reach the parent's state."
+    },
+    "correct_answer": "b",
+    "explanation": "The parent passes its state setter (setValue) as the onChange prop. The child calls props.onChange(newValue) to invoke the setter, effectively updating the parent's state. This is the standard React pattern for child-to-parent communication."
+  },
+  {
+    "skill": "React",
+    "difficulty": "medium",
+    "question": "What does this pattern implement?",
+    "code_snippet": "const ThemeContext = React.createContext('light');\n\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <Toolbar />\n    </ThemeContext.Provider>\n  );\n}\n\nfunction Toolbar() {\n  const theme = useContext(ThemeContext);\n  return <div>{theme}</div>;\n}",
+    "options": {
+      "a": "Global state management with Redux",
+      "b": "Sharing the 'dark' theme value via Context without prop drilling",
+      "c": "A render prop pattern",
+      "d": "A controlled component pattern"
+    },
+    "correct_answer": "b",
+    "explanation": "This is the React Context API pattern. ThemeContext.Provider makes the 'dark' value available to all descendants. Toolbar consumes it with useContext(ThemeContext) without needing it passed as a prop through intermediate components."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the expected output when the following code is executed, and why?",
+    "code_snippet": "def extend_list(val, list=[]):\n    list.append(val)\n    return list\n\nlist1 = extend_list(10)\nlist2 = extend_list(123, [])\nlist3 = extend_list('a')\n\nprint(f'{list1}, {list2}, {list3}')",
+    "options": {
+      "a": "[10], [123], ['a']",
+      "b": "[10, 'a'], [123], [10, 'a']",
+      "c": "[10, 123, 'a'], [10, 123, 'a'], [10, 123, 'a']",
+      "d": "[10], [123], [10, 'a']"
+    },
+    "correct_answer": "b",
+    "explanation": "Default arguments in Python are evaluated once at the time of function definition, not every time the function is called. Thus, 'list' persists across calls unless a new list is provided."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "In Python's Method Resolution Order (MRO), how is the search path determined for a class with multiple inheritance following the C3 Linearization algorithm?",
+    "code_snippet": "class A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\n\nprint(D.**mro**)",
+    "options": {
+      "a": "(D, B, A, C, object)",
+      "b": "(D, B, C, A, object)",
+      "c": "(D, C, B, A, object)",
+      "d": "(D, B, C, object)"
+    },
+    "correct_answer": "b",
+    "explanation": "C3 Linearization ensures that a class always appears before its parents and that the order of parents in the definition is preserved. D inherits from B then C, and both B and C inherit from A."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What happens when you use the 'nonlocal' keyword in a nested function?",
+    "code_snippet": "def outer():\n    count = 0\n    def inner():\n        nonlocal count\n        count += 1\n        return count\n    return inner\n\ncounter = outer()\nprint(counter(), counter())",
+    "options": {
+      "a": "1 1",
+      "b": "1 2",
+      "c": "UnboundLocalError",
+      "d": "0 1"
+    },
+    "correct_answer": "b",
+    "explanation": "The 'nonlocal' keyword allows the inner function to modify a variable in the nearest enclosing scope that is not global."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "Which of the following describes the behavior of the Global Interpreter Lock (GIL) in CPython?",
+    "code_snippet": "",
+    "options": {
+      "a": "It prevents multiple threads from executing Python bytecodes at once.",
+      "b": "It speeds up CPU-bound tasks by utilizing multiple cores.",
+      "c": "It is a garbage collection mechanism that clears unreferenced memory.",
+      "d": "It prevents deadlocks by locking all variables in a script."
+    },
+    "correct_answer": "a",
+    "explanation": "The GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecodes simultaneously in CPython."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the primary difference between `__getattr__` and `__getattribute__`?",
+    "code_snippet": "",
+    "options": {
+      "a": "`__getattribute__` is only called if the attribute is not found via standard means.",
+      "b": "`__getattr__` is called for every attribute access, while `__getattribute__` is a fallback.",
+      "c": "`__getattribute__` is called first for every attribute access; `__getattr__` is called only if the attribute isn't found.",
+      "d": "There is no functional difference; they are aliases for one another."
+    },
+    "correct_answer": "c",
+    "explanation": "`__getattribute__` is the first stop for all attribute lookups. If it raises an AttributeError, `__getattr__` is then invoked as a fallback."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What will be the result of the following dictionary comprehension?",
+    "code_snippet": "data = {x: x2 for x in range(5) if x % 2 == 0}\nprint(data)",
+    "options": {
+      "a": "{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}",
+      "b": "{0: 0, 2: 4, 4: 16}",
+      "c": "{2: 4, 4: 16}",
+      "d": "[0, 4, 16]"
+    },
+    "correct_answer": "b",
+    "explanation": "The comprehension iterates through 0-4, filters for even numbers (0, 2, 4), and maps them to their squares."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "How does the `is` operator differ from the `==` operator?",
+    "code_snippet": "a = [1, 2, 3]\nb = [1, 2, 3]\nc = a",
+    "options": {
+      "a": "`is` checks for value equality; `==` checks for identity.",
+      "b": "`is` checks if two variables point to the same object in memory; `==` checks if they have the same value.",
+      "c": "There is no difference between them in Python 3.",
+      "d": "`is` is faster but less reliable than `==`."
+    },
+    "correct_answer": "b",
+    "explanation": "`is` is the identity operator, while `==` is the equality operator."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the output of the following code regarding closure scope and late binding?",
+    "code_snippet": "def create_multipliers():\n    return [lambda x : i * x for i in range(4)]\n\nfor multiplier in create_multipliers():\n    print(multiplier(2), end=' ')",
+    "options": {
+      "a": "0 2 4 6",
+      "b": "2 2 2 2",
+      "c": "6 6 6 6",
+      "d": "Error: 'i' is not defined."
+    },
+    "correct_answer": "c",
+    "explanation": "Python's closures are late-binding. All lambdas refer to the variable 'i' from the surrounding scope, which is 3 by the time the loop finished."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the purpose of the `yield` keyword in Python?",
+    "code_snippet": "",
+    "options": {
+      "a": "To stop the execution of a function and return a final value.",
+      "b": "To turn a function into a generator that produces a sequence of values lazily.",
+      "c": "To release the GIL in multi-threaded applications.",
+      "d": "To force the garbage collector to run."
+    },
+    "correct_answer": "b",
+    "explanation": "`yield` returns a value from a function but saves its state, allowing it to resume where it left off, creating a generator."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the significance of `__slots__` in a Python class?",
+    "code_snippet": "class MyClass:\n    **slots** = ['a', 'b']",
+    "options": {
+      "a": "It defines the only attributes the class can have, saving memory by preventing the creation of `__dict__`.",
+      "b": "It defines private variables that cannot be accessed outside the class.",
+      "c": "It speeds up the initialization of class instances by 50%.",
+      "d": "It allows the class to inherit from multiple abstract base classes."
+    },
+    "correct_answer": "a",
+    "explanation": "`__slots__` tells Python not to use a dynamic dictionary (`__dict__`) for each instance, which significantly reduces memory overhead for classes with many instances."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What will the following code output?",
+    "code_snippet": "try:\n    print(1 / 0)\nexcept ZeroDivisionError:\n    print('Zero')\nfinally:\n    print('Final')\nelse:\n    print('Else')",
+    "options": {
+      "a": "Zero\nFinal",
+      "b": "Zero\nElse",
+      "c": "Zero\nElse\nFinal",
+      "d": "SyntaxError"
+    },
+    "correct_answer": "a",
+    "explanation": "The `else` block only runs if no exception was raised in the `try` block. `finally` always runs."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "How do you implement a singleton pattern using a metaclass?",
+    "code_snippet": "class Singleton(type):\n    _instances = {}\n    def **call**(cls, *args, kwargs):\n        if cls not in cls._instances:\n            cls._instances[cls] = super().**call**(*args, kwargs)\n        return cls._instances[cls]",
+    "options": {
+      "a": "By overriding the `__init__` method.",
+      "b": "By overriding the `__new__` method.",
+      "c": "By overriding the `__call__` method of the metaclass.",
+      "d": "By using the `@staticmethod` decorator."
+    },
+    "correct_answer": "c",
+    "explanation": "The `__call__` method of a metaclass is called when an instance of the class (that uses the metaclass) is created."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the result of `bool(['False'])`?",
+    "code_snippet": "",
+    "options": {
+      "a": "True",
+      "b": "False",
+      "c": "TypeError",
+      "d": "None"
+    },
+    "correct_answer": "a",
+    "explanation": "A non-empty list in Python always evaluates to True, regardless of the strings or values inside it."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "In `asyncio`, what is the effect of running a CPU-bound task using `await` without a separate thread or process?",
+    "code_snippet": "async def main():\n    await heavy_computation()",
+    "options": {
+      "a": "It runs in the background while other tasks continue.",
+      "b": "It blocks the entire event loop, preventing other tasks from running.",
+      "c": "It automatically spawns a new process to handle the task.",
+      "d": "It raises a `RuntimeError`."
+    },
+    "correct_answer": "b",
+    "explanation": "Asyncio is single-threaded. If an 'awaitable' function performs heavy CPU work synchronously, it prevents the event loop from switching to other tasks."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What does the `*args` and `kwargs` syntax allow in function definitions?",
+    "code_snippet": "",
+    "options": {
+      "a": "It allows functions to accept a fixed number of named arguments.",
+      "b": "It allows functions to accept any number of positional and keyword arguments.",
+      "c": "It is used to define private and protected variables.",
+      "d": "It allows the function to return multiple values as a tuple."
+    },
+    "correct_answer": "b",
+    "explanation": "`*args` collects extra positional arguments into a tuple, and `kwargs` collects extra keyword arguments into a dictionary."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the output of the following code involving `id()` and small integer caching?",
+    "code_snippet": "x = 256\ny = 256\nprint(x is y)\n\na = 257\nb = 257\nprint(a is b)",
+    "options": {
+      "a": "True\nTrue",
+      "b": "False\nFalse",
+      "c": "True\nFalse",
+      "d": "False\nTrue"
+    },
+    "correct_answer": "c",
+    "explanation": "CPython caches small integers in the range of [-5, 256]. For integers outside this range, new objects are usually created (depending on the environment/script execution)."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "How can you merge two dictionaries in Python 3.9+ using a single operator?",
+    "code_snippet": "dict1 = {'a': 1}\ndict2 = {'b': 2}",
+    "options": {
+      "a": "dict1 + dict2",
+      "b": "dict1 | dict2",
+      "c": "dict1.update(dict2)",
+      "d": "dict1 & dict2"
+    },
+    "correct_answer": "b",
+    "explanation": "Python 3.9 introduced the union operator `|` for dictionaries to merge them into a new dictionary."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the correct way to handle a cleanup action in a generator even if an exception occurs during iteration?",
+    "code_snippet": "",
+    "options": {
+      "a": "Using a `finally` block inside the generator function.",
+      "b": "Using the `__del__` method in the class.",
+      "c": "Calling `gen.close()` manually every time.",
+      "d": "Generators cannot handle exceptions during iteration."
+    },
+    "correct_answer": "a",
+    "explanation": "A `finally` block inside a generator function will execute when the generator is closed or when the caller catches an exception."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What does the `zip()` function do when passed two iterables of different lengths?",
+    "code_snippet": "",
+    "options": {
+      "a": "It raises a `ValueError`.",
+      "b": "It pads the shorter iterable with `None`.",
+      "c": "It stops at the end of the shortest iterable.",
+      "d": "It stops at the end of the longest iterable."
+    },
+    "correct_answer": "c",
+    "explanation": "By default, `zip` stops when the shortest iterable is exhausted. (Note: `zip_longest` in `itertools` pads with None)."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What will be the output of the following code snippet?",
+    "code_snippet": "class Parent:\n    x = 1\nclass Child1(Parent):\n    pass\nclass Child2(Parent):\n    pass\n\nChild1.x = 2\nParent.x = 3\nprint(Parent.x, Child1.x, Child2.x)",
+    "options": {
+      "a": "3 2 3",
+      "b": "3 2 1",
+      "c": "1 2 1",
+      "d": "3 3 3"
+    },
+    "correct_answer": "a",
+    "explanation": "Child1.x creates a new instance/class attribute on Child1. Child2.x still references Parent.x, so when Parent.x is updated, Child2.x reflects that change."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "Which of the following is true about a Python `f-string`?",
+    "code_snippet": "val = 10\nprint(f'{val=}')",
+    "options": {
+      "a": "It is slower than `str.format()`.",
+      "b": "It can only be used for string concatenation.",
+      "c": "The `=` inside the curly braces prints both the variable name and its value (Python 3.8+).",
+      "d": "It doesn't support expressions inside the curly braces."
+    },
+    "correct_answer": "c",
+    "explanation": "The `f'{var=}'` syntax is a convenient debugging feature added in Python 3.8 to show the expression and its result."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the purpose of the `__init__` vs `__new__` method in Python classes?",
+    "code_snippet": "",
+    "options": {
+      "a": "`__init__` is for object creation, `__new__` is for initialization.",
+      "b": "`__new__` is the static method that creates the instance, `__init__` initializes it.",
+      "c": "`__init__` must return the instance; `__new__` must not.",
+      "d": "There is no reason to use `__new__` unless you are creating a list."
+    },
+    "correct_answer": "b",
+    "explanation": "`__new__` is responsible for creating the object (it returns the instance), while `__init__` is responsible for setting up the initial state of that instance."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is a 'decorator' in Python?",
+    "code_snippet": "",
+    "options": {
+      "a": "A function that takes another function and extends its behavior without modifying it.",
+      "b": "A way to define a class within another class.",
+      "c": "A keyword used to declare constant variables.",
+      "d": "A tool for documenting code."
+    },
+    "correct_answer": "a",
+    "explanation": "Decorators wrap a function, modifying its behavior by executing code before or after the wrapped function runs."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "In the `contextlib` module, what does the `@contextmanager` decorator enable?",
+    "code_snippet": "",
+    "options": {
+      "a": "It converts a class into a thread-safe singleton.",
+      "b": "It allows a generator function to be used as a context manager via the `with` statement.",
+      "c": "It automatically closes all database connections.",
+      "d": "It manages memory for large datasets."
+    },
+    "correct_answer": "b",
+    "explanation": "By using `yield`, a function decorated with `@contextmanager` provides the 'setup' code before the yield and 'teardown' code after it."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the complexity of looking up a key in a Python dictionary (average case)?",
+    "code_snippet": "",
+    "options": {
+      "a": "O(1)",
+      "b": "O(n)",
+      "c": "O(log n)",
+      "d": "O(n^2)"
+    },
+    "correct_answer": "a",
+    "explanation": "Dictionaries in Python are implemented using hash tables, providing O(1) average-time complexity for lookups."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "How does `multiprocessing` bypass the Global Interpreter Lock (GIL)?",
+    "code_snippet": "",
+    "options": {
+      "a": "By using a special version of the Python interpreter.",
+      "b": "By spawning separate memory spaces/processes, each with its own Python interpreter and GIL.",
+      "c": "By optimizing the CPU scheduler in the OS kernel.",
+      "d": "It doesn't; it is subject to the same GIL limitations as threading."
+    },
+    "correct_answer": "b",
+    "explanation": "Because each process has its own GIL and memory space, `multiprocessing` can effectively utilize multiple CPU cores for CPU-bound tasks."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What will be the output of `print(type(1/1))`?",
+    "code_snippet": "",
+    "options": {
+      "a": "<class 'int'>",
+      "b": "<class 'float'>",
+      "c": "<class 'double'>",
+      "d": "Error"
+    },
+    "correct_answer": "b",
+    "explanation": "In Python 3, the `/` operator performs 'true division' and always returns a float."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is 'monkey patching' in Python?",
+    "code_snippet": "",
+    "options": {
+      "a": "Writing code that only runs on certain versions of Python.",
+      "b": "Dynamically modifying a class or module at runtime.",
+      "c": "A technique for encrypting Python source code.",
+      "d": "Creating mock objects for unit tests using the `unittest.mock` library."
+    },
+    "correct_answer": "b",
+    "explanation": "Monkey patching involves changing the behavior of a module or class after it has been imported, often used in testing or to apply hotfixes."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "How do you create a deep copy of an object in Python?",
+    "code_snippet": "import copy",
+    "options": {
+      "a": "copy.copy(obj)",
+      "b": "obj.copy()",
+      "c": "copy.deepcopy(obj)",
+      "d": "obj[:]"
+    },
+    "correct_answer": "c",
+    "explanation": "`copy.deepcopy()` recursively copies all objects found in the original, whereas `copy.copy()` only creates a shallow copy."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "Which of the following describes a 'descriptor' in Python?",
+    "code_snippet": "",
+    "options": {
+      "a": "A class that implements `__get__`, `__set__`, or `__delete__`.",
+      "b": "A decorator used only for class methods.",
+      "c": "A function that generates metadata for a module.",
+      "d": "An attribute that is automatically deleted when the object is destroyed."
+    },
+    "correct_answer": "a",
+    "explanation": "Descriptors are the underlying mechanism for properties, class methods, and static methods. They customize attribute access."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the difference between `list.sort()` and `sorted(list)`?",
+    "code_snippet": "",
+    "options": {
+      "a": "`list.sort()` returns a new list; `sorted(list)` sorts in place.",
+      "b": "`list.sort()` sorts in place; `sorted(list)` returns a new sorted list.",
+      "c": "`sorted(list)` is only for tuples.",
+      "d": "There is no difference."
+    },
+    "correct_answer": "b",
+    "explanation": "`list.sort()` is a method of the list class that modifies the list itself. `sorted()` is a built-in function that creates a new sorted list from any iterable."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the output of the following code involving `weakref`?",
+    "code_snippet": "import weakref\nclass MyClass: pass\nobj = MyClass()\nr = weakref.ref(obj)\nobj = None\nprint(r())",
+    "options": {
+      "a": "<MyClass ... at object>",
+      "b": "None",
+      "c": "ReferenceError",
+      "d": "Error"
+    },
+    "correct_answer": "b",
+    "explanation": "A weak reference doesn't keep an object alive. When the only references to an object are weak references, garbage collection can reclaim it, and the weak reference returns `None`."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the result of `'abc'.find('z')`?",
+    "code_snippet": "",
+    "options": {
+      "a": "-1",
+      "b": "0",
+      "c": "None",
+      "d": "ValueError"
+    },
+    "correct_answer": "a",
+    "explanation": "The `find()` method returns -1 if the substring is not found. (The `index()` method would raise a `ValueError`)."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What does the `__call__` method allow an instance of a class to do?",
+    "code_snippet": "",
+    "options": {
+      "a": "To be used as a dictionary key.",
+      "b": "To be treated like a function and called using parentheses.",
+      "c": "To be automatically deleted by the garbage collector.",
+      "d": "To be converted into a string."
+    },
+    "correct_answer": "b",
+    "explanation": "Implementing `__call__` makes the instance a 'callable' object, similar to a function."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "Which of these is the correct way to open a file for reading and ensure it closes?",
+    "code_snippet": "",
+    "options": {
+      "a": "f = open('file.txt', 'r')",
+      "b": "with open('file.txt', 'r') as f:",
+      "c": "f = open('file.txt'); try: f.read()",
+      "d": "read('file.txt')"
+    },
+    "correct_answer": "b",
+    "explanation": "The `with` statement uses a context manager to ensure the file is closed automatically, even if an exception occurs."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the result of `10 // 3` and `10 % 3`?",
+    "code_snippet": "",
+    "options": {
+      "a": "3.33 and 1",
+      "b": "3 and 1",
+      "c": "3 and 3.33",
+      "d": "4 and 1"
+    },
+    "correct_answer": "b",
+    "explanation": "`//` is floor division (returns 3) and `%` is the modulo operator (returns the remainder, 1)."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is a `lambda` function in Python?",
+    "code_snippet": "",
+    "options": {
+      "a": "A function that can only be defined inside a class.",
+      "b": "An anonymous, one-line function.",
+      "c": "A function that is used for parallel processing.",
+      "d": "A special type of recursive function."
+    },
+    "correct_answer": "b",
+    "explanation": "Lambdas are small, anonymous functions defined with the `lambda` keyword, often used for short-lived tasks like sorting keys."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "How does `sys.setrecursionlimit()` affect a Python program?",
+    "code_snippet": "",
+    "options": {
+      "a": "It limits the number of threads the program can create.",
+      "b": "It changes the maximum depth of the Python interpreter stack.",
+      "c": "It limits the amount of memory a recursive function can use.",
+      "d": "It has no effect in Python 3."
+    },
+    "correct_answer": "b",
+    "explanation": "It sets the maximum depth of the Python call stack to prevent infinite recursion from crashing the C stack and causing a segfault."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What will `['a', 'b', 'c'] * 2` result in?",
+    "code_snippet": "",
+    "options": {
+      "a": "['aa', 'bb', 'cc']",
+      "b": "['a', 'b', 'c', 'a', 'b', 'c']",
+      "c": "TypeError",
+      "d": "[['a', 'b', 'c'], ['a', 'b', 'c']]"
+    },
+    "correct_answer": "b",
+    "explanation": "The `*` operator on a list performs concatenation of the list with itself 'n' times."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "In Python 3.10+, what is the purpose of the `match` statement?",
+    "code_snippet": "match status:\n    case 200:\n        return 'OK'",
+    "options": {
+      "a": "It is a faster version of an `if-else` block for integers only.",
+      "b": "It provides structural pattern matching.",
+      "c": "It matches strings using regular expressions automatically.",
+      "d": "It is used for multi-threaded switch cases."
+    },
+    "correct_answer": "b",
+    "explanation": "The `match` statement (Structural Pattern Matching) allows for complex matching of data structures, shapes, and values."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the output of `any([0, False, [], 1])`?",
+    "code_snippet": "",
+    "options": {
+      "a": "True",
+      "b": "False",
+      "c": "None",
+      "d": "0"
+    },
+    "correct_answer": "a",
+    "explanation": "`any()` returns True if at least one element in the iterable is truthy. Here, `1` is truthy."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What happens if you raise an exception inside an `__exit__` method of a context manager?",
+    "code_snippet": "",
+    "options": {
+      "a": "The exception is suppressed if `__exit__` returns True.",
+      "b": "The exception is always suppressed.",
+      "c": "The exception is caught and stored in `sys.last_value`.",
+      "d": "The program crashes immediately without running `finally` blocks."
+    },
+    "correct_answer": "a",
+    "explanation": "If `__exit__` returns a truthy value, Python suppresses the exception that occurred within the `with` block."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "Which module would you use to measure the execution time of small code snippets?",
+    "code_snippet": "",
+    "options": {
+      "a": "datetime",
+      "b": "time",
+      "c": "timeit",
+      "d": "profile"
+    },
+    "correct_answer": "c",
+    "explanation": "The `timeit` module is specifically designed to accurately time small bits of Python code."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the primary advantage of using `collections.deque` over a standard `list` for a queue?",
+    "code_snippet": "",
+    "options": {
+      "a": "It supports O(1) time complexity for appends and pops from both ends.",
+      "b": "It uses less memory than a list.",
+      "c": "It is thread-safe for all operations.",
+      "d": "It can only store integers, making it faster."
+    },
+    "correct_answer": "a",
+    "explanation": "A list has O(n) complexity for inserting or deleting from the beginning (index 0), while `deque` is O(1)."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What is the purpose of `self` in Python class methods?",
+    "code_snippet": "",
+    "options": {
+      "a": "It is a keyword that refers to the class itself.",
+      "b": "It is a convention used to represent the instance of the object.",
+      "c": "It is used to define global variables within a class.",
+      "d": "It is required only for static methods."
+    },
+    "correct_answer": "b",
+    "explanation": "`self` represents the specific instance of the class and allows access to its attributes and methods."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "Which of the following is true about the `__repr__` method?",
+    "code_snippet": "",
+    "options": {
+      "a": "It is meant to provide a 'user-friendly' string representation.",
+      "b": "It is meant to provide an 'official' string representation, ideally one that can recreate the object.",
+      "c": "It is called only when you use the `print()` function.",
+      "d": "It is used for converting an object to an integer."
+    },
+    "correct_answer": "b",
+    "explanation": "`__repr__` is for developers (debugging); `__str__` is for end-users."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "How do you handle multiple exceptions in a single `except` block?",
+    "code_snippet": "",
+    "options": {
+      "a": "except (TypeError, ValueError):",
+      "b": "except TypeError or ValueError:",
+      "c": "except TypeError | ValueError:",
+      "d": "except [TypeError, ValueError]:"
+    },
+    "correct_answer": "a",
+    "explanation": "To catch multiple exceptions, you must provide them as a tuple."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "In the `threading` module, what is a 'Daemon' thread?",
+    "code_snippet": "",
+    "options": {
+      "a": "A thread that runs with high priority.",
+      "b": "A thread that prevents the program from exiting until it finishes.",
+      "c": "A thread that runs in the background and shuts down automatically when all non-daemon threads have exited.",
+      "d": "A thread used specifically for network I/O."
+    },
+    "correct_answer": "c",
+    "explanation": "Daemon threads are background tasks that do not block the main program from closing."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "medium",
+    "question": "What will `bool(range(0))` evaluate to?",
+    "code_snippet": "",
+    "options": {
+      "a": "True",
+      "b": "False",
+      "c": "TypeError",
+      "d": "None"
+    },
+    "correct_answer": "b",
+    "explanation": "An empty range (or any empty sequence) evaluates to False in a boolean context."
+  },
+  {
+    "skill": "Python",
+    "difficulty": "hard",
+    "question": "What is the difference between `math.floor()` and the `//` operator for negative numbers?",
+    "code_snippet": "import math\nprint(math.floor(-3.5), -3 // 2)",
+    "options": {
+      "a": "Both return the same values (rounding toward negative infinity).",
+      "b": "`math.floor` rounds toward zero; `//` rounds toward negative infinity.",
+      "c": "`math.floor` returns a float; `//` returns an int.",
+      "d": "They behave differently for complex numbers."
+    },
+    "correct_answer": "a",
+    "explanation": "Both `math.floor()` and `//` perform floor division, which rounds towards negative infinity."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Given the box-sizing: border-box property, what is the final rendered width of an element with the following styles?",
+    "code_snippet": ".box {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n  margin: 10px;\n  box-sizing: border-box;\n}",
+    "options": {
+      "a": "250px",
+      "b": "200px",
+      "c": "225px",
+      "d": "150px"
+    },
+    "correct_answer": "b",
+    "explanation": "With border-box, the specified width includes the padding and border. The margin is outside the width calculation, so the element stays exactly 200px wide."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "Which selector has the highest specificity?",
+    "code_snippet": "",
+    "options": {
+      "a": "div.container ul li:first-child",
+      "b": "#nav .item",
+      "c": "div#header",
+      "d": "html body main div.active"
+    },
+    "correct_answer": "c",
+    "explanation": "Specificity is calculated as (ID, Class/Attribute/Pseudo-class, Element). Choice 'c' is (1, 0, 1). Choice 'b' is (1, 1, 0). Choice 'a' is (0, 2, 3). Choice 'c' and 'b' are close, but 'b' (110) is actually higher than 'c' (101). Wait, recalculating: b (#nav .item) is 1 ID, 1 Class = 110. c (div#header) is 1 ID, 1 Element = 101. Therefore, B is higher."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What is the result of the following specificity calculation for choice 'b' in the previous logic?",
+    "code_snippet": "#nav .item",
+    "options": {
+      "a": "0, 1, 1",
+      "b": "1, 1, 0",
+      "c": "0, 2, 0",
+      "d": "1, 0, 1"
+    },
+    "correct_answer": "b",
+    "explanation": "#nav is an ID (1,0,0) and .item is a class (0,1,0), totaling (1,1,0)."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "In a Flexbox container, what does the 'flex-basis' property define?",
+    "code_snippet": "",
+    "options": {
+      "a": "The maximum width of a flex item.",
+      "b": "The alignment of items along the cross axis.",
+      "c": "The initial size of a flex item before free space is distributed.",
+      "d": "The order in which items appear in the container."
+    },
+    "correct_answer": "c",
+    "explanation": "Flex-basis defines the default size of an element before the remaining space is distributed via flex-grow or flex-shrink."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "How does the ':is()' pseudo-class affect specificity compared to ':where()'?",
+    "code_snippet": ":is(.header, #main) p { color: red; }\n:where(.header, #main) p { color: blue; }",
+    "options": {
+      "a": "Both have zero specificity.",
+      "b": "Both take the specificity of their most specific argument.",
+      "c": "':is()' takes the specificity of its most specific argument, while ':where()' always has zero specificity.",
+      "d": "':is()' has the specificity of a class, while ':where()' has the specificity of an ID."
+    },
+    "correct_answer": "c",
+    "explanation": "The :is() pseudo-class takes the specificity of its most specific argument. The :where() pseudo-class always has a specificity of 0, regardless of its arguments."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What happens to an element with 'position: sticky' if none of its ancestors have a defined height or scroll overflow?",
+    "code_snippet": "",
+    "options": {
+      "a": "It behaves like 'position: fixed'.",
+      "b": "It behaves like 'position: relative'.",
+      "c": "It is removed from the document flow.",
+      "d": "It centers itself in the viewport."
+    },
+    "correct_answer": "b",
+    "explanation": "Sticky positioning relies on a 'scrolling box'. If no ancestor is scrollable, the element cannot 'stick' and behaves like a relatively positioned element."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "Which CSS property is used to create a new stacking context without using z-index?",
+    "code_snippet": "",
+    "options": {
+      "a": "display: block",
+      "b": "opacity: 0.99",
+      "c": "color: transparent",
+      "d": "overflow: visible"
+    },
+    "correct_answer": "b",
+    "explanation": "Setting opacity to a value less than 1 creates a new stacking context. Other ways include using transform, filter, or will-change."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What is the difference between 'display: none' and 'visibility: hidden'?",
+    "code_snippet": "",
+    "options": {
+      "a": "'display: none' removes the element from the DOM; 'visibility: hidden' does not.",
+      "b": "'display: none' hides the element but keeps its space; 'visibility: hidden' removes the space.",
+      "c": "'display: none' removes the element from the flow and its space; 'visibility: hidden' hides it but keeps the space.",
+      "d": "There is no difference in layout behavior."
+    },
+    "correct_answer": "c",
+    "explanation": "display: none ensures the element is not rendered and takes up no space. visibility: hidden hides the content but the element still occupies its original area in the layout."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "How does 'flex-shrink: 0' affect a flex item?",
+    "code_snippet": "",
+    "options": {
+      "a": "The item will grow to fill the container.",
+      "b": "The item will not shrink even if the container is too small.",
+      "c": "The item will maintain a 1:1 aspect ratio.",
+      "d": "The item will be hidden if it exceeds the container size."
+    },
+    "correct_answer": "b",
+    "explanation": "By default, flex items have 'flex-shrink: 1', allowing them to get smaller if space is limited. Setting it to 0 prevents this behavior."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What does the 'ch' unit represent in CSS?",
+    "code_snippet": "width: 20ch;",
+    "options": {
+      "a": "The height of the character 'x'.",
+      "b": "The width of the character '0' (zero) in the element's font.",
+      "c": "The width of the character 'c'.",
+      "d": "A percentage of the container's height."
+    },
+    "correct_answer": "b",
+    "explanation": "The 'ch' unit is relative to the width of the '0' character in the current font, making it useful for sizing inputs or text containers."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the purpose of the 'contain' property in CSS?",
+    "code_snippet": "contain: layout paint;",
+    "options": {
+      "a": "To limit the scope of browser styles to a specific component.",
+      "b": "To inform the browser that an element's subtree is independent of the rest of the page for performance optimization.",
+      "c": "To ensure an element's children stay within its borders.",
+      "d": "To force a specific aspect ratio on an element."
+    },
+    "correct_answer": "b",
+    "explanation": "The 'contain' property allows developers to isolate parts of the DOM, letting the browser avoid recalculating layout or paint for the whole page when only the contained element changes."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which function allows you to use a value that is the result of a mathematical expression?",
+    "code_snippet": "",
+    "options": {
+      "a": "eval()",
+      "b": "math()",
+      "c": "calc()",
+      "d": "var()"
+    },
+    "correct_answer": "c",
+    "explanation": "The calc() function allows you to perform calculations (like mixing percentages and pixels) to determine CSS property values."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "In CSS Grid, what is the difference between 'auto-fill' and 'auto-fit' in the 'repeat()' function?",
+    "code_snippet": "grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));",
+    "options": {
+      "a": "'auto-fill' collapses empty tracks; 'auto-fit' keeps them.",
+      "b": "'auto-fill' keeps empty tracks; 'auto-fit' collapses them to zero width.",
+      "c": "'auto-fill' is for rows; 'auto-fit' is for columns.",
+      "d": "There is no practical difference unless using 'flex-wrap'."
+    },
+    "correct_answer": "b",
+    "explanation": "Both create as many tracks as possible. If there is extra space, 'auto-fill' preserves the empty tracks, while 'auto-fit' collapses them and stretches the filled tracks to occupy the space."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which property is used to define the stack order of elements?",
+    "code_snippet": "",
+    "options": {
+      "a": "order",
+      "b": "z-index",
+      "c": "stack-level",
+      "d": "layer"
+    },
+    "correct_answer": "b",
+    "explanation": "z-index determines the position of an element along the Z-axis (depth) within its stacking context."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the 'CSS Object Model' (CSSOM)?",
+    "code_snippet": "",
+    "options": {
+      "a": "A framework for writing modular CSS.",
+      "b": "A set of APIs that allow manipulating CSS from JavaScript.",
+      "c": "The internal browser engine that parses HTML.",
+      "d": "A deprecated method of styling XML documents."
+    },
+    "correct_answer": "b",
+    "explanation": "The CSSOM is a map of all CSS selectors and relevant properties for each selector in the form of a tree, which can be accessed via JS."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What does the following CSS selector match?",
+    "code_snippet": "div > p",
+    "options": {
+      "a": "All p elements inside a div.",
+      "b": "All p elements that are direct children of a div.",
+      "c": "The first p element inside a div.",
+      "d": "All div elements that contain a p."
+    },
+    "correct_answer": "b",
+    "explanation": "The child combinator (>) selects only the elements that are immediate children of the specified parent."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the value of the 'currentColor' keyword?",
+    "code_snippet": "div { color: blue; border: 1px solid currentColor; }",
+    "options": {
+      "a": "It defaults to black.",
+      "b": "It is the value of the 'color' property of the element.",
+      "c": "It is the background color of the parent element.",
+      "d": "It refers to the user's system highlight color."
+    },
+    "correct_answer": "b",
+    "explanation": "currentColor acts like a CSS variable that automatically inherits the value of the current 'color' property of the element."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "How do you apply a style to an element when a user hovers over it?",
+    "code_snippet": "",
+    "options": {
+      "a": "element:active",
+      "b": "element:focus",
+      "c": "element:hover",
+      "d": "element:visited"
+    },
+    "correct_answer": "c",
+    "explanation": "The :hover pseudo-class is used to select elements when the mouse pointer is over them."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What does 'will-change' do in CSS?",
+    "code_snippet": "will-change: transform;",
+    "options": {
+      "a": "It forces a property to change immediately.",
+      "b": "It suggests to the browser that an element will be animated so it can optimize ahead of time.",
+      "c": "It locks a property to prevent JS modification.",
+      "d": "It defines the final state of a transition."
+    },
+    "correct_answer": "b",
+    "explanation": "will-change informs the browser about upcoming changes, often prompting it to promote the element to its own layer to avoid expensive layout shifts."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What is the default value of the 'position' property?",
+    "code_snippet": "",
+    "options": {
+      "a": "relative",
+      "b": "absolute",
+      "c": "static",
+      "d": "fixed"
+    },
+    "correct_answer": "c",
+    "explanation": "By default, all elements are 'static', meaning they follow the normal document flow."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "In the CSS Grid, how does 'grid-area: 1 / 2 / 3 / 4;' map to grid lines?",
+    "code_snippet": "",
+    "options": {
+      "a": "row-start / row-end / col-start / col-end",
+      "b": "row-start / col-start / row-end / col-end",
+      "c": "col-start / row-start / col-end / row-end",
+      "d": "top / left / bottom / right"
+    },
+    "correct_answer": "b",
+    "explanation": "The shorthand 'grid-area' follows the order: grid-row-start, grid-column-start, grid-row-end, grid-column-end."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which unit is relative to the font-size of the root element (html)?",
+    "code_snippet": "",
+    "options": {
+      "a": "em",
+      "b": "rem",
+      "c": "px",
+      "d": "vh"
+    },
+    "correct_answer": "b",
+    "explanation": "rem stands for 'root em', which is based on the font-size of the  element."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the purpose of the 'hyphens: auto;' property?",
+    "code_snippet": "",
+    "options": {
+      "a": "It prevents words from being broken at the end of a line.",
+      "b": "It allows the browser to automatically insert hyphens where appropriate to break words across lines.",
+      "c": "It replaces all spaces with hyphens.",
+      "d": "It is a shorthand for 'text-decoration'."
+    },
+    "correct_answer": "b",
+    "explanation": "When combined with a 'lang' attribute on HTML, 'hyphens: auto' allows the browser to use its dictionary to hyphenate words for better text wrapping."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which CSS property is used to change the mouse cursor?",
+    "code_snippet": "",
+    "options": {
+      "a": "mouse-pointer",
+      "b": "cursor",
+      "c": "pointer-type",
+      "d": "icon"
+    },
+    "correct_answer": "b",
+    "explanation": "The 'cursor' property specifies the mouse cursor to be displayed when pointing over an element."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What does 'aspect-ratio: 16 / 9;' accomplish?",
+    "code_snippet": "",
+    "options": {
+      "a": "It ensures the element is 1600px wide and 900px tall.",
+      "b": "It sets a preferred aspect ratio for the box, which will be used in layout calculations.",
+      "c": "It crops the background image to 16:9.",
+      "d": "It is a media query feature for wide screens."
+    },
+    "correct_answer": "b",
+    "explanation": "The aspect-ratio property allows you to maintain a consistent width-to-height ratio for an element as it scales."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What is the primary use of the 'z-index' property?",
+    "code_snippet": "",
+    "options": {
+      "a": "To zoom in on an element.",
+      "b": "To control the horizontal alignment.",
+      "c": "To specify the stack order of overlapping elements.",
+      "d": "To set the transparency of an element."
+    },
+    "correct_answer": "c",
+    "explanation": "z-index controls how elements overlap on the Z-axis (front to back)."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "How does the 'clamp()' function work?",
+    "code_snippet": "font-size: clamp(1rem, 5vw, 2rem);",
+    "options": {
+      "a": "It picks the largest value among the three.",
+      "b": "It picks the smallest value among the three.",
+      "c": "It clamps a value between an upper and lower bound, based on a preferred value.",
+      "d": "It only works for viewport units."
+    },
+    "correct_answer": "c",
+    "explanation": "clamp(min, preferred, max) restricts a value to a range. It uses the preferred value as long as it is between the min and max."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which property allows you to create space between the content and the border of an element?",
+    "code_snippet": "",
+    "options": {
+      "a": "margin",
+      "b": "padding",
+      "c": "spacing",
+      "d": "gutter"
+    },
+    "correct_answer": "b",
+    "explanation": "Padding creates internal space within an element, between the content and its border."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What does the 'backface-visibility: hidden;' property do?",
+    "code_snippet": "",
+    "options": {
+      "a": "It hides the element from screen readers.",
+      "b": "It prevents the back side of an element from being visible when it is rotated in 3D space.",
+      "c": "It hides the background image of an element.",
+      "d": "It is a performance hack to hide elements off-screen."
+    },
+    "correct_answer": "b",
+    "explanation": "When an element is rotated using CSS 3D transforms, backface-visibility determines if the user can see the 'reverse' side of the element."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "In CSS Flexbox, what is the default value of 'flex-direction'?",
+    "code_snippet": "",
+    "options": {
+      "a": "column",
+      "b": "row",
+      "c": "row-reverse",
+      "d": "initial"
+    },
+    "correct_answer": "b",
+    "explanation": "By default, flex items are laid out in a horizontal row."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the 'Double Margin Bug' in older versions of Internet Explorer (IE6)?",
+    "code_snippet": "",
+    "options": {
+      "a": "Margins on floats are doubled in the direction of the float.",
+      "b": "Vertical margins between blocks do not collapse.",
+      "c": "Absolute elements ignore margins entirely.",
+      "d": "The box model width includes margins twice."
+    },
+    "correct_answer": "a",
+    "explanation": "In IE6, a floated element with a margin in the same direction as the float would have that margin doubled. This is a classic 'web archeology' interview question."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which of the following is NOT a valid value for 'display'?",
+    "code_snippet": "",
+    "options": {
+      "a": "flex",
+      "b": "grid",
+      "c": "inline-block",
+      "d": "center"
+    },
+    "correct_answer": "d",
+    "explanation": "'center' is a value for 'text-align' or 'justify-content', but not a valid value for the 'display' property."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What does the ':has()' pseudo-class allow you to do?",
+    "code_snippet": "section:has(h1) { background: gray; }",
+    "options": {
+      "a": "Style an element only if it has a specific child or following element.",
+      "b": "Select all children of a parent.",
+      "c": "Check if a variable has been defined.",
+      "d": "It is a synonym for ':matches()'."
+    },
+    "correct_answer": "a",
+    "explanation": "Often called the 'parent selector', :has() allows you to style an element based on its contents or subsequent siblings."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "How do you make a list not show bullet points?",
+    "code_snippet": "",
+    "options": {
+      "a": "list-style-type: none;",
+      "b": "bullet: none;",
+      "c": "text-decoration: none;",
+      "d": "list-style: hidden;"
+    },
+    "correct_answer": "a",
+    "explanation": "list-style-type: none removes the default markers from list items."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the difference between 'content-visibility: auto' and 'display: none'?",
+    "code_snippet": "",
+    "options": {
+      "a": "'content-visibility: auto' keeps the element in the DOM but skips rendering when off-screen to improve performance.",
+      "b": "They are the same, but 'content-visibility' is for mobile.",
+      "c": "'content-visibility' only works for images.",
+      "d": "'display: none' is faster for large documents."
+    },
+    "correct_answer": "a",
+    "explanation": "content-visibility: auto allows the browser to skip an element's layout and painting work until it is needed (e.g., when it scrolls into view), greatly boosting initial load performance."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which property is used to change the text color of an element?",
+    "code_snippet": "",
+    "options": {
+      "a": "font-color",
+      "b": "text-color",
+      "c": "color",
+      "d": "foreground"
+    },
+    "correct_answer": "c",
+    "explanation": "The 'color' property is used specifically to set the color of text."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is 'CSS fragmentation'?",
+    "code_snippet": "",
+    "options": {
+      "a": "When CSS files are split into multiple chunks for faster loading.",
+      "b": "How content is broken across multiple outputs like pages (print) or columns.",
+      "c": "A bug where styles don't load correctly on slow connections.",
+      "d": "The process of minifying CSS code."
+    },
+    "correct_answer": "b",
+    "explanation": "Fragmentation refers to breaking content into pieces to fit into 'fragmentation containers' like columns or printed pages."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "How do you select an element with id 'demo'?",
+    "code_snippet": "",
+    "options": {
+      "a": ".demo",
+      "b": "#demo",
+      "c": "demo",
+      "d": "*demo"
+    },
+    "correct_answer": "b",
+    "explanation": "The '#' symbol is used for ID selectors in CSS."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the 'object-fit' property used for?",
+    "code_snippet": "img { width: 100%; height: 300px; object-fit: cover; }",
+    "options": {
+      "a": "To make images responsive.",
+      "b": "To specify how an  or  should be resized to fit its container.",
+      "c": "To align objects within a flex container.",
+      "d": "To fit text around an image."
+    },
+    "correct_answer": "b",
+    "explanation": "object-fit (with values like cover or contain) handles how replaced content fills its box while preserving or stretching its aspect ratio."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which property is used to make text bold?",
+    "code_snippet": "",
+    "options": {
+      "a": "font-style",
+      "b": "text-decoration",
+      "c": "font-weight",
+      "d": "bold"
+    },
+    "correct_answer": "c",
+    "explanation": "font-weight: bold or numeric values (e.g., 700) are used to set text thickness."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "In the context of CSS performance, what is a 'Reflow'?",
+    "code_snippet": "",
+    "options": {
+      "a": "When the browser recalculates the positions and geometries of elements in the document.",
+      "b": "When the browser re-downloads the CSS file.",
+      "c": "When a color change occurs without changing dimensions.",
+      "d": "The process of converting CSS into a pixel-based image."
+    },
+    "correct_answer": "a",
+    "explanation": "A reflow (or layout) happens when a change affects the layout of part or all of the page. It is more computationally expensive than a 'Repaint'."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What does 'overflow: hidden' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "Hides the entire element.",
+      "b": "Clips content that is too large to fit in the element's box and hides the scrollbars.",
+      "c": "Hides the background image of the element.",
+      "d": "Makes the element transparent."
+    },
+    "correct_answer": "b",
+    "explanation": "It prevents content from spilling out of the container by clipping it."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "How do 'logical properties' (e.g., margin-inline-start) differ from 'physical properties' (e.g., margin-left)?",
+    "code_snippet": "",
+    "options": {
+      "a": "Logical properties are based on the direction of text (LTR vs RTL).",
+      "b": "Logical properties are only used in CSS Grid.",
+      "c": "Physical properties are faster for browsers to render.",
+      "d": "Logical properties require JavaScript to work."
+    },
+    "correct_answer": "a",
+    "explanation": "Logical properties allow you to define layout relative to the flow of content. For example, 'margin-inline-start' will be 'margin-left' in LTR and 'margin-right' in RTL."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which CSS property controls the size of text?",
+    "code_snippet": "",
+    "options": {
+      "a": "text-style",
+      "b": "font-size",
+      "c": "text-size",
+      "d": "font-style"
+    },
+    "correct_answer": "b",
+    "explanation": "font-size is used to define the height and size of the text characters."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the 'mask-image' property used for?",
+    "code_snippet": "",
+    "options": {
+      "a": "To hide elements behind an image.",
+      "b": "To use an image as a mask to selectively hide parts of an element.",
+      "c": "To set a background image that doesn't scroll.",
+      "d": "To create a grayscale version of an image."
+    },
+    "correct_answer": "b",
+    "explanation": "Similar to masks in design software, mask-image uses the alpha channel or luminance of an image to determine the transparency of the element it is applied to."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "How can you apply a transition effect when a property changes?",
+    "code_snippet": "",
+    "options": {
+      "a": "animate: 2s;",
+      "b": "transition: all 0.3s ease;",
+      "c": "transform: ease 0.3s;",
+      "d": "change: duration(0.3s);"
+    },
+    "correct_answer": "b",
+    "explanation": "The transition property allows you to define the duration and timing function for property changes."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What does the 'scroll-snap-type' property enable?",
+    "code_snippet": ".container { scroll-snap-type: y mandatory; }",
+    "options": {
+      "a": "It forces the page to scroll to the top on refresh.",
+      "b": "It allows a scrolling container to 'snap' to specific points or elements.",
+      "c": "It prevents the user from scrolling.",
+      "d": "It adds a bouncy animation to the scrollbar."
+    },
+    "correct_answer": "b",
+    "explanation": "CSS Scroll Snap provides a way to create controlled scrolling experiences (like carousels) without needing heavy JavaScript libraries."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "Which property is used to create a rounded corner?",
+    "code_snippet": "",
+    "options": {
+      "a": "corner-radius",
+      "b": "border-radius",
+      "c": "border-round",
+      "d": "radius"
+    },
+    "correct_answer": "b",
+    "explanation": "border-radius is the standard CSS property for rounding the corners of an element's outer border edge."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "hard",
+    "question": "What is the purpose of the 'user-select: none;' property?",
+    "code_snippet": "",
+    "options": {
+      "a": "It prevents the user from clicking on a link.",
+      "b": "It prevents the user from selecting (highlighting) the text on the element.",
+      "c": "It disables all form inputs.",
+      "d": "It hides the element from the user."
+    },
+    "correct_answer": "b",
+    "explanation": "user-select: none is often used on UI elements (like buttons) to prevent accidental text highlighting during interaction."
+  },
+  {
+    "skill": "CSS",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'z-index' property when set to 'auto'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It inherits the z-index of its parent.",
+      "b": "The element does not establish a new local stacking context.",
+      "c": "The element is automatically placed at the front.",
+      "d": "The element is automatically placed at the back."
+    },
+    "correct_answer": "b",
+    "explanation": "The default value 'auto' means the element does not create a new stacking context unless other properties (like opacity or transform) force it to."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the result of comparing two Integer objects using the '==' operator when their values are within the range -128 to 127?",
+    "code_snippet": "Integer a = 127;\nInteger b = 127;\nInteger c = 128;\nInteger d = 128;\nSystem.out.println((a == b) + \"\" + (c == d));",
+    "options": {
+      "a": "true true",
+      "b": "false false",
+      "c": "true false",
+      "d": "false true"
+    },
+    "correct_answer": "c",
+    "explanation": "Java maintains an Internal Integer Cache for values between -128 and 127. Variables 'a' and 'b' point to the same cached object, while 'c' and 'd' are new objects created on the heap."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "How does a HashMap handle a collision in Java 8 and above when a bucket exceeds a certain threshold?",
+    "code_snippet": "",
+    "options": {
+      "a": "It uses double hashing to find the next available bucket.",
+      "b": "It converts the linked list in the bucket into a balanced red-black tree.",
+      "c": "It increases the load factor and rehashes all elements immediately.",
+      "d": "It throws a ConcurrentModificationException."
+    },
+    "correct_answer": "b",
+    "explanation": "In Java 8, once a bucket exceeds a threshold (TREEIFY_THRESHOLD = 8), the linked list is converted into a red-black tree to improve worst-case lookup performance from O(n) to O(log n)."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What happens if a thread calls 'start()' on a Thread object that has already been started and finished execution?",
+    "code_snippet": "Thread t = new Thread(() -> System.out.println('Running'));\nt.start();\n// ... after t finishes\nt.start();",
+    "options": {
+      "a": "The thread restarts and runs the same task again.",
+      "b": "The call is ignored silently.",
+      "c": "It throws an IllegalThreadStateException.",
+      "d": "The main thread deadlocks."
+    },
+    "correct_answer": "c",
+    "explanation": "A thread cannot be restarted once it has completed its execution. Any attempt to call start() on a thread that is not in the 'NEW' state results in an IllegalThreadStateException."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which of the following statements is true regarding the 'finally' block?",
+    "code_snippet": "try {\n    System.exit(0);\n} finally {\n    System.out.println('Finally');\n}",
+    "options": {
+      "a": "The finally block always executes regardless of what happens in the try block.",
+      "b": "The finally block will not execute if System.exit() is called.",
+      "c": "The finally block executes before the JVM shuts down.",
+      "d": "The finally block only executes if an exception is caught."
+    },
+    "correct_answer": "b",
+    "explanation": "While finally blocks usually run, they do not execute if the JVM terminates (via System.exit()), if the thread is killed, or in case of a power failure."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "In Java Generics, what is the difference between 'List<? extends T>' and 'List<? super T>' (PECS rule)?",
+    "code_snippet": "",
+    "options": {
+      "a": "extends is for consumers; super is for producers.",
+      "b": "extends allows adding elements of type T; super allows reading elements as T.",
+      "c": "extends is for producers (you can read T); super is for consumers (you can add T).",
+      "d": "There is no difference; they are interchangeable."
+    },
+    "correct_answer": "c",
+    "explanation": "PECS stands for 'Producer Extends, Consumer Super'. Use '? extends' when you only want to retrieve items from a collection, and '? super' when you want to put items into a collection."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the primary purpose of the 'volatile' keyword in Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "To make a block of code thread-safe by locking the object.",
+      "b": "To ensure that a variable is read from and written to main memory, bypassing CPU caches.",
+      "c": "To prevent a variable from being serialized.",
+      "d": "To ensure that a variable is immutable."
+    },
+    "correct_answer": "b",
+    "explanation": "Volatile ensures visibility of changes to variables across threads by preventing threads from caching the variable locally."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the output of the following String manipulation code?",
+    "code_snippet": "String s1 = \"Java\";\nString s2 = new String(\"Java\");\ns2 = s2.intern();\nSystem.out.println(s1 == s2);",
+    "options": {
+      "a": "true",
+      "b": "false",
+      "c": "NullPointerException",
+      "d": "Compilation Error"
+    },
+    "correct_answer": "a",
+    "explanation": "The intern() method returns a reference from the String Constant Pool. Since s1 is already in the pool, s2.intern() returns the same reference, making s1 == s2 true."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is 'Type Erasure' in Java Generics?",
+    "code_snippet": "",
+    "options": {
+      "a": "A process where the JVM deletes unused classes at runtime.",
+      "b": "The compiler removes all generic type information and replaces it with raw types or bounds during compilation.",
+      "c": "A runtime feature that allows casting any object to a Generic type.",
+      "d": "A security feature that hides the type of data stored in a list."
+    },
+    "correct_answer": "b",
+    "explanation": "Java Generics are implemented via type erasure to ensure backward compatibility with older Java versions that did not support generics. The JVM does not know about generic types at runtime."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the difference between 'fail-fast' and 'fail-safe' iterators?",
+    "code_snippet": "",
+    "options": {
+      "a": "Fail-fast iterators work on a copy of the collection; fail-safe work on the original.",
+      "b": "Fail-fast iterators throw ConcurrentModificationException if the collection is modified; fail-safe do not.",
+      "c": "Fail-safe is faster than fail-fast.",
+      "d": "Fail-fast iterators are used only in multi-threaded environments."
+    },
+    "correct_answer": "b",
+    "explanation": "Fail-fast iterators (like those for ArrayList) immediately throw an exception if the collection is modified during iteration. Fail-safe iterators (like for CopyOnWriteArrayList) operate on a clone."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "Which Java 8 feature allows an interface to have method implementations?",
+    "code_snippet": "interface MyInterface {\n    default void log(String str) {\n        System.out.println(\"Logging: \" + str);\n    }\n}",
+    "options": {
+      "a": "Abstract methods",
+      "b": "Default methods",
+      "c": "Static initializers",
+      "d": "Final methods"
+    },
+    "correct_answer": "b",
+    "explanation": "Default methods allow developers to add new functionality to interfaces without breaking existing implementations of those interfaces."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "How does the 'try-with-resources' statement work?",
+    "code_snippet": "try (BufferedReader br = new BufferedReader(new FileReader(path))) {\n    return br.readLine();\n}",
+    "options": {
+      "a": "It automatically catches all exceptions and logs them.",
+      "b": "It ensures that each resource is closed at the end of the statement, provided it implements AutoCloseable.",
+      "c": "It speeds up file I/O operations by using native code.",
+      "d": "It prevents memory leaks by running the Garbage Collector."
+    },
+    "correct_answer": "b",
+    "explanation": "Try-with-resources simplifies resource management by automatically closing resources like streams and database connections at the end of the block."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the difference between 'Stream.map()' and 'Stream.flatMap()'?",
+    "code_snippet": "",
+    "options": {
+      "a": "map() is for integers, flatMap() is for strings.",
+      "b": "map() produces one output for one input; flatMap() can produce multiple outputs (flattens a stream of streams).",
+      "c": "flatMap() is faster than map().",
+      "d": "map() is a terminal operation, while flatMap() is intermediate."
+    },
+    "correct_answer": "b",
+    "explanation": "flatMap() is used to transform a Stream of Collections/Streams into a single flattened Stream of elements."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the effect of the 'transient' keyword on a class member?",
+    "code_snippet": "public class User implements Serializable {\n    private transient String password;\n}",
+    "options": {
+      "a": "The variable becomes thread-safe.",
+      "b": "The variable will not be part of the persistent state of an object when serialized.",
+      "c": "The variable cannot be modified after initialization.",
+      "d": "The variable is stored in the constant pool."
+    },
+    "correct_answer": "b",
+    "explanation": "The transient keyword indicates that a field should not be serialized when the object is converted into a byte stream."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "In Java's memory model, where are local variables and object references stored?",
+    "code_snippet": "",
+    "options": {
+      "a": "Both are stored on the Heap.",
+      "b": "Local variables are on the Stack; Objects they refer to are on the Heap.",
+      "c": "Both are stored on the Stack.",
+      "d": "Local variables are in the Method Area."
+    },
+    "correct_answer": "b",
+    "explanation": "Local variables (primitive types and references to objects) are stored on the stack frame of the thread. The actual objects themselves reside on the heap."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which of these is a 'checked' exception?",
+    "code_snippet": "",
+    "options": {
+      "a": "NullPointerException",
+      "b": "ArithmeticException",
+      "c": "IOException",
+      "d": "ArrayIndexOutOfBoundsException"
+    },
+    "correct_answer": "c",
+    "explanation": "IOException is a checked exception, meaning it must be either caught or declared in the 'throws' clause of a method. The others are RuntimeExceptions (unchecked)."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the purpose of a PhantomReference in Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "To prevent an object from being garbage collected.",
+      "b": "To provide a way to be notified when an object has been removed from memory.",
+      "c": "To create a shallow copy of an object.",
+      "d": "To speed up the lookup of objects in a WeakHashMap."
+    },
+    "correct_answer": "b",
+    "explanation": "PhantomReferences are used to perform post-mortem cleanup actions after an object has been finalized and its memory is about to be reclaimed."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the output of the following code snippet?",
+    "code_snippet": "int x = 5;\nSystem.out.println(x++ + ++x);",
+    "options": {
+      "a": "10",
+      "b": "11",
+      "c": "12",
+      "d": "13"
+    },
+    "correct_answer": "c",
+    "explanation": "x++ uses the current value (5) then increments to 6. ++x increments first (6 to 7) then uses it. So, 5 + 7 = 12."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "How does the 'synchronized' keyword behave when applied to a static method?",
+    "code_snippet": "",
+    "options": {
+      "a": "It locks the 'this' instance of the class.",
+      "b": "It locks the Class object associated with the class.",
+      "c": "It prevents any other thread from accessing any method in the class.",
+      "d": "It only works if the class implements the Lock interface."
+    },
+    "correct_answer": "b",
+    "explanation": "A synchronized static method locks on the monitor of the Class object, whereas an instance method locks on the monitor of the specific instance ('this')."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which collection should be used if you want to store elements in a sorted order and do not allow duplicates?",
+    "code_snippet": "",
+    "options": {
+      "a": "ArrayList",
+      "b": "HashSet",
+      "c": "TreeSet",
+      "d": "LinkedHashSet"
+    },
+    "correct_answer": "c",
+    "explanation": "TreeSet implements the NavigableSet interface and uses a TreeMap internally to keep elements sorted and unique."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the behavior of 'Double.NaN == Double.NaN' in Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "true",
+      "b": "false",
+      "c": "It throws an ArithmeticException.",
+      "d": "It results in a compilation error."
+    },
+    "correct_answer": "b",
+    "explanation": "Following IEEE 754 standards, NaN (Not-a-Number) is not equal to anything, including itself. You must use Double.isNaN() to check for it."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'FunctionalInterface' annotation?",
+    "code_snippet": "@FunctionalInterface\ninterface MyTask {\n    void execute();\n}",
+    "options": {
+      "a": "It makes the interface serializable.",
+      "b": "It marks the interface as having exactly one abstract method, making it eligible for lambda expressions.",
+      "c": "It allows the interface to have multiple default methods.",
+      "d": "It is required for all interfaces in Java 8."
+    },
+    "correct_answer": "b",
+    "explanation": "The @FunctionalInterface annotation is a hint to the compiler to ensure the interface contains only one abstract method, which is the requirement for lambda compatibility."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the 'Double-Checked Locking' pattern in Singleton implementation, and why was it broken before Java 5?",
+    "code_snippet": "",
+    "options": {
+      "a": "It was broken because of the lack of 'volatile' support for ensuring memory visibility.",
+      "b": "It was broken because 'synchronized' was too slow.",
+      "c": "It was broken because classes couldn't have static variables.",
+      "d": "It was never broken; it has always worked."
+    },
+    "correct_answer": "a",
+    "explanation": "Before Java 5, the memory model didn't guarantee that a thread would see a fully initialized object if the 'volatile' keyword wasn't used correctly, leading to partially constructed objects being accessed."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "In Java 8, what is the output of the following Stream operation?",
+    "code_snippet": "List list = Arrays.asList(1, 2, 3, 4, 5);\nint result = list.stream().filter(x -> x > 3).mapToInt(x -> x).sum();\nSystem.out.println(result);",
+    "options": {
+      "a": "7",
+      "b": "9",
+      "c": "15",
+      "d": "3"
+    },
+    "correct_answer": "b",
+    "explanation": "The filter keeps 4 and 5. The sum of 4 + 5 is 9."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "How does the 'invokedynamic' instruction differ from 'invokevirtual' in the JVM?",
+    "code_snippet": "",
+    "options": {
+      "a": "invokedynamic is for private methods; invokevirtual is for public.",
+      "b": "invokedynamic allows the target method to be determined at runtime by user-defined code (used for Lambdas).",
+      "c": "invokevirtual is used only for static methods.",
+      "d": "There is no difference; they are synonymous."
+    },
+    "correct_answer": "b",
+    "explanation": "Introduced in Java 7, invokedynamic allows dynamic language features and is the technical foundation for Java 8 lambdas, deferring method linkage until the first execution."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'Object.finalize()' method?",
+    "code_snippet": "",
+    "options": {
+      "a": "To manually trigger garbage collection.",
+      "b": "To provide a way for an object to clean up resources before it is garbage collected (now deprecated).",
+      "c": "To convert an object into a byte array.",
+      "d": "To make an object immutable."
+    },
+    "correct_answer": "b",
+    "explanation": "Finalize was intended for resource cleanup, but because of its unpredictable execution timing and performance issues, it is deprecated in favor of cleaner alternatives like AutoCloseable."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is a 'memory leak' in a Garbage Collected language like Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "When the JVM runs out of stack space.",
+      "b": "When objects that are no longer needed are still being referenced, preventing the GC from reclaiming them.",
+      "c": "When the program uses too many primitive variables.",
+      "d": "When the computer runs out of physical RAM."
+    },
+    "correct_answer": "b",
+    "explanation": "Memory leaks in Java occur when developers unintentionally hold references to objects (e.g., in a static Map or an unclosed resource), making them ineligible for garbage collection."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the difference between 'StringBuilder' and 'StringBuffer'?",
+    "code_snippet": "",
+    "options": {
+      "a": "StringBuffer is faster than StringBuilder.",
+      "b": "StringBuilder is thread-safe; StringBuffer is not.",
+      "c": "StringBuffer is thread-safe (synchronized); StringBuilder is not.",
+      "d": "StringBuilder can only be used for small strings."
+    },
+    "correct_answer": "c",
+    "explanation": "Both are used for mutable strings. StringBuffer has synchronized methods making it thread-safe, while StringBuilder is unsynchronized and faster for single-threaded use."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the contract between 'hashCode()' and 'equals()' in Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "If two objects are equal according to equals(), they must have the same hashCode.",
+      "b": "If two objects have the same hashCode, they must be equal according to equals().",
+      "c": "Objects with different hashCodes can still be equal.",
+      "d": "HashCode must always return a unique value for every object."
+    },
+    "correct_answer": "a",
+    "explanation": "The contract states that equal objects must have equal hash codes. However, unequal objects can have the same hash code (a collision)."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is an 'Optional' in Java 8?",
+    "code_snippet": "Optional name = Optional.ofNullable(null);",
+    "options": {
+      "a": "A new data type that replaces the String class.",
+      "b": "A container object which may or may not contain a non-null value, used to avoid NullPointerExceptions.",
+      "c": "A keyword that makes a variable optional in a method signature.",
+      "d": "A collection type similar to a List."
+    },
+    "correct_answer": "b",
+    "explanation": "Optional provides a more expressive way to handle null values without explicit null checks, encouraging safer coding patterns."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "In the context of Garbage Collection, what does 'Stop-the-World' (STW) mean?",
+    "code_snippet": "",
+    "options": {
+      "a": "The entire computer freezes.",
+      "b": "All application threads are paused so the GC can safely perform its tasks.",
+      "c": "The program waits for user input.",
+      "d": "The database connection is closed temporarily."
+    },
+    "correct_answer": "b",
+    "explanation": "Most GC algorithms require a period where the application state is consistent, necessitating a pause of all application threads."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the difference between an 'abstract class' and an 'interface' in Java 8+?",
+    "code_snippet": "",
+    "options": {
+      "a": "Interfaces cannot have any method implementations.",
+      "b": "A class can implement multiple interfaces but extend only one abstract class.",
+      "c": "Abstract classes can only have static methods.",
+      "d": "Interfaces can have state (instance variables)."
+    },
+    "correct_answer": "b",
+    "explanation": "While interfaces can now have default methods, they still differ from abstract classes in that they cannot maintain instance state, and Java supports multiple inheritance only for interfaces."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is 'Happen-Before' relationship in the Java Memory Model?",
+    "code_snippet": "",
+    "options": {
+      "a": "It ensures that a constructor runs before any methods.",
+      "b": "It is a formal guarantee that memory writes by one specific action are visible to another action.",
+      "c": "It is a rule that says try blocks must happen before finally blocks.",
+      "d": "It ensures that higher priority threads run first."
+    },
+    "correct_answer": "b",
+    "explanation": "The Happens-Before relationship is a set of rules (like synchronization or volatile access) that define when one thread's changes to memory are guaranteed to be seen by another thread."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the output of 'System.out.println(1.0 / 0.0);'?",
+    "code_snippet": "",
+    "options": {
+      "a": "Infinity",
+      "b": "ArithmeticException",
+      "c": "NaN",
+      "d": "0.0"
+    },
+    "correct_answer": "a",
+    "explanation": "For floating-point numbers, dividing by zero results in 'Infinity' rather than an exception. Integer division by zero, however, would throw an ArithmeticException."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the 'Fork/Join' framework used for?",
+    "code_snippet": "",
+    "options": {
+      "a": "To handle multiple database connections.",
+      "b": "To split a large task into smaller sub-tasks that run in parallel, using a work-stealing algorithm.",
+      "c": "To fork a new OS process from within Java.",
+      "d": "To join two different lists together."
+    },
+    "correct_answer": "b",
+    "explanation": "Fork/Join (introduced in Java 7) is designed for recursive, compute-intensive tasks to efficiently utilize all available processors."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which keyword is used to access the parent class's constructor?",
+    "code_snippet": "",
+    "options": {
+      "a": "this()",
+      "b": "parent()",
+      "c": "super()",
+      "d": "base()"
+    },
+    "correct_answer": "c",
+    "explanation": "The super() call must be the first line in a constructor to invoke the constructor of the parent class."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "In Java 9+, what is the 'Module System' (Project Jigsaw) primarily used for?",
+    "code_snippet": "module my.module {\n    requires java.base;\n    exports my.package;\n}",
+    "options": {
+      "a": "To allow multiple versions of the same library to run at once.",
+      "b": "To provide strong encapsulation and declare explicit dependencies between components of an application.",
+      "c": "To replace the Maven build system.",
+      "d": "To speed up the Garbage Collector."
+    },
+    "correct_answer": "b",
+    "explanation": "Modules allow developers to control which parts of their API are visible to other modules, reducing the 'JAR hell' problem and improving security/performance."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the use of the 'native' keyword?",
+    "code_snippet": "public native void someMethod();",
+    "options": {
+      "a": "It indicates the method is written in another language (like C or C++).",
+      "b": "It indicates the method can only be used by local threads.",
+      "c": "It tells the compiler to optimize the method for the local hardware.",
+      "d": "It is a synonym for 'private'."
+    },
+    "correct_answer": "a",
+    "explanation": "The native keyword is used with JNI (Java Native Interface) to call code that is outside the JVM, usually for hardware interaction or performance."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the difference between 'CompletableFuture' and 'Future'?",
+    "code_snippet": "",
+    "options": {
+      "a": "CompletableFuture is only for mobile applications.",
+      "b": "CompletableFuture allows for functional-style callbacks and chaining of asynchronous tasks.",
+      "c": "Future supports non-blocking retrieval; CompletableFuture does not.",
+      "d": "CompletableFuture is a deprecated version of Future."
+    },
+    "correct_answer": "b",
+    "explanation": "CompletableFuture (Java 8) extends Future and provides methods like thenApply and thenCompose to build complex asynchronous pipelines without blocking."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "How do you correctly compare two strings for value equality in Java?",
+    "code_snippet": "",
+    "options": {
+      "a": "s1 == s2",
+      "b": "s1.equals(s2)",
+      "c": "s1.compare(s2)",
+      "d": "s1 === s2"
+    },
+    "correct_answer": "b",
+    "explanation": "In Java, '==' compares object references (memory location), while '.equals()' compares the actual sequence of characters in the strings."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is 'Shadowing' in Java?",
+    "code_snippet": "class Test {\n    int x = 10;\n    void method(int x) {\n        System.out.println(x);\n    }\n}",
+    "options": {
+      "a": "When a subclass method has the same name as a parent class method.",
+      "b": "When a local variable has the same name as an instance variable, hiding the instance variable within that scope.",
+      "c": "When an object is copied using clone().",
+      "d": "When two threads access the same variable."
+    },
+    "correct_answer": "b",
+    "explanation": "The local variable 'x' in the method shadows the instance variable 'x'. To access the instance variable, you would need to use 'this.x'."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which of these is NOT a characteristic of a 'static' variable?",
+    "code_snippet": "",
+    "options": {
+      "a": "It is shared among all instances of the class.",
+      "b": "It is initialized when the class is loaded.",
+      "c": "Each instance of the class has its own copy of the variable.",
+      "d": "It can be accessed using the class name."
+    },
+    "correct_answer": "c",
+    "explanation": "Static variables are class-level; there is only one copy regardless of how many instances are created."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the purpose of the 'VarHandle' API introduced in Java 9?",
+    "code_snippet": "",
+    "options": {
+      "a": "To replace all variable declarations in Java.",
+      "b": "To provide a standard way to invoke the equivalents of java.util.concurrent.atomic and sun.misc.Unsafe operations.",
+      "c": "To handle variables in JavaScript within the JVM.",
+      "d": "To manage memory for huge arrays."
+    },
+    "correct_answer": "b",
+    "explanation": "VarHandles provide a safer and more performant alternative to Atomic classes and the dangerous 'Unsafe' class for fine-grained concurrent access."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is 'Autoboxing' in Java?",
+    "code_snippet": "List list = new ArrayList<>();\nlist.add(5);",
+    "options": {
+      "a": "Automatically boxing objects for shipping.",
+      "b": "The automatic conversion the Java compiler makes between primitive types and their corresponding object wrapper classes.",
+      "c": "A way to automatically resize an array.",
+      "d": "A feature for automatic memory management."
+    },
+    "correct_answer": "b",
+    "explanation": "In the example, the primitive int '5' is automatically converted into an 'Integer' object to be added to the list."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What happens when a 'ReferenceQueue' is used with a 'WeakReference'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It keeps the object from being garbage collected.",
+      "b": "The GC appends the reference object to the queue after it determines the reachability of the referent has changed.",
+      "c": "It throws an exception if the object is null.",
+      "d": "It is used to store high-priority objects."
+    },
+    "correct_answer": "b",
+    "explanation": "Reference queues allow the program to track when objects are reclaimed, enabling efficient cleanup of resources associated with those objects."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "Which of these allows you to run multiple tasks concurrently and get the results as they finish?",
+    "code_snippet": "",
+    "options": {
+      "a": "Thread.join()",
+      "b": "ExecutorCompletionService",
+      "c": "TimerTask",
+      "d": "Synchronized block"
+    },
+    "correct_answer": "b",
+    "explanation": "ExecutorCompletionService combines an Executor and a BlockingQueue, allowing you to poll or take results in the order they complete."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the 'G1 Garbage Collector'?",
+    "code_snippet": "",
+    "options": {
+      "a": "The first version of the Garbage Collector from Java 1.0.",
+      "b": "A regionalized, parallel-phase collector designed for multi-processor machines with large memory.",
+      "c": "A collector that only runs on Google Cloud.",
+      "d": "A tool for finding memory leaks in the IDE."
+    },
+    "correct_answer": "b",
+    "explanation": "G1 (Garbage First) divides the heap into regions and prioritizes collecting regions with the most garbage to meet user-defined pause time targets."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is the purpose of 'yield()' in the Thread class?",
+    "code_snippet": "",
+    "options": {
+      "a": "To stop the current thread.",
+      "b": "To hint to the scheduler that the current thread is willing to give up its current use of a processor.",
+      "c": "To wait for another thread to finish.",
+      "d": "To return a value from the thread."
+    },
+    "correct_answer": "b",
+    "explanation": "Yield is a purely heuristic hint; the scheduler is free to ignore it. It suggests that other threads of equal priority should be allowed to run."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the difference between 'ArrayBlockingQueue' and 'LinkedBlockingQueue'?",
+    "code_snippet": "",
+    "options": {
+      "a": "ArrayBlockingQueue is always faster.",
+      "b": "LinkedBlockingQueue has optional capacity; ArrayBlockingQueue has fixed capacity.",
+      "c": "ArrayBlockingQueue is not thread-safe.",
+      "d": "Only LinkedBlockingQueue can be used with Executors."
+    },
+    "correct_answer": "b",
+    "explanation": "ArrayBlockingQueue is backed by an array and must be bounded. LinkedBlockingQueue is backed by nodes and can be 'unbound' (up to Integer.MAX_VALUE), which can lead to memory issues if consumers are slow."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "medium",
+    "question": "What is a 'Method Reference' in Java 8?",
+    "code_snippet": "list.forEach(System.out::println);",
+    "options": {
+      "a": "A way to call private methods from other classes.",
+      "b": "A shorthand notation of a lambda expression to call an existing method.",
+      "c": "A pointer to a C++ function.",
+      "d": "A way to create a new method at runtime."
+    },
+    "correct_answer": "b",
+    "explanation": "Method references (using '::') make the code cleaner when a lambda simply passes all its arguments to an existing method."
+  },
+  {
+    "skill": "Java",
+    "difficulty": "hard",
+    "question": "What is the 'Diamond Problem' in inheritance and how does Java avoid it?",
+    "code_snippet": "",
+    "options": {
+      "a": "It refers to expensive object creation; Java uses pooling.",
+      "b": "It refers to multiple inheritance of classes; Java forbids multiple class inheritance but allows it for interfaces with specific resolution rules.",
+      "c": "It is a performance bug in the JVM; Java uses JIT to fix it.",
+      "d": "It refers to cyclic dependencies in Maven."
+    },
+    "correct_answer": "b",
+    "explanation": "The diamond problem occurs when a class inherits from two classes that have a common ancestor. Java avoids this by only allowing single class inheritance. For interfaces, Java 8 provides conflict resolution rules for default methods."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What is the primary difference between 'git fetch' and 'git pull'?",
+    "code_snippet": "",
+    "options": {
+      "a": "'git fetch' downloads remote changes and merges them into the current branch; 'git pull' only downloads them.",
+      "b": "'git fetch' only downloads remote metadata; 'git pull' downloads the actual file contents.",
+      "c": "'git fetch' downloads changes from the remote but does not integrate them; 'git pull' is a combination of 'git fetch' and 'git merge'.",
+      "d": "'git fetch' is used for HTTPS remotes; 'git pull' is used for SSH remotes."
+    },
+    "correct_answer": "c",
+    "explanation": "Fetch updates your remote-tracking branches without modifying your local working directory. Pull performs a fetch and then immediately attempts to merge the results into your current branch."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "You accidentally committed a large sensitive file and then deleted it in a subsequent commit. How can you completely remove the file from the repository's history?",
+    "code_snippet": "",
+    "options": {
+      "a": "Run 'git rm --cached ' and push the changes.",
+      "b": "Use 'git filter-branch' or 'git filter-repo' to rewrite the history and remove the file from all commits.",
+      "c": "Simply delete the '.git' folder and re-initialize the repository.",
+      "d": "Perform a 'git reset --hard HEAD~1' to go back to the state before the file was added."
+    },
+    "correct_answer": "b",
+    "explanation": "Deleting a file in a new commit doesn't remove it from history. You must rewrite the history using tools like 'git filter-repo' to ensure the object is purged from all previous snapshots."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does the command 'git reset --soft HEAD~1' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "It deletes the last commit and discards all changes in the working directory.",
+      "b": "It moves the HEAD back by one commit, but keeps the changes from that commit staged in the index.",
+      "c": "It moves the HEAD back by one commit and moves the changes to the working directory (unstaged).",
+      "d": "It undoes the last merge operation only."
+    },
+    "correct_answer": "b",
+    "explanation": "--soft moves the HEAD without touching the index or working tree, meaning your changes stay 'staged' and ready for a new commit."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "In Git internals, what type of object is used to store the contents of a single file?",
+    "code_snippet": "",
+    "options": {
+      "a": "Commit object",
+      "b": "Tree object",
+      "c": "Blob object",
+      "d": "Tag object"
+    },
+    "correct_answer": "c",
+    "explanation": "A 'blob' (binary large object) stores the file content. 'Trees' store directory structures and filenames, and 'Commits' link trees to snapshots in time."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What is the purpose of the 'git reflog' command?",
+    "code_snippet": "",
+    "options": {
+      "a": "To view the commit history of a specific file.",
+      "b": "To see a record of all changes made to the tips of branches and other references (HEAD movements).",
+      "c": "To list all remote repositories linked to the local project.",
+      "d": "To recover deleted branches by looking at the server-side logs."
+    },
+    "correct_answer": "b",
+    "explanation": "Reflog tracks every time the HEAD changes (e.g., checkouts, commits, resets), allowing you to recover 'lost' commits that are no longer reachable by any branch."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "When performing a 'git rebase', what happens to the original commits being moved?",
+    "code_snippet": "",
+    "options": {
+      "a": "They are modified in place to update their parent pointer.",
+      "b": "They are deleted immediately from the database.",
+      "c": "They are left abandoned in the object database, and new commits with different hashes are created.",
+      "d": "They are moved to a special 'rebase' branch for backup."
+    },
+    "correct_answer": "c",
+    "explanation": "Commits are immutable. Rebase creates brand-new commits with different parentage. The old commits eventually get garbage collected if no reference points to them."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does the 'git stash pop' command do compared to 'git stash apply'?",
+    "code_snippet": "",
+    "options": {
+      "a": "'pop' applies the changes and removes them from the stash list; 'apply' keeps them in the list.",
+      "b": "'apply' is for specific files; 'pop' is for the whole working tree.",
+      "c": "'pop' only works on the most recent stash; 'apply' can work on any stash index.",
+      "d": "There is no difference between the two."
+    },
+    "correct_answer": "a",
+    "explanation": "'pop' is a shortcut for 'apply' followed by 'drop'. It is useful when you are sure you no longer need the stashed version."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is a 'detached HEAD' state in Git?",
+    "code_snippet": "",
+    "options": {
+      "a": "When the .git directory is missing from the project.",
+      "b": "When HEAD points directly to a specific commit hash rather than a named branch.",
+      "c": "When a developer deletes the main branch locally.",
+      "d": "When a push to a remote repository fails due to permission errors."
+    },
+    "correct_answer": "b",
+    "explanation": "Usually, HEAD points to a branch reference. In detached HEAD state, you are looking at a specific commit. Changes made here will not belong to any branch unless a new branch is created."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How can you change the message of your most recent commit?",
+    "code_snippet": "",
+    "options": {
+      "a": "git commit --edit",
+      "b": "git commit --amend",
+      "c": "git reset --message",
+      "d": "git rebase --message"
+    },
+    "correct_answer": "b",
+    "explanation": "'git commit --amend' allows you to modify the last commit, including its message and the staged content."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "Which command is used to find the specific commit that introduced a bug using binary search?",
+    "code_snippet": "",
+    "options": {
+      "a": "git blame",
+      "b": "git find-bug",
+      "c": "git bisect",
+      "d": "git search"
+    },
+    "correct_answer": "c",
+    "explanation": "Git bisect automates a binary search between a 'bad' commit and a 'good' commit to pinpoint exactly where a regression occurred."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What is the purpose of '.gitignore'?",
+    "code_snippet": "",
+    "options": {
+      "a": "To delete files from the remote repository.",
+      "b": "To specify intentionally untracked files that Git should ignore (e.g., build artifacts, secrets).",
+      "c": "To encrypt sensitive files before committing.",
+      "d": "To prevent other users from seeing specific files in a shared branch."
+    },
+    "correct_answer": "b",
+    "explanation": ".gitignore tells Git which files or patterns to ignore so they don't show up as 'untracked' and aren't accidentally committed."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What does 'git merge --no-ff' accomplish?",
+    "code_snippet": "",
+    "options": {
+      "a": "It prevents a merge from happening if there are conflicts.",
+      "b": "It forces Git to create a merge commit even if the merge could have been resolved as a fast-forward.",
+      "c": "It ignores all changes from the source branch.",
+      "d": "It performs a squash merge by default."
+    },
+    "correct_answer": "b",
+    "explanation": "--no-ff (no fast-forward) preserves the historical grouping of commits by ensuring a merge commit always exists, even if the destination branch is a direct ancestor."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which command would you use to see who last modified each line of a file?",
+    "code_snippet": "",
+    "options": {
+      "a": "git log --lines",
+      "b": "git history",
+      "c": "git blame",
+      "d": "git who"
+    },
+    "correct_answer": "c",
+    "explanation": "'git blame' annotates each line in a file with the commit hash, author, and timestamp of the last modification."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the difference between 'git reset' and 'git revert'?",
+    "code_snippet": "",
+    "options": {
+      "a": "'reset' creates a new commit; 'revert' deletes commits.",
+      "b": "'reset' moves the branch pointer backward (rewriting history); 'revert' creates a new commit that undoes the changes of a previous commit.",
+      "c": "They are identical in function.",
+      "d": "'reset' is for remote branches; 'revert' is for local branches."
+    },
+    "correct_answer": "b",
+    "explanation": "Reset is 'destructive' (rewrites history), while Revert is 'safe' for public branches because it preserves history by adding a new 'undo' commit."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does 'git remote -v' show?",
+    "code_snippet": "",
+    "options": {
+      "a": "The version of Git installed on the remote server.",
+      "b": "A list of all remote connections and their associated URLs.",
+      "c": "The status of the remote server (online/offline).",
+      "d": "The disk usage of the remote repository."
+    },
+    "correct_answer": "b",
+    "explanation": "The '-v' (verbose) flag shows the fetch and push URLs for all configured remotes."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What happens when you run 'git add -p'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It adds only the files that have 'private' in their name.",
+      "b": "It allows you to interactively review and stage specific 'hunks' (parts) of a file rather than the whole file.",
+      "c": "It adds all files and pushes them immediately.",
+      "d": "It performs a 'patch' update from the remote."
+    },
+    "correct_answer": "b",
+    "explanation": "The '-p' (patch) flag is a powerful way to stage only certain changes within a file, allowing for cleaner, more focused commits."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How do you delete a local branch named 'feature-x'?",
+    "code_snippet": "",
+    "options": {
+      "a": "git branch -d feature-x",
+      "b": "git remove branch feature-x",
+      "c": "git checkout -delete feature-x",
+      "d": "git delete feature-x"
+    },
+    "correct_answer": "a",
+    "explanation": "'git branch -d' is the standard command. Use '-D' to force delete if the branch hasn't been merged."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the purpose of 'git checkout -- ' (in older Git versions) or 'git restore '?",
+    "code_snippet": "",
+    "options": {
+      "a": "To stage the file for a commit.",
+      "b": "To discard local changes in a file and restore it to the version in the index/HEAD.",
+      "c": "To delete the file from the filesystem.",
+      "d": "To rename the file."
+    },
+    "correct_answer": "b",
+    "explanation": "These commands are used to 'undo' local edits by overwriting the working directory file with the version currently held by Git."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which command is used to apply the changes from a single specific commit from another branch?",
+    "code_snippet": "",
+    "options": {
+      "a": "git merge --single",
+      "b": "git cherry-pick",
+      "c": "git copy-commit",
+      "d": "git branch-apply"
+    },
+    "correct_answer": "b",
+    "explanation": "Cherry-pick takes the patch introduced by a specific commit and applies it as a new commit on your current branch."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is a 'Git hook'?",
+    "code_snippet": "",
+    "options": {
+      "a": "A specialized UI tool for managing branches.",
+      "b": "A script that Git executes before or after events like commit, push, or receive.",
+      "c": "A hardware device used for securing Git servers.",
+      "d": "A hidden directory used for storing large blobs."
+    },
+    "correct_answer": "b",
+    "explanation": "Hooks allow you to automate tasks (like linting or running tests) at specific points in the Git workflow."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How do you create a new branch and switch to it in one command?",
+    "code_snippet": "",
+    "options": {
+      "a": "git branch -new ",
+      "b": "git checkout -b ",
+      "c": "git move ",
+      "d": "git switch -new "
+    },
+    "correct_answer": "b",
+    "explanation": "'git checkout -b ' (or the newer 'git switch -c ') creates the branch and immediately checks it out."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the difference between 'git merge' and 'git rebase'?",
+    "code_snippet": "",
+    "options": {
+      "a": "Merge rewrites history; Rebase preserves it.",
+      "b": "Merge combines work from different branches via a new merge commit; Rebase reapplies commits on top of another base tip, creating a linear history.",
+      "c": "Rebase is only used for remote branches.",
+      "d": "There is no functional difference."
+    },
+    "correct_answer": "b",
+    "explanation": "Merge is non-destructive and preserves the exact chronology. Rebase rewrites history to present a clean, linear sequence of changes."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does 'git push origin :feature-branch' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "It renames 'feature-branch' to 'origin'.",
+      "b": "It deletes the remote branch 'feature-branch' on the 'origin' remote.",
+      "c": "It forces a push of the local branch.",
+      "d": "It downloads the remote branch."
+    },
+    "correct_answer": "b",
+    "explanation": "The syntax 'push  <local_ref>:<remote_ref>' is used for pushing. Pushing an empty local ref effectively 'deletes' the remote reference."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the 'Three-Tree' architecture in Git?",
+    "code_snippet": "",
+    "options": {
+      "a": "The Working Directory, the Staging Area (Index), and the HEAD.",
+      "b": "Local, Origin, and Upstream.",
+      "c": "Master, Develop, and Feature.",
+      "d": "The Commit, the Tree, and the Blob."
+    },
+    "correct_answer": "a",
+    "explanation": "Git manages three states: your physical files (Working Directory), the snapshot you are preparing (Index), and the last commit on your current branch (HEAD)."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which command displays the status of the working directory and the staging area?",
+    "code_snippet": "",
+    "options": {
+      "a": "git check",
+      "b": "git status",
+      "c": "git log",
+      "d": "git show"
+    },
+    "correct_answer": "b",
+    "explanation": "'git status' shows which files are staged, which are modified but not staged, and which are untracked."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is 'git rerere' used for?",
+    "code_snippet": "",
+    "options": {
+      "a": "To repeat the last command automatically.",
+      "b": "To 'Reuse Recorded Resolution' of merge conflicts.",
+      "c": "To refresh the remote metadata.",
+      "d": "To rename all files in a directory."
+    },
+    "correct_answer": "b",
+    "explanation": "It stands for 'Reuse Recorded Resolution'. If you frequently merge the same branches and hit the same conflicts, Git can remember how you solved them and apply the fix automatically."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How do you view a graphical representation of the commit history in the terminal?",
+    "code_snippet": "",
+    "options": {
+      "a": "git graph",
+      "b": "git log --oneline --graph --all",
+      "c": "git show --history",
+      "d": "git branch --view"
+    },
+    "correct_answer": "b",
+    "explanation": "The '--graph' flag draws an ASCII-art representation of the branch and merge history."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What does 'git commit --squash <commit_hash>' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "It deletes all commits after the specified hash.",
+      "b": "It creates a new commit with a message that tells 'git rebase --autosquash' to combine this work with the specified commit.",
+      "c": "It merges the current branch into the specified commit.",
+      "d": "It compresses the repository size."
+    },
+    "correct_answer": "b",
+    "explanation": "Squash commits are a workflow tool used with interactive rebasing to automatically clean up 'fixup' commits into their original parents."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What command lists all local branches?",
+    "code_snippet": "",
+    "options": {
+      "a": "git branch",
+      "b": "git list --branches",
+      "c": "git show-branches",
+      "d": "git ls-remote"
+    },
+    "correct_answer": "a",
+    "explanation": "Running 'git branch' without arguments lists all branch names in the local repository."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is a 'bare' repository in Git?",
+    "code_snippet": "git init --bare",
+    "options": {
+      "a": "A repository with no files in it.",
+      "b": "A repository that does not have a working directory (it only contains the .git folder contents).",
+      "c": "A repository that is not protected by a password.",
+      "d": "A temporary repository used for testing."
+    },
+    "correct_answer": "b",
+    "explanation": "Bare repositories are used on servers as central sharing points. Since no one edits files directly on the server, a working directory is unnecessary and would interfere with pushes."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does 'git diff --staged' (or '--cached') show?",
+    "code_snippet": "",
+    "options": {
+      "a": "Changes between the working directory and the index.",
+      "b": "Changes between the index (staged area) and the last commit (HEAD).",
+      "c": "Changes between two different branches.",
+      "d": "Changes that have already been pushed to the remote."
+    },
+    "correct_answer": "b",
+    "explanation": "Standard 'git diff' shows unstaged changes. Adding '--staged' shows what you have added to the index and are about to commit."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "How do you point your local branch to a specific remote branch without merging?",
+    "code_snippet": "",
+    "options": {
+      "a": "git checkout -f ",
+      "b": "git reset --hard origin/",
+      "c": "git branch --sync ",
+      "d": "git pull --force"
+    },
+    "correct_answer": "b",
+    "explanation": "Using 'git reset --hard' to a remote tracking branch pointer forces your local branch to match the server's state exactly, discarding all local deviations."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which file contains the configuration for the current repository?",
+    "code_snippet": "",
+    "options": {
+      "a": "~/.gitconfig",
+      "b": "/etc/gitconfig",
+      "c": ".git/config",
+      "d": "git.yaml"
+    },
+    "correct_answer": "c",
+    "explanation": "Git configurations are hierarchical: system, global (user), and local (per repository in .git/config)."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What happens when you run 'git gc'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It deletes the repository.",
+      "b": "It runs 'Garbage Collection', identifying and removing unreachable objects and compressing file revisions.",
+      "c": "It pushes all local changes to the remote.",
+      "d": "It checks the code for syntax errors."
+    },
+    "correct_answer": "b",
+    "explanation": "GC optimizes the repository by packing objects and pruning loose objects that are no longer needed (e.g., from deleted branches)."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How do you create an annotated tag named 'v1.0'?",
+    "code_snippet": "",
+    "options": {
+      "a": "git tag v1.0",
+      "b": "git tag -a v1.0 -m 'Version 1.0'",
+      "c": "git create tag v1.0",
+      "d": "git push --tag v1.0"
+    },
+    "correct_answer": "b",
+    "explanation": "Annotated tags are stored as full objects in the Git database, containing the tagger's name, email, and date, unlike lightweight tags which are just pointers."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the purpose of 'git submodule'?",
+    "code_snippet": "",
+    "options": {
+      "a": "To create a branch within a branch.",
+      "b": "To keep another Git repository as a subdirectory of your repository.",
+      "c": "To split a large file into multiple parts.",
+      "d": "To manage different versions of the Git binary."
+    },
+    "correct_answer": "b",
+    "explanation": "Submodules allow you to include and manage external libraries or components that are their own Git repositories while keeping them tied to specific commits in your main project."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does 'git checkout -' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "Deletes the current branch.",
+      "b": "Switches back to the previous branch you were on.",
+      "c": "Checks out the root directory.",
+      "d": "Shows a help menu."
+    },
+    "correct_answer": "b",
+    "explanation": "The dash '-' is a shorthand for '@{-1}', the previous branch, similar to 'cd -' in a shell."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "How can you see which branches contain a specific commit hash?",
+    "code_snippet": "",
+    "options": {
+      "a": "git branch --contains ",
+      "b": "git show  --branches",
+      "c": "git log --where ",
+      "d": "git reflog "
+    },
+    "correct_answer": "a",
+    "explanation": "This is extremely useful for checking if a hotfix or feature has been merged into 'main' or 'develop' yet."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What is the command to initialize a new Git repository?",
+    "code_snippet": "",
+    "options": {
+      "a": "git start",
+      "b": "git create",
+      "c": "git init",
+      "d": "git new"
+    },
+    "correct_answer": "c",
+    "explanation": "'git init' creates a .git subdirectory in the current folder, enabling version control."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What does the 'HEAD' reference always point to in a healthy repository?",
+    "code_snippet": "",
+    "options": {
+      "a": "The oldest commit in the repository.",
+      "b": "The current branch or the current commit you are working on.",
+      "c": "The master branch, regardless of where you are.",
+      "d": "The remote server's main branch."
+    },
+    "correct_answer": "b",
+    "explanation": "HEAD is a symbolic reference to the branch you are currently on, which in turn points to the latest commit on that branch."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which command is used to move or rename a file in Git?",
+    "code_snippet": "",
+    "options": {
+      "a": "git rename",
+      "b": "git mv",
+      "c": "git move",
+      "d": "git cp"
+    },
+    "correct_answer": "b",
+    "explanation": "'git mv' renames the file on disk and stages the change in the index simultaneously."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the result of 'git merge --squash feature'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It deletes the 'feature' branch after merging.",
+      "b": "It takes all the changes from 'feature' and condenses them into a single set of changes to be committed manually on the current branch.",
+      "c": "It merges only the first commit of the feature branch.",
+      "d": "It compresses the commits into a zip file."
+    },
+    "correct_answer": "b",
+    "explanation": "Squash merging is useful for keeping the main branch clean by turning a long feature history into one meaningful commit."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What is the purpose of 'git config --global user.name \"Name\"' ?",
+    "code_snippet": "",
+    "options": {
+      "a": "To set the login name for the Git hosting service (e.g., GitHub).",
+      "b": "To set the author name that will be attached to your commits globally for the current OS user.",
+      "c": "To set the name of the repository.",
+      "d": "To rename your local computer."
+    },
+    "correct_answer": "b",
+    "explanation": "Git uses this name (and email) to identify who authored each commit in the history."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What does 'git push --force-with-lease' do differently than 'git push --force'?",
+    "code_snippet": "",
+    "options": {
+      "a": "It only works over SSH.",
+      "b": "It only pushes if the remote branch hasn't been updated since your last fetch (preventing you from overwriting others' work).",
+      "c": "It automatically resolves merge conflicts before pushing.",
+      "d": "There is no difference; it's an alias."
+    },
+    "correct_answer": "b",
+    "explanation": "--force-with-lease is the 'safer' force push. It fails if the remote branch tip has changed since you last checked, ensuring you don't blindly destroy work you haven't seen."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "How do you check out a file from a specific commit?",
+    "code_snippet": "",
+    "options": {
+      "a": "git checkout <commit_hash> -- <file_path>",
+      "b": "git get <file_path> <commit_hash>",
+      "c": "git fetch <file_path> from <commit_hash>",
+      "d": "git show <commit_hash>:<file_path>"
+    },
+    "correct_answer": "a",
+    "explanation": "This allows you to pull a specific version of a file from any point in time into your current working directory."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is 'git worktree' useful for?",
+    "code_snippet": "",
+    "options": {
+      "a": "Visualizing the branch tree.",
+      "b": "Managing multiple working trees attached to the same repository (allowing you to check out multiple branches at once in different folders).",
+      "c": "Generating a list of project contributors.",
+      "d": "Calculating the total lines of code in a project."
+    },
+    "correct_answer": "b",
+    "explanation": "Worktrees allow you to have multiple branches checked out simultaneously in different directories without cloning the repository multiple times."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "Which command is used to remove a file from Git tracking but keep it on the local disk?",
+    "code_snippet": "",
+    "options": {
+      "a": "git rm ",
+      "b": "git rm --cached ",
+      "c": "git forget ",
+      "d": "git untrack "
+    },
+    "correct_answer": "b",
+    "explanation": "'--cached' removes the file from the index (staging area), so it won't be in the next commit, but it leaves the physical file untouched."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "What is the 'index' in Git?",
+    "code_snippet": "",
+    "options": {
+      "a": "The database of all previous commits.",
+      "b": "The staging area where you prepare the next commit snapshot.",
+      "c": "A list of all contributors to the repository.",
+      "d": "The remote server's URL list."
+    },
+    "correct_answer": "b",
+    "explanation": "The index is a binary file (usually .git/index) that acts as a buffer between your working directory and your project history."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "medium",
+    "question": "What does 'git branch -m old-name new-name' do?",
+    "code_snippet": "",
+    "options": {
+      "a": "Merges old-name into new-name.",
+      "b": "Renames the branch 'old-name' to 'new-name'.",
+      "c": "Moves the branch to a different remote.",
+      "d": "Copies the branch."
+    },
+    "correct_answer": "b",
+    "explanation": "The '-m' (move) flag is used to rename branches locally."
+  },
+  {
+    "skill": "Git",
+    "difficulty": "hard",
+    "question": "How do you undo the very last commit but keep all the changes in the working directory (not staged)?",
+    "code_snippet": "",
+    "options": {
+      "a": "git reset --soft HEAD~1",
+      "b": "git reset --mixed HEAD~1",
+      "c": "git reset --hard HEAD~1",
+      "d": "git revert HEAD"
+    },
+    "correct_answer": "b",
+    "explanation": "'--mixed' is the default for reset. It moves the HEAD and resets the index, but leaves your files in the working directory alone."
+  }
+]

@@ -1,0 +1,50 @@
+# === BACKEND ===
+backend/venv/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/**/__pycache__/
+backend/.env
+backend/*.pyc
+backend/**/*.pyc
+backend/crash_dump.log
+backend/gemini_debug.log
+
+# Scratch and temp scripts
+backend/scratch/
+backend/temp_pip/
+backend/check_*.py
+backend/test_*.py
+backend/fix_*.py
+backend/verify_*.py
+backend/reset_*.py
+backend/recover_*.py
+backend/aggressive_purge.py
+backend/clear_cache*.py
+
+# Data files
+backend/data/
+backend/*.xlsx
+
+# Firebase credentials (DO NOT COMMIT)
+backend/firebase-service-account.json
+
+# === FRONTEND ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/build.log
+frontend/build_err.txt
+frontend/mylint.txt
+frontend/vite_out.txt
+frontend/auth.jsx
+frontend/replace_theme.cjs
+frontend/test_build.js
+
+# === OS ===
+.DS_Store
+Thumbs.db
+*.log
+
+# === IDE ===
+.vscode/
+.idea/

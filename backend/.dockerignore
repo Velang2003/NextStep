@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+.env
+crash_dump.log
+gemini_debug.log
+.pytest_cache/
+tests/
+scratch/
+temp_pip/
