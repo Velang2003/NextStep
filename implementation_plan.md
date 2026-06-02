@@ -93,6 +93,12 @@ NextStep/
 - Wire data endpoints to Recharts in React to generate beautiful, interactive displays.
 - Set up a Flask report endpoint to capture the analytics as a branded PDF.
 
+### Phase 6: Deployment (Current Focus)
+- **Target Platform**: Render (using the existing `render.yaml`) or a custom VPS using `docker-compose.yml`.
+- **Backend Setup**: Deploy the Flask API, Celery Worker, Redis, and MySQL/PostgreSQL databases.
+- **Frontend Setup**: Deploy the Vite React app as a static site.
+- **Environment Variables**: Configure secrets (`SECRET_KEY`, `JWT_SECRET_KEY`, `GEMINI_API_KEY`, etc.) in the production environment.
+
 ---
 
 ## 💡 Other Professional Recommendations
@@ -106,10 +112,10 @@ NextStep/
 > [!IMPORTANT]
 > ## User Review Required & Open Questions
 > 
-> Before we start executing commands and writing code, I'd like your feedback on the following:
+> Before we proceed with deployment, I need to know:
 > 
-> 1. **Styling Direction**: Is standard CSS (with custom properties) acceptable, or do you have a strict preference to include TailwindCSS?
-> 2. **Database ORM**: Are you comfortable with SQLAlchemy handling our database interactions behind the scenes, or do you strictly want to write raw MySQL queries?
-> 3. **ATS Access**: Do you already possess active API keys for platforms like Greenhouse/Lever, or will we be relying on publicly exposed JSON endpoints / scraping first?
+> 1. **Target Platform**: I see a `render.yaml` file in the project. Are we deploying to **Render**, or do you prefer using **Docker Compose** on a different server (like AWS, DigitalOcean, or a local server)?
+> 2. **Database Migration**: Locally, the project uses MySQL (XAMPP). Render's free tier uses PostgreSQL. Are we switching to PostgreSQL for production on Render? (SQLAlchemy makes this switch easy, but we need to confirm).
+> 3. **Source Code Hosting**: Is this project currently hosted on a GitHub repository? (Render typically requires a connected GitHub/GitLab repo for automatic deployment).
 > 
-> Please let me know your thoughts so we can finalize the plan!
+> Please let me know your deployment preferences so we can proceed!
