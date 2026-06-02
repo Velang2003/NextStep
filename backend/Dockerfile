@@ -22,5 +22,8 @@ COPY . .
 # Expose port
 EXPOSE 5000
 
-# Start command (Overridden by docker-compose for worker/scheduler)
-CMD gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 3 --timeout 120 wsgi:app
+# Make start.sh executable
+RUN chmod +x start.sh
+
+# Start both Celery and Gunicorn using the script
+CMD ["./start.sh"]

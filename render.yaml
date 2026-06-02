@@ -1,81 +1,27 @@
 services:
-  # 1. Backend Web Service (Flask)
+  # 1. Unified Backend Web Service (Flask API + Celery Worker)
   - type: web
     name: nextstep-backend
     env: docker
     dockerContext: ./backend
     dockerFilePath: ./backend/Dockerfile
-    plan: free # Change to 'starter' or higher for production
+    plan: free
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: nextstep-db
-          property: connectionString
+        sync: false # Set to Supabase Postgres URL in dashboard
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: nextstep-redis
-          property: connectionString
+        sync: false # Set to Upstash Redis URL in dashboard
       - key: CELERY_BROKER_URL
-        fromService:
-          type: redis
-          name: nextstep-redis
-          property: connectionString
+        sync: false # Set to Upstash Redis URL in dashboard
       - key: CELERY_RESULT_BACKEND
-        fromService:
-          type: redis
-          name: nextstep-redis
-          property: connectionString
+        sync: false # Set to Upstash Redis URL in dashboard
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: GEMINI_API_KEY
-        sync: false # Set manually in Render Dashboard
+        sync: false # Set manually in dashboard
       - key: AI_PROVIDER
         value: gemini
       - key: CORS_ORIGINS
-        value: https://nextstep-frontend.onrender.com # Update after frontend is created
-
-  # 2. Celery Worker (Background Service)
-  - type: worker
-    name: nextstep-worker
-    env: docker
-    dockerContext: ./backend
-    dockerFilePath: ./backend/Dockerfile
-    dockerCommand: celery -A app.celery_app.celery_app worker --loglevel=info
-    plan: free
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: nextstep-db
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: nextstep-redis
-          property: connectionString
-      - key: GEMINI_API_KEY
-        sync: false
-
-  # 3. Frontend Static Site (React/Vite)
-  - type: web
-    name: nextstep-frontend
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    rootDir: ./frontend
-    envVars:
-      - key: VITE_API_URL
-        value: https://nextstep-backend.onrender.com/api # Update after backend is created
-
-# 4. Databases
-databases:
-  - name: nextstep-db
-    plan: free # Managed PostgreSQL
-
-# 5. Cache/Broker
-redis:
-  - name: nextstep-redis
-    plan: free
-    ipAllowList: [] # Only allow internal connections
+        sync: false # Set to Vercel Frontend URL after frontend is deployed

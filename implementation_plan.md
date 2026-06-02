@@ -93,11 +93,13 @@ NextStep/
 - Wire data endpoints to Recharts in React to generate beautiful, interactive displays.
 - Set up a Flask report endpoint to capture the analytics as a branded PDF.
 
-### Phase 6: Deployment (Current Focus)
-- **Target Platform**: Render (using the existing `render.yaml`) or a custom VPS using `docker-compose.yml`.
-- **Backend Setup**: Deploy the Flask API, Celery Worker, Redis, and MySQL/PostgreSQL databases.
-- **Frontend Setup**: Deploy the Vite React app as a static site.
-- **Environment Variables**: Configure secrets (`SECRET_KEY`, `JWT_SECRET_KEY`, `GEMINI_API_KEY`, etc.) in the production environment.
+### Phase 6: Deployment (100% Free Strategy)
+To achieve a completely free deployment without sacrificing the background worker or database, we will use a "fragmented" hosting approach utilizing the best free tiers available across the web:
+
+1. **Frontend**: **Vercel** or **Netlify** (Permanent free hosting for React, very fast).
+2. **Database**: **Supabase** (Permanent free PostgreSQL database up to 500MB).
+3. **Redis**: **Upstash** (Permanent free serverless Redis, 10k requests/day).
+4. **Backend + Worker**: **Render** (Free Web Service). We will modify the Dockerfile to run both the Flask API and the Celery worker inside the *same* free container to avoid paying for a separate worker instance.
 
 ---
 
@@ -112,10 +114,14 @@ NextStep/
 > [!IMPORTANT]
 > ## User Review Required & Open Questions
 > 
-> Before we proceed with deployment, I need to know:
+> You requested a **100% free** hosting setup. Because platforms like Render charge for background workers and delete free databases after 90 days, we have to split the services across a few platforms.
 > 
-> 1. **Target Platform**: I see a `render.yaml` file in the project. Are we deploying to **Render**, or do you prefer using **Docker Compose** on a different server (like AWS, DigitalOcean, or a local server)?
-> 2. **Database Migration**: Locally, the project uses MySQL (XAMPP). Render's free tier uses PostgreSQL. Are we switching to PostgreSQL for production on Render? (SQLAlchemy makes this switch easy, but we need to confirm).
-> 3. **Source Code Hosting**: Is this project currently hosted on a GitHub repository? (Render typically requires a connected GitHub/GitLab repo for automatic deployment).
+> **Are you okay with signing up for a few different services to keep this entirely free?**
+> 1. **Supabase.com** (For the Database)
+> 2. **Upstash.com** (For Redis)
+> 3. **Render.com** (For the Backend API & Worker combo)
+> 4. **Vercel.com** (For the Frontend)
 > 
-> Please let me know your deployment preferences so we can proceed!
+> *Alternatively*, if you have a credit card you can use for verification (it won't be charged), you can sign up for **Oracle Cloud's Always Free Tier**, which gives you a massive 24GB RAM server for free forever. If we use that, we can just run your `docker-compose.yml` and host everything in one place. 
+> 
+> **Which completely free route do you prefer: The Multi-Platform approach, or Oracle Cloud?**
