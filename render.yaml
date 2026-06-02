@@ -4,7 +4,7 @@ services:
     name: nextstep-backend
     env: docker
     dockerContext: ./backend
-    dockerFilePath: ./backend/Dockerfile
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     envVars:
       - key: DATABASE_URL
