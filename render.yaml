@@ -59,9 +59,9 @@ services:
         sync: false
 
   # 3. Frontend Static Site (React/Vite)
-  - type: static
+  - type: web
     name: nextstep-frontend
-    env: node
+    env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     rootDir: ./frontend
