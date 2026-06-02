@@ -47,7 +47,7 @@ class JobListing(db.Model):
     role = db.relationship('RoleTaxonomy', backref='job_listings')
 
     __table_args__ = (
-        db.Index('idx_job_search', 'title', 'company', 'location', 'description', mysql_prefix='FULLTEXT'),
+        db.Index('idx_job_search', 'title', 'company', 'location'),
     )
 
     def to_dict(self):

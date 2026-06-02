@@ -29,10 +29,19 @@ A beautiful, "glassmorphic", premium dark-mode UI was crafted using TailwindCSS:
 > **Try Generating a Report!**
 > Login, complete your Profile, ensure Market Data is sync'd, and head over to your Dashboard. Click "Export PDF Report" to receive an instantly tailored career snapshot.
 
+### 4. 100% Free Live Deployment (Phase 6)
+We successfully architected and deployed a multi-platform cloud environment to host NextStep completely free of charge, avoiding typical PaaS fees for databases and background workers:
+- **Database Layer**: Migrated from local MySQL to a permanent **Supabase** (PostgreSQL) instance.
+- **Cache/Queue Layer**: Integrated **Upstash** (Serverless Redis) for lightning-fast Celery task brokering.
+- **Backend & Worker Layer**: Modified the Flask Docker container via a custom `start.sh` script to run both Gunicorn (API) and Celery (Worker) simultaneously. This unified container is hosted for free on **Render**.
+- **Frontend Layer**: Deployed the Vite React application on **Vercel** for ultra-fast, CDN-backed static delivery.
+- **Security**: Bound the deployment tightly together by enforcing CORS Origins and configuring Firebase Authorized Domains.
+
 ## Verification
 
 - **Schema Check**: `init_db.py` fully configured with `users`, `profiles`, `job_listings`, and `skill_trends`. All joined successfully.
 - **Frontend Build**: Vite seamlessly packaged and minified our React Application alongside `recharts` and `lucide-react` with 0 structural errors.
+- **Live Production Check**: Fully authenticated sessions, live Celery queuing, and data retrieval are functioning correctly across the Vercel/Render pipeline.
 
 ## Next Steps for the USER
 
