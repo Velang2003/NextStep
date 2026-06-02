@@ -34,13 +34,31 @@ def create_app(config_class=Config):
     db.init_app(app)
     
     # Initialize Firebase Admin SDK
-    service_account_path = os.path.join(app.root_path, '..', 'firebase-service-account.json')
-    if os.path.exists(service_account_path):
-        cred = credentials.Certificate(service_account_path)
+    import json
+    import base64
+    firebase_env = os.getenv('FIREBASE_CREDENTIALS')
+    
+    if firebase_env:
+        try:
+            # Try to parse as direct JSON first
+            cred_dict = json.loads(firebase_env)
+        except json.JSONDecodeError:
+            # If it fails, try parsing as base64
+            cred_dict = json.loads(base64.b64decode(firebase_env).decode('utf-8'))
+            
+        cred = credentials.Certificate(cred_dict)
         if not firebase_admin._apps:
             firebase_admin.initialize_app(cred)
+            
     else:
-        app.logger.warning(f"Firebase service account file not found at {service_account_path}")
+        # Fallback to local file for development
+        service_account_path = os.path.join(app.root_path, '..', 'firebase-service-account.json')
+        if os.path.exists(service_account_path):
+            cred = credentials.Certificate(service_account_path)
+            if not firebase_admin._apps:
+                firebase_admin.initialize_app(cred)
+        else:
+            app.logger.warning("Firebase credentials not found in env or local file.")
 
     # Load allowed CORS origins from env for production flexibility
     allowed_origins = os.getenv(
