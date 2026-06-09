@@ -73,8 +73,8 @@ def main():
         print("=" * 55)
         results = run_pipeline()
         print(f"\n[Summary] Fetched: {results['fetched']} | "
-              f"New: {results['inserted']} | "
-              f"Refreshed: {results['skipped']}")
+              f"Deduped: {results['deduped']} | "
+              f"New Raw Inserted: {results['inserted_raw']}")
         if results['errors']:
             print("[Warnings] Some sources had errors:")
             for e in results['errors']:

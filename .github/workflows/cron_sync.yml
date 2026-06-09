@@ -1,0 +1,19 @@
+name: Daily Job Sync Cron
+
+on:
+  schedule:
+    # 2:00 AM IST is 8:30 PM UTC previous day. (IST is UTC + 5:30)
+    # Cron format: minute hour day_of_month month day_of_week
+    - cron: '30 20 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Job Pipeline Sync
+        run: |
+          curl -X POST "${{ secrets.BACKEND_API_URL }}/api/jobs/cron-sync" \
+            -H "X-Cron-Token: ${{ secrets.CRON_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --fail

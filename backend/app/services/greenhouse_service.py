@@ -59,7 +59,7 @@ def fetch_company_jobs(company_slug: str) -> list[dict]:
     """Fetch and normalize all jobs from a single Greenhouse board."""
     url = GREENHOUSE_API.format(company=company_slug)
     try:
-        resp = requests.get(url, timeout=10)
+        resp = requests.get(url, timeout=5)
         if resp.status_code != 200:
             print(f"  [Greenhouse] {company_slug}: HTTP {resp.status_code}")
             return []
@@ -122,7 +122,7 @@ def fetch_all() -> list[dict]:
     all_jobs = []
     with ThreadPoolExecutor(max_workers=10) as ex:
         futures = {ex.submit(_fetch_with_ctx, c): c for c in COMPANIES}
-        for fut in as_completed(futures, timeout=120):
+        for fut in as_completed(futures, timeout=300):
             try:
                 jobs = fut.result(timeout=15)
                 all_jobs.extend(jobs)

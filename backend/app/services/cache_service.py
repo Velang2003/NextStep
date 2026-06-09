@@ -8,12 +8,15 @@ logger = logging.getLogger(__name__)
 
 class CacheService:
     def __init__(self):
-        redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+        redis_url = os.getenv('REDIS_URL') or os.getenv('CELERY_BROKER_URL') or 'redis://localhost:6379/0'
         try:
             self.redis = redis.from_url(redis_url, decode_responses=True)
+            # Ping immediately to check health
+            self.redis.ping()
             self.enabled = True
+            logger.info(f"Connected to Redis cache successfully at {redis_url[:20]}...")
         except Exception as e:
-            logger.error(f"Failed to connect to Redis: {e}")
+            logger.warning(f"Redis cache is disabled. Failed to connect to Redis: {e}")
             self.enabled = False
 
     def get(self, key):

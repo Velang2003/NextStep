@@ -11,7 +11,7 @@ from collections import Counter
 from app import db
 from app.models.job import JobListing, JobRaw, SkillTrend, RoleTrend, SectorTrend
 
-from sqlalchemy import func, or_, text
+from sqlalchemy import func, or_, text, tuple_
 import threading
 from app.services.cache_service import cached, cache_svc
 
@@ -94,11 +94,11 @@ def run_pipeline() -> dict:
         for i, fut in enumerate(as_completed(futures, timeout=300)):
             name = futures[fut]
             try:
-                jobs = fut.result(timeout=60)
+                jobs = fut.result(timeout=300)
                 all_jobs.extend(jobs)
                 _update_status(progress=i+1, log=f"✓ {name}: {len(jobs)} jobs")
             except TimeoutError:
-                msg = f"{name}: Timed out after 60s — skipped"
+                msg = f"{name}: Timed out after 300s — skipped"
                 results['errors'].append(msg)
                 _update_status(progress=i+1, log=f"⏱ {msg}")
             except Exception as e:
@@ -121,33 +121,66 @@ def run_pipeline() -> dict:
     raw_refreshed = 0
     seen_keys = set()
 
-    existing_raw = {
-        (r.source, r.source_id) 
-        for r in JobRaw.query.with_entities(JobRaw.source, JobRaw.source_id).all()
+    # Load existing raw jobs into a fast lookup map
+    existing_raw_query = JobRaw.query.with_entities(
+        JobRaw.source, JobRaw.source_id, JobRaw.raw_payload, JobRaw.is_processed
+    ).all()
+    existing_raw_map = {
+        (r.source, r.source_id): (r.raw_payload, r.is_processed)
+        for r in existing_raw_query
     }
+
+    keys_to_update_fetched_at = []
 
     for j_idx, job in enumerate(unique_jobs):
         src, sid = job.get('source'), job.get('source_id')
         key = (src, sid)
         seen_keys.add(key)
         
-        if key in existing_raw:
-            db.session.query(JobRaw).filter_by(source=src, source_id=sid).update(
-                {'fetched_at': now, 'is_processed': False},
-                synchronize_session=False
-            )
-            raw_refreshed += 1
+        if key in existing_raw_map:
+            old_payload, is_proc = existing_raw_map[key]
+            
+            # Detect payload changes to core fields to decide if we re-process
+            payload_changed = False
+            if isinstance(old_payload, dict):
+                for f in ['title', 'description', 'company', 'location']:
+                    if old_payload.get(f) != job.get(f):
+                        payload_changed = True
+                        break
+            else:
+                payload_changed = True
+            
+            if payload_changed:
+                db.session.query(JobRaw).filter_by(source=src, source_id=sid).update(
+                    {'raw_payload': job, 'fetched_at': now, 'is_processed': False},
+                    synchronize_session=False
+                )
+                raw_refreshed += 1
+            else:
+                # If unmodified, only update the fetched_at timestamp
+                keys_to_update_fetched_at.append(key)
         else:
             db.session.add(JobRaw(source=src, source_id=sid, raw_payload=job, fetched_at=now))
             raw_inserted += 1
         
-        if (j_idx + 1) % 500 == 0:
+        if (j_idx + 1) % 1000 == 0:
             _update_status(progress=j_idx+1)
             db.session.commit()
 
     db.session.commit()
+
+    # Bulk update fetched_at timestamps for unmodified jobs in chunks to minimize network roundtrips
+    if keys_to_update_fetched_at:
+        chunk_size = 500
+        for i in range(0, len(keys_to_update_fetched_at), chunk_size):
+            chunk = keys_to_update_fetched_at[i:i+chunk_size]
+            db.session.query(JobRaw).filter(
+                tuple_(JobRaw.source, JobRaw.source_id).in_(chunk)
+            ).update({'fetched_at': now}, synchronize_session=False)
+            db.session.commit()
+
     results['inserted_raw'] = raw_inserted
-    _update_status(log=f"Staging complete: {raw_inserted} new, {raw_refreshed} refreshed.")
+    _update_status(log=f"Staging complete: {raw_inserted} new, {raw_refreshed} updated payloads.")
 
     # 4. Integrated Consumer Processing
     _update_status(step='Processing & Skill Extraction', log="Starting normalization and skill extraction...")
@@ -191,6 +224,7 @@ def run_integrated_consumer() -> dict:
     from app.services.data_normalizer import extract_skills, classify_department, normalize_role
     
     stats = {'processed': 0, 'new_listings': 0}
+    discovery_count = 0
     
     # Pre-fetch taxonomy
     sectors_map = {s.name: s.id for s in SectorTaxonomy.query.all()}
@@ -267,9 +301,10 @@ def run_integrated_consumer() -> dict:
         # Discovery Step: Identify potentially new skills/roles for Admin review
         # We only do this for jobs where normalization was weak to discover emerging trends
         # IMPORTANT: To prevent pipeline stalling during bulk sync, we limit this to a small subset
-        # or disable it entirely if there are thousands of jobs.
-        if (not role_id or len(detected_skill_names) < 3) and len(raw_jobs) < 100:
+        # of jobs (max 15 per run) instead of disabling it completely when raw_jobs count is high.
+        if (not role_id or len(detected_skill_names) < 3) and discovery_count < 100:
             try:
+                discovery_count += 1
                 from app.services.ai_service import ai_svc
                 from app.models.taxonomy import PendingSkill, PendingRole, RoleTaxonomy, KeywordDiscovery
                 discovery = ai_svc.discover_new_entities(f"{title} {desc}")
@@ -282,14 +317,14 @@ def run_integrated_consumer() -> dict:
                         kd = KeywordDiscovery.query.filter_by(name=dr, type='role').first()
                         if kd:
                             kd.frequency += 1
-                            if kd.frequency >= 5:
+                            if kd.frequency >= 2:
                                 # Promote to Pending
                                 if not PendingRole.query.filter_by(title=dr).first():
                                     db.session.add(PendingRole(
                                         title=dr,
                                         suggested_sector=dept or 'Other',
                                         source='pipeline',
-                                        source_detail=f"Frequent Keyword (Seen 5+ times)"
+                                        source_detail=f"Frequent Keyword (Seen 2+ times)"
                                     ))
                         else:
                             db.session.add(KeywordDiscovery(name=dr, type='role', suggested_sector=dept))
@@ -300,14 +335,14 @@ def run_integrated_consumer() -> dict:
                         kd = KeywordDiscovery.query.filter_by(name=s, type='skill').first()
                         if kd:
                             kd.frequency += 1
-                            if kd.frequency >= 5:
+                            if kd.frequency >= 2:
                                 # Promote to Pending
                                 if not PendingSkill.query.filter_by(name=s).first():
                                     db.session.add(PendingSkill(
                                         name=s,
                                         suggested_category='Tool',
                                         source='pipeline',
-                                        source_detail=f"Frequent Keyword (Seen 5+ times)"
+                                        source_detail=f"Frequent Keyword (Seen 2+ times)"
                                     ))
                         else:
                             db.session.add(KeywordDiscovery(name=s, type='skill'))

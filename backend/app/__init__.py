@@ -114,6 +114,7 @@ def create_app(config_class=Config):
             trigger='cron',
             hour=2,
             minute=0,
+            timezone='Asia/Kolkata',
             id='daily_pipeline',
             replace_existing=True,
             misfire_grace_time=3600,  # 1-hour grace window

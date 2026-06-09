@@ -4,6 +4,30 @@ from app.services.pipeline import (
     run_pipeline, get_skill_trends, get_job_listings,
     get_role_trends, get_sector_trends
 )
+import time
+from functools import wraps
+
+def ttl_cache(ttl_seconds=300):
+    cache = {}
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # Using endpoint path and query string as cache key if available
+            try:
+                from flask import request
+                key = request.path + "?" + request.query_string.decode('utf-8')
+            except Exception:
+                key = str(args) + str(kwargs)
+            
+            if key in cache:
+                result, timestamp = cache[key]
+                if time.time() - timestamp < ttl_seconds:
+                    return result
+            result = func(*args, **kwargs)
+            cache[key] = (result, time.time())
+            return result
+        return wrapper
+    return decorator
 
 jobs_bp = Blueprint('jobs', __name__)
 
@@ -16,6 +40,27 @@ def sync_jobs():
     try:
         result = run_pipeline()
         return jsonify({'message': 'Sync complete.', 'result': result}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@jobs_bp.route('/cron-sync', methods=['POST'])
+def cron_sync_jobs():
+    """Trigger a full ATS data pipeline sync via external secure token (bypass Firebase auth)."""
+    import os
+    expected_token = os.getenv('CRON_TOKEN')
+    if not expected_token:
+        return jsonify({'error': 'Cron trigger token not configured on server.'}), 500
+        
+    auth_header = request.headers.get('X-Cron-Token')
+    query_token = request.args.get('token')
+    
+    if auth_header != expected_token and query_token != expected_token:
+        return jsonify({'error': 'Unauthorized cron token.'}), 401
+        
+    try:
+        result = run_pipeline()
+        return jsonify({'message': 'Cron sync complete.', 'result': result}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -39,6 +84,7 @@ def list_jobs():
 
 
 @jobs_bp.route('/trends/skills', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def skill_trends():
     """Top skill demands. Query params: sector (optional), limit (default 20)"""
     sector = request.args.get('sector')
@@ -64,6 +110,7 @@ def role_skills():
 
 
 @jobs_bp.route('/trends/roles', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def role_trends():
     """Top roles by demand, filterable by sector."""
     sector = request.args.get('sector')
@@ -72,12 +119,14 @@ def role_trends():
 
 
 @jobs_bp.route('/trends/sectors', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def sector_breakdown():
     """Sectors with job counts and growth percentages."""
     return jsonify(get_sector_trends()), 200
 
 
 @jobs_bp.route('/trends/locations', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def location_breakdown():
     """Distribution of job listings by country."""
     from app.models.job import JobListing, db
@@ -94,6 +143,7 @@ def location_breakdown():
 
 
 @jobs_bp.route('/trends/geo', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def geo_data():
     """Job counts by country with ISO3 codes and coordinates for map visualization."""
     from app.models.job import JobListing, db
@@ -194,6 +244,7 @@ def geo_data():
 
 
 @jobs_bp.route('/trends/skills/history', methods=['GET'])
+@ttl_cache(ttl_seconds=3600)
 def skill_trend_history():
     """Skill demand across multiple periods for time-series visualization."""
     from app.models.job import SkillTrend
