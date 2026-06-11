@@ -23,12 +23,12 @@ class JobListing(db.Model):
     location        = db.Column(db.Text)
     
     # Updated: Replaced string sector with taxonomy links
-    sector_id       = db.Column(db.Integer, db.ForeignKey('sector_taxonomy.id', ondelete='SET NULL'), nullable=True)
-    role_id         = db.Column(db.Integer, db.ForeignKey('role_taxonomy.id', ondelete='SET NULL'), nullable=True)
+    sector_id       = db.Column(db.Integer, db.ForeignKey('sector_taxonomy.id', ondelete='SET NULL'), nullable=True, index=True)
+    role_id         = db.Column(db.Integer, db.ForeignKey('role_taxonomy.id', ondelete='SET NULL'), nullable=True, index=True)
     
-    country         = db.Column(db.String(150))
+    country         = db.Column(db.String(150), index=True)
     employment_type = db.Column(db.String(150))                   # Full-time, Part-time, Contract
-    remote          = db.Column(db.Boolean, default=False)
+    remote          = db.Column(db.Boolean, default=False, index=True)
     
     description     = db.Column(db.Text)
     url             = db.Column(db.Text)
