@@ -48,6 +48,7 @@ def discover_entities_spacy(text: str) -> dict:
 
 def _load_cache():
     """Load taxonomy data from DB into memory cache."""
+    from sqlalchemy.orm import joinedload
     from app.models.taxonomy import SkillTaxonomy, SectorTaxonomy, CountryMapping, RoleTaxonomy
     with _cache_lock:
         now = time.time()
@@ -55,7 +56,7 @@ def _load_cache():
             return
 
         # Load Skills with Aliases
-        skills_rows = SkillTaxonomy.query.all()
+        skills_rows = SkillTaxonomy.query.options(joinedload(SkillTaxonomy.aliases)).all()
         _cache['skills'] = {}
         for s in skills_rows:
             # Pre-tokenize all aliases to save time during extraction
@@ -68,14 +69,14 @@ def _load_cache():
                 _cache['skills'][s.canonical_name] = aliases
 
         # Load Sectors with Aliases
-        sectors_rows = SectorTaxonomy.query.all()
+        sectors_rows = SectorTaxonomy.query.options(joinedload(SectorTaxonomy.aliases)).all()
         _cache['sectors'] = {
             s.name: [a.name.lower() for a in s.aliases] + [s.name.lower()]
             for s in sectors_rows
         }
 
         # Load Roles with Aliases
-        roles_rows = RoleTaxonomy.query.all()
+        roles_rows = RoleTaxonomy.query.options(joinedload(RoleTaxonomy.aliases)).all()
         _cache['roles'] = {
             r.title: [a.name.lower() for a in r.aliases] + [r.title.lower()]
             for r in roles_rows
