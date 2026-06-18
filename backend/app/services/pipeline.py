@@ -247,6 +247,13 @@ def run_integrated_consumer() -> dict:
         return stats
 
     for i, raw in enumerate(raw_jobs):
+        if (i + 1) % 50 == 0:
+            try:
+                from app.services.pipeline import _update_status
+                _update_status(progress=i+1, total=len(raw_jobs), log=f"Processing job {i+1}/{len(raw_jobs)}...")
+            except ImportError:
+                pass
+                
         payload = raw.raw_payload
         title = payload.get('title', '')
         dept = payload.get('department', '')
