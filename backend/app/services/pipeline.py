@@ -279,9 +279,24 @@ def run_integrated_consumer() -> dict:
                 sector_id=sector_id, role_id=role_id
             )
             db.session.add(listing)
-            db.session.flush()
-            listing_id = listing.id
-            stats['new_listings'] += 1
+            try:
+                db.session.flush()
+                listing_id = listing.id
+                stats['new_listings'] += 1
+            except Exception as flush_err:
+                # Handles duplicate key (UniqueViolation) caused by stale ID sequence.
+                # Roll back this single job and try to look it up instead of crashing.
+                import logging as _log
+                _log.getLogger(__name__).warning(f"Flush failed for '{title}' ({raw.source}/{raw.source_id}): {flush_err}. Attempting re-lookup...")
+                db.session.rollback()
+                existing = JobListing.query.filter_by(source=raw.source, source_id=raw.source_id).first()
+                if existing:
+                    listing_id = existing.id
+                    existing_listings[(raw.source, raw.source_id)] = listing_id
+                else:
+                    raw.is_processed = True
+                    stats['processed'] += 1
+                    continue
 
         # Skill extraction
         from app.models.job_skill import JobSkill
