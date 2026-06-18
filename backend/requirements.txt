@@ -61,3 +61,4 @@ psycopg2-binary==2.9.9
 
 sentry-sdk
 
+groq==0.8.0
