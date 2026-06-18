@@ -84,9 +84,9 @@ class GroqService:
         current_key = self.api_keys[self.current_key_index] if self.api_keys else None
         
         try:
-            # Enforce a baseline delay to avoid blasting the API and getting rate limited
-            # This ensures we don't exceed the ~30 RPM free tier easily
-            time.sleep(2.5) 
+            # Enforce a baseline delay to stay safely under the ~30 RPM free tier limit.
+            # 3.5s = ~17 RPM with two keys, well under the 30 RPM ceiling.
+            time.sleep(3.5)
             
             response = self.client.chat.completions.create(
                 model=self.MODEL,
