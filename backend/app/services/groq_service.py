@@ -34,7 +34,7 @@ class GroqService:
             self.enabled = False
             logger.warning("No Groq API keys found. GroqService disabled.")
             
-        self.MODEL = 'llama3-8b-8192' # Extremely fast open-source model
+        self.MODEL = 'llama-3.1-8b-instant' # Extremely fast open-source model
         
         self.failure_count = 0
         self.last_failure_time = 0
