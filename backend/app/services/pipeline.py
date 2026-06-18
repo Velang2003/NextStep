@@ -248,12 +248,8 @@ def run_integrated_consumer() -> dict:
 
     for i, raw in enumerate(raw_jobs):
         if (i + 1) % 50 == 0:
-            try:
-                from app.services.pipeline import _update_status
-                _update_status(progress=i+1, total=len(raw_jobs), log=f"Processing job {i+1}/{len(raw_jobs)}...")
-            except ImportError:
-                pass
-                
+            _update_status(progress=i+1, total=len(raw_jobs), log=f"Processing job {i+1}/{len(raw_jobs)}...")
+        
         payload = raw.raw_payload
         title = payload.get('title', '')
         dept = payload.get('department', '')
@@ -357,15 +353,29 @@ def run_integrated_consumer() -> dict:
             except Exception as e:
                 import logging
                 logging.getLogger(__name__).error(f"Discovery failed for job {title}: {e}")
+                # CRITICAL: Roll back the session if it was left in an invalid state by a DB error
+                # (e.g. SSL drop mid-query). Without this, every subsequent DB op in the loop fails.
+                try:
+                    db.session.rollback()
+                except Exception:
+                    pass
 
         # MOVED OUTSIDE THE IF BLOCK: Mark as processed for EVERY job!
         raw.is_processed = True
         stats['processed'] += 1
         
         if (i + 1) % 100 == 0:
-            db.session.commit()
+            try:
+                db.session.commit()
+            except Exception as e:
+                logging.getLogger(__name__).error(f"Batch commit failed at job {i+1}: {e}")
+                db.session.rollback()
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        logging.getLogger(__name__).error(f"Final commit failed: {e}")
+        db.session.rollback()
     
     # Recompute trends
     _recompute_skill_trends()
