@@ -7,7 +7,6 @@ from firebase_admin import credentials
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from .config import Config
-from .celery_app import celary_init_app
 
 db = SQLAlchemy()
 
@@ -24,8 +23,7 @@ def create_app(config_class=Config):
             profiles_sample_rate=1.0,
         )
     
-    # Initialize Celery
-    celary_init_app(app)
+    # (Celery removed — pipeline runs via APScheduler + threading)
     
     # Load models
     from . import models

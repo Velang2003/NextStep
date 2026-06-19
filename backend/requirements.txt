@@ -1,4 +1,4 @@
-﻿annotated-types==0.7.0
+annotated-types==0.7.0
 bcrypt==4.0.1
 blinker==1.9.0
 certifi==2026.2.25
@@ -53,8 +53,7 @@ APScheduler
 spacy
 duckduckgo-search
 
-celery
-redis
+# celery and redis removed — pipeline uses APScheduler + threading
 gunicorn
 psycopg2-binary==2.9.9
 
