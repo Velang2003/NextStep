@@ -84,7 +84,8 @@ def create_app(config_class=Config):
     app.register_blueprint(applications_bp,  url_prefix='/api/applications')
     app.register_blueprint(admin_bp,         url_prefix='/api/admin')
 
-    # Health check
+    # Health check endpoints — handles Render's probe hitting both / and /api/health
+    @app.route('/', methods=['GET'])
     @app.route('/api/health', methods=['GET'])
     def health_check():
         return jsonify({"status": "healthy", "version": "2.0.0"}), 200
@@ -121,15 +122,21 @@ def create_app(config_class=Config):
         atexit.register(lambda: scheduler.shutdown(wait=False))
         app.logger.info("Background scheduler started: run_pipeline at 2:00 AM daily.")
 
+    @app.errorhandler(404)
+    def handle_not_found(e):
+        return jsonify(error='Not Found'), 404
+
     @app.errorhandler(Exception)
     def handle_exception(e):
-        import traceback, logging
+        from werkzeug.exceptions import HTTPException
+        # Don't log normal HTTP errors (404, 405 etc.) as crashes
+        if isinstance(e, HTTPException):
+            return jsonify(error=e.description), e.code
+        import traceback
         tb = traceback.format_exc()
-        # Append to crash log instead of overwriting
         with open('crash_dump.log', 'a') as f:
             f.write(f"\n{'='*60}\n{tb}")
         app.logger.error(tb)
-        # Never expose internals to the client in production
         if app.debug:
             return jsonify(error=str(e), traceback=tb), 500
         return jsonify(error='Internal Server Error. Please try again later.'), 500
