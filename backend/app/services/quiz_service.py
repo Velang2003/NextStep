@@ -55,16 +55,15 @@ def fetch_quiz_questions(skill_name: str, count: int = 10,
         selected = random.sample(cached_qs, count)
         return [q.to_dict() for q in selected]
     
-    # ── Step 4: DB doesn't have enough — try Gemini API for a small batch ──
-    # Only fetch 3 synchronously to prevent UI lag
-    needed = min(count, 3)
+    # ── Step 4: DB doesn't have enough — generate via Groq ──
+    needed = min(count, 10)   # Cap at 10 per single call to keep prompts manageable
     
     try:
         from app.services.ai_service import ai_svc
         new_qs = ai_svc.generate_assessment(skill_name, needed, difficulty_val)
         
         if not new_qs:
-            raise Exception("Gemini returned no questions (Quota Exhausted / Circuit Breaker)")
+            raise Exception("Groq returned no questions (Quota Exhausted / Circuit Breaker)")
             
         for q in new_qs:
             exists = QuestionBank.query.filter_by(
