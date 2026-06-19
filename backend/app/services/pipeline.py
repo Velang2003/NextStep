@@ -63,7 +63,8 @@ def run_pipeline() -> dict:
 
     from app.services import (
         remotive_service, arbeitnow_service, themuse_service, jobicy_service,
-        greenhouse_service, lever_service, ashby_service
+        greenhouse_service, lever_service, ashby_service,
+        jooble_service, adzuna_service,
     )
     from concurrent.futures import ThreadPoolExecutor, as_completed
     from flask import current_app
@@ -71,13 +72,16 @@ def run_pipeline() -> dict:
 
     # Define all fetchers
     fetchers = [
-        ('Remotive',  remotive_service.fetch_all),
-        ('Arbeitnow', arbeitnow_service.fetch_all),
-        ('The Muse',  themuse_service.fetch_all),
-        ('Jobicy',    jobicy_service.fetch_all),
-        ('Greenhouse', greenhouse_service.fetch_all),
-        ('Lever',      lever_service.fetch_all),
-        ('Ashby',      ashby_service.fetch_all),
+        ('Remotive',      remotive_service.fetch_all),
+        ('Arbeitnow',     arbeitnow_service.fetch_all),
+        ('The Muse',      themuse_service.fetch_all),
+        ('Jobicy',        jobicy_service.fetch_all),
+        ('Greenhouse',    greenhouse_service.fetch_all),
+        ('Lever',         lever_service.fetch_all),
+        ('Ashby',         ashby_service.fetch_all),
+        # ── Indian Market Sources ──
+        ('Jooble India',  jooble_service.fetch_all),
+        ('Adzuna India',  adzuna_service.fetch_all),
     ]
 
     # Wrapper to push app context into each worker thread
