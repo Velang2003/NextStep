@@ -53,7 +53,8 @@ APScheduler
 spacy
 duckduckgo-search
 
-# celery and redis removed — pipeline uses APScheduler + threading
+# celery removed — pipeline uses APScheduler + threading
+redis
 gunicorn
 psycopg2-binary==2.9.9
 
