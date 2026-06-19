@@ -113,7 +113,14 @@ def get_assessment_questions():
     # Sort by ID so order is deterministic on frontend
     q_list.sort(key=lambda x: x['id'])
 
-    return jsonify({'questions': q_list}), 200
+    # Tell the frontend when ALL assessments have their full question sets
+    # so it knows to stop polling instead of guessing via settled-state detection.
+    all_ready = all(
+        AssessmentQuestion.query.filter_by(assessment_id=a.id).count() >= a.total_questions
+        for a in assessments
+    )
+
+    return jsonify({'questions': q_list, 'all_ready': all_ready}), 200
 
 
 @assessment_bp.route('/submit', methods=['POST'])

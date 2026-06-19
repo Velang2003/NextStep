@@ -119,8 +119,6 @@ export default function SkillAssessment() {
 
   useEffect(() => {
     let pollInterval;
-    let lastCount = 0;
-    let settledTicks = 0;
 
     if (phase === 'quiz' && assessment?.assessment_ids) {
       pollInterval = setInterval(async () => {
@@ -128,28 +126,11 @@ export default function SkillAssessment() {
           const ids = assessment.assessment_ids.join(',');
           const res = await api.get(`/assessment/questions?ids=${ids}`);
           if (res.data?.questions) {
-            const incoming = res.data.questions;
-            setQuestions(incoming);
-
-            // Stop if we have all expected questions
-            if (incoming.length >= totalExpected) {
-              clearInterval(pollInterval);
-              return;
-            }
-
-            // Stop if question count hasn't changed for 2 polls (settled state)
-            if (incoming.length === lastCount) {
-              settledTicks += 1;
-              if (settledTicks >= 2 && incoming.length > 0) {
-                // Update total so UI shows correct count, then stop polling
-                setTotalExpected(incoming.length);
-                clearInterval(pollInterval);
-                return;
-              }
-            } else {
-              settledTicks = 0;
-            }
-            lastCount = incoming.length;
+            setQuestions(res.data.questions);
+          }
+          // Stop polling only when the backend confirms ALL questions are ready
+          if (res.data?.all_ready) {
+            clearInterval(pollInterval);
           }
         } catch (e) {
           console.error("Polling error", e);
@@ -157,7 +138,7 @@ export default function SkillAssessment() {
       }, 2000);
     }
     return () => clearInterval(pollInterval);
-  }, [phase, assessment, totalExpected]);
+  }, [phase, assessment]);
 
   const selectAnswer = (qId, letter) => {
     setAnswers(prev => ({ ...prev, [qId]: letter }));
