@@ -229,6 +229,7 @@ def run_integrated_consumer() -> dict:
     
     stats = {'processed': 0, 'new_listings': 0}
     discovery_count = 0
+    jobs_for_discovery = []  # Collected for async AI processing after main loop
     
     # Pre-fetch taxonomy
     sectors_map = {s.name: s.id for s in SectorTaxonomy.query.all()}
@@ -320,66 +321,13 @@ def run_integrated_consumer() -> dict:
             if is_valid:
                 db.session.add(JobSkill(job_id=listing_id, skill_id=skill_id, proficiency_level='medium'))
 
-        # Discovery Step: Identify potentially new skills/roles for Admin review
-        # We only do this for jobs where normalization was weak to discover emerging trends
-        # IMPORTANT: To prevent pipeline stalling during bulk sync, we limit this to a small subset
-        # of jobs (max 15 per run) instead of disabling it completely when raw_jobs count is high.
-        if (not role_id or len(detected_skill_names) < 3) and discovery_count < 100:
-            try:
-                discovery_count += 1
-                from app.services.ai_service import ai_svc
-                from app.models.taxonomy import PendingSkill, PendingRole, RoleTaxonomy, KeywordDiscovery
-                discovery = ai_svc.discover_new_entities(f"{title} {desc}")
-                
-                # Discovery logic with Threshold (Frequency >= 5)
-                # 1. New Role Candidate
-                dr = discovery.get('role')
-                if dr and len(dr) > 3:
-                    if not RoleTaxonomy.query.filter(func.lower(RoleTaxonomy.title) == dr.lower()).first():
-                        kd = KeywordDiscovery.query.filter_by(name=dr, type='role').first()
-                        if kd:
-                            kd.frequency += 1
-                            if kd.frequency >= 2:
-                                # Promote to Pending
-                                if not PendingRole.query.filter_by(title=dr).first():
-                                    db.session.add(PendingRole(
-                                        title=dr,
-                                        suggested_sector=dept or 'Other',
-                                        source='pipeline',
-                                        source_detail=f"Frequent Keyword (Seen 2+ times)"
-                                    ))
-                        else:
-                            db.session.add(KeywordDiscovery(name=dr, type='role', suggested_sector=dept))
-                
-                # 2. New Skill Candidate
-                for s in discovery.get('skills', []):
-                    if len(s) > 2 and s.lower() not in [sk.lower() for sk in skills_map.keys()]:
-                        kd = KeywordDiscovery.query.filter_by(name=s, type='skill').first()
-                        if kd:
-                            kd.frequency += 1
-                            if kd.frequency >= 2:
-                                # Promote to Pending
-                                if not PendingSkill.query.filter_by(name=s).first():
-                                    db.session.add(PendingSkill(
-                                        name=s,
-                                        suggested_category='Tool',
-                                        source='pipeline',
-                                        source_detail=f"Frequent Keyword (Seen 2+ times)"
-                                    ))
-                        else:
-                            db.session.add(KeywordDiscovery(name=s, type='skill'))
-    
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).error(f"Discovery failed for job {title}: {e}")
-                # CRITICAL: Roll back the session if it was left in an invalid state by a DB error
-                # (e.g. SSL drop mid-query). Without this, every subsequent DB op in the loop fails.
-                try:
-                    db.session.rollback()
-                except Exception:
-                    pass
+        # Collect jobs that need AI discovery (weak classification)
+        # We do NOT call the AI API here to avoid blocking the processing loop.
+        if (not role_id or len(detected_skill_names) < 3) and discovery_count < 30:
+            discovery_count += 1
+            jobs_for_discovery.append((title, dept, desc))
 
-        # MOVED OUTSIDE THE IF BLOCK: Mark as processed for EVERY job!
+        # Mark as processed for EVERY job
         raw.is_processed = True
         stats['processed'] += 1
         
@@ -387,22 +335,106 @@ def run_integrated_consumer() -> dict:
             try:
                 db.session.commit()
             except Exception as e:
-                logging.getLogger(__name__).error(f"Batch commit failed at job {i+1}: {e}")
+                import logging as _log
+                _log.getLogger(__name__).error(f"Batch commit failed at job {i+1}: {e}")
                 db.session.rollback()
 
     try:
         db.session.commit()
     except Exception as e:
-        logging.getLogger(__name__).error(f"Final commit failed: {e}")
+        import logging as _log
+        _log.getLogger(__name__).error(f"Final commit failed: {e}")
         db.session.rollback()
     
     # Recompute trends
     _recompute_skill_trends()
     _recompute_role_trends()
     _recompute_sector_trends()
-    
+
+    # Run AI discovery in a background thread so it doesn't block pipeline completion
+    if jobs_for_discovery:
+        import threading as _threading
+        app_ctx = db.get_app()  # pylint: disable=no-member
+
+        def _run_discovery_async(job_list, app):
+            with app.app_context():
+                _run_discovery_batch(job_list, skills_map)
+
+        try:
+            from flask import current_app as _ca
+            _app = _ca._get_current_object()
+            t = _threading.Thread(
+                target=_run_discovery_async, args=(jobs_for_discovery, _app), daemon=True
+            )
+            t.start()
+            _update_status(log=f"Discovery queued for {len(jobs_for_discovery)} jobs (running async).")
+        except Exception as disc_err:
+            import logging as _log
+            _log.getLogger(__name__).warning(f"Could not start discovery thread: {disc_err}")
+
     return stats
 
+
+def _run_discovery_batch(jobs_for_discovery: list, skills_map: dict):
+    """
+    Run AI discovery for collected jobs. Executes asynchronously after the main pipeline loop.
+    Handles PendingSkill / PendingRole promotions based on keyword frequency.
+    """
+    import logging as _log
+    logger = _log.getLogger(__name__)
+
+    from app.models.taxonomy import (
+        PendingSkill, PendingRole, RoleTaxonomy, KeywordDiscovery, SkillTaxonomy
+    )
+    from app.services.ai_service import ai_svc
+
+    for title, dept, desc in jobs_for_discovery:
+        try:
+            discovery = ai_svc.discover_new_entities(f"{title} {desc[:2000]}")
+
+            # 1. New Role Candidate
+            dr = discovery.get('role')
+            if dr and len(dr) > 3:
+                if not RoleTaxonomy.query.filter(func.lower(RoleTaxonomy.title) == dr.lower()).first():
+                    kd = KeywordDiscovery.query.filter_by(name=dr, type='role').first()
+                    if kd:
+                        kd.frequency += 1
+                        if kd.frequency >= 2:
+                            if not PendingRole.query.filter_by(title=dr).first():
+                                db.session.add(PendingRole(
+                                    title=dr,
+                                    suggested_sector=dept or 'Other',
+                                    source='pipeline',
+                                    source_detail="Frequent Keyword (Seen 2+ times)"
+                                ))
+                    else:
+                        db.session.add(KeywordDiscovery(name=dr, type='role', suggested_sector=dept))
+
+            # 2. New Skill Candidates
+            for s in discovery.get('skills', []):
+                if len(s) > 2 and s.lower() not in [sk.lower() for sk in skills_map.keys()]:
+                    kd = KeywordDiscovery.query.filter_by(name=s, type='skill').first()
+                    if kd:
+                        kd.frequency += 1
+                        if kd.frequency >= 2:
+                            if not PendingSkill.query.filter_by(name=s).first():
+                                db.session.add(PendingSkill(
+                                    name=s,
+                                    suggested_category='Tool',
+                                    source='pipeline',
+                                    source_detail="Frequent Keyword (Seen 2+ times)"
+                                ))
+                    else:
+                        db.session.add(KeywordDiscovery(name=s, type='skill'))
+
+            db.session.commit()
+
+        except Exception as e:
+            logger.error(f"Discovery batch error for '{title}': {e}")
+            try:
+                db.session.rollback()
+            except Exception:
+                pass
 
 
 def _recompute_skill_trends():
