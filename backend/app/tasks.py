@@ -83,6 +83,11 @@ def generate_assessment_questions_task(assessment_ids, skills, count_per_skill, 
                 )
                 db.session.add(aq)
 
+            # Update total_questions in case we generated fewer than expected
+            assessment = Assessment.query.get(a_id)
+            if assessment and count_to_use < assessment.total_questions:
+                assessment.total_questions = count_to_use
+
             db.session.commit()
             logger.info(f"[{skill_name}] Saved {count_to_use} AssessmentQuestions for assessment {a_id}.")
 
@@ -92,6 +97,12 @@ def generate_assessment_questions_task(assessment_ids, skills, count_per_skill, 
             traceback.print_exc()
             try:
                 db.session.rollback()
+                # If it failed, cap the total_questions to whatever exists
+                assessment = Assessment.query.get(a_id)
+                if assessment:
+                    actual_count = AssessmentQuestion.query.filter_by(assessment_id=a_id).count()
+                    assessment.total_questions = actual_count
+                    db.session.commit()
             except Exception:
                 pass
 

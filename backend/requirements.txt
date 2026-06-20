@@ -43,6 +43,7 @@ APScheduler
 
 # spacy removed — _nlp is always None, pure keyword fallback is used instead
 # duckduckgo-search removed — not used anywhere in the app
+openai==1.59.3
 
 # celery removed — pipeline uses APScheduler + threading
 redis
