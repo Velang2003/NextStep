@@ -95,20 +95,24 @@ def run_pipeline() -> dict:
     _update_status(step='Fetching Data', total=len(fetchers), log=f"Fetching from {len(fetchers)} sources...")
     with ThreadPoolExecutor(max_workers=5) as ex:
         futures = {ex.submit(_fetch_with_ctx, func): name for name, func in fetchers}
-        for i, fut in enumerate(as_completed(futures, timeout=300)):
-            name = futures[fut]
-            try:
-                jobs = fut.result(timeout=300)
-                all_jobs.extend(jobs)
-                _update_status(progress=i+1, log=f"✓ {name}: {len(jobs)} jobs")
-            except TimeoutError:
-                msg = f"{name}: Timed out after 300s — skipped"
-                results['errors'].append(msg)
-                _update_status(progress=i+1, log=f"⏱ {msg}")
-            except Exception as e:
-                msg = f"{name} Fetch Error: {e}"
-                results['errors'].append(msg)
-                _update_status(progress=i+1, log=f"✗ {msg}")
+        try:
+            for i, fut in enumerate(as_completed(futures, timeout=300)):
+                name = futures[fut]
+                try:
+                    jobs = fut.result()
+                    all_jobs.extend(jobs)
+                    _update_status(progress=i+1, log=f"✓ {name}: {len(jobs)} jobs")
+                except Exception as e:
+                    msg = f"{name} Fetch Error: {e}"
+                    results['errors'].append(msg)
+                    _update_status(progress=i+1, log=f"✗ {msg}")
+        except TimeoutError:
+            # Handle any remaining/unfinished futures that timed out
+            for fut, name in futures.items():
+                if not fut.done():
+                    msg = f"{name}: Timed out after 300s — skipped"
+                    results['errors'].append(msg)
+                    _update_status(log=f"⏱ {msg}")
 
     results['fetched'] = len(all_jobs)
 

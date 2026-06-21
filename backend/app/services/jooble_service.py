@@ -124,19 +124,17 @@ def fetch_all() -> list[dict]:
             seen_ids.add(job['source_id'])
             all_jobs.append(job)
 
-    # Keyword × city matrix
-    total_queries = len(KEYWORDS) * len(LOCATIONS)
+    # Keyword-specific sweep (India wide)
+    total_queries = len(KEYWORDS)
     done = 0
     for keyword in KEYWORDS:
-        for location in LOCATIONS:
-            batch = _fetch_batch(keyword, location)
-            for job in batch:
-                if job['source_id'] not in seen_ids:
-                    seen_ids.add(job['source_id'])
-                    all_jobs.append(job)
-            done += 1
-            if done % 10 == 0:
-                print(f"  [Jooble] Progress: {done}/{total_queries} queries, {len(all_jobs)} unique jobs so far")
+        batch = _fetch_batch(keyword, "India")
+        for job in batch:
+            if job['source_id'] not in seen_ids:
+                seen_ids.add(job['source_id'])
+                all_jobs.append(job)
+        done += 1
+        print(f"  [Jooble] Progress: {done}/{total_queries} queries, {len(all_jobs)} unique jobs so far")
 
     print(f"  [Jooble] Total: {len(all_jobs)} unique Indian jobs fetched")
     return all_jobs
