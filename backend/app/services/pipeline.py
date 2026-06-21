@@ -358,7 +358,6 @@ def run_integrated_consumer() -> dict:
     # Run AI discovery in a background thread so it doesn't block pipeline completion
     if jobs_for_discovery:
         import threading as _threading
-        app_ctx = db.get_app()  # pylint: disable=no-member
 
         def _run_discovery_async(job_list, app):
             with app.app_context():
