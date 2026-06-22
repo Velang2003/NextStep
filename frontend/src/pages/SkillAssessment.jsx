@@ -128,9 +128,15 @@ export default function SkillAssessment() {
           if (res.data?.questions) {
             setQuestions(res.data.questions);
           }
+          if (res.data?.total_expected) {
+            setTotalExpected(res.data.total_expected);
+          }
           // Stop polling only when the backend confirms ALL questions are ready
           if (res.data?.all_ready) {
             clearInterval(pollInterval);
+            if (res.data?.questions) {
+              setTotalExpected(res.data.questions.length);
+            }
           }
         } catch (e) {
           console.error("Polling error", e);
@@ -395,7 +401,7 @@ export default function SkillAssessment() {
                           <span className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em]">Code Preview</span>
                         </div>
                       </div>
-                      <pre className="bg-[#0f0f1a] text-secondary font-mono text-sm leading-relaxed p-8 overflow-x-auto no-scrollbar">
+                      <pre className="bg-[#0f0f1a] text-indigo-200 font-mono text-sm leading-relaxed p-8 overflow-x-auto no-scrollbar">
                         <code>{questions[currentQ].code_snippet}</code>
                       </pre>
                     </div>
@@ -553,7 +559,7 @@ export default function SkillAssessment() {
                         
                         {q.code_snippet && (
                           <div className="rounded-2xl overflow-hidden border border-base shadow-inner bg-[#0f0f1a]">
-                            <pre className="text-secondary font-mono text-xs leading-relaxed p-6 overflow-x-auto no-scrollbar">
+                            <pre className="text-indigo-200 font-mono text-xs leading-relaxed p-6 overflow-x-auto no-scrollbar">
                               <code>{q.code_snippet}</code>
                             </pre>
                           </div>

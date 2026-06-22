@@ -79,6 +79,7 @@ class RoleTaxonomy(db.Model):
             'id': self.id,
             'title': self.title,
             'sector': self.sector.name if self.sector else None,
+            'sector_id': self.sector_id,
             'seniority': self.seniority,
             'aliases': [a.name for a in self.aliases],
         }

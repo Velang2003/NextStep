@@ -109,6 +109,7 @@ def fetch_all() -> list[dict]:
     Fetch jobs from Jooble across a matrix of keywords × Indian cities.
     Deduplicates by source_id before returning.
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     if not API_KEY:
         print("  [Jooble] No API key configured — skipping.")
         return []
@@ -124,17 +125,20 @@ def fetch_all() -> list[dict]:
             seen_ids.add(job['source_id'])
             all_jobs.append(job)
 
-    # Keyword-specific sweep (India wide)
-    total_queries = len(KEYWORDS)
-    done = 0
-    for keyword in KEYWORDS:
-        batch = _fetch_batch(keyword, "India")
-        for job in batch:
-            if job['source_id'] not in seen_ids:
-                seen_ids.add(job['source_id'])
-                all_jobs.append(job)
-        done += 1
-        print(f"  [Jooble] Progress: {done}/{total_queries} queries, {len(all_jobs)} unique jobs so far")
+    # Keyword-specific sweep (India wide) in parallel
+    print(f"  [Jooble] Starting parallel keyword sweep...")
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        futures = {ex.submit(_fetch_batch, kw, "India"): kw for kw in KEYWORDS}
+        for fut in as_completed(futures, timeout=120):
+            kw = futures[fut]
+            try:
+                batch = fut.result()
+                for job in batch:
+                    if job['source_id'] not in seen_ids:
+                        seen_ids.add(job['source_id'])
+                        all_jobs.append(job)
+            except Exception as e:
+                print(f"  [Jooble] Error fetching keyword {kw}: {e}")
 
     print(f"  [Jooble] Total: {len(all_jobs)} unique Indian jobs fetched")
     return all_jobs

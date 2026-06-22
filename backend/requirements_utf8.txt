@@ -1,4 +1,4 @@
-﻿annotated-types==0.7.0
+annotated-types==0.7.0
 bcrypt==4.0.1
 blinker==1.9.0
 certifi==2026.2.25
@@ -49,6 +49,4 @@ urllib3==2.6.3
 Werkzeug==3.1.7
 firebase-admin
 APScheduler
-
-spacy
 duckduckgo-search

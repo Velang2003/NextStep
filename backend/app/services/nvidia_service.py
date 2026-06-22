@@ -61,7 +61,7 @@ class NvidiaService:
         
         Return ONLY a JSON object with an array named "questions". Each object in the array MUST have:
         - "question": string
-        - "code_snippet": string (or empty)
+        - "code_snippet": string (or empty). Only use this for code context (e.g., buggy code to debug, code to evaluate, or a fill-in-the-blank snippet). DO NOT put the correct answer itself inside the code_snippet, as that makes the question trivial. If the question is conceptual (e.g. "How do you do X?"), the code_snippet MUST be empty.
         - "options": {{"a": "...", "b": "...", "c": "...", "d": "..."}}
         - "correct_answer": "a"|"b"|"c"|"d"
         - "explanation": string

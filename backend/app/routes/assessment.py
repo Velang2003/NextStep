@@ -120,7 +120,13 @@ def get_assessment_questions():
         for a in assessments
     )
 
-    return jsonify({'questions': q_list, 'all_ready': all_ready}), 200
+    total_expected = sum(a.total_questions for a in assessments)
+
+    return jsonify({
+        'questions': q_list,
+        'all_ready': all_ready,
+        'total_expected': total_expected
+    }), 200
 
 
 @assessment_bp.route('/submit', methods=['POST'])

@@ -113,6 +113,7 @@ def fetch_all() -> list[dict]:
     Runs keyword-specific queries. Deduplicates by source_id.
     Designed to complete within ~90 seconds total.
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     if not APP_ID or not APP_KEY:
         logger.info("[Adzuna] No API credentials configured — skipping.")
         return []
@@ -120,21 +121,24 @@ def fetch_all() -> list[dict]:
     all_jobs: list[dict] = []
     seen_ids: set = set()
 
-    def _add_batch(batch):
-        added = 0
-        for job in batch:
-            sid = job['source_id']
-            if sid and sid not in seen_ids:
-                seen_ids.add(sid)
-                all_jobs.append(job)
-                added += 1
-        return added
-
-    # Keyword-specific queries only (broad sweep was causing extra API quota usage)
-    for keyword in SEARCH_QUERIES:
-        batch = _fetch_query(what=keyword, where="India")
-        added = _add_batch(batch)
-        logger.info(f"[Adzuna] '{keyword}': +{added} new jobs (total {len(all_jobs)})")
+    # Keyword-specific queries in parallel
+    logger.info("[Adzuna] Starting parallel keyword sweep...")
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        futures = {ex.submit(_fetch_query, kw, "India"): kw for kw in SEARCH_QUERIES}
+        for fut in as_completed(futures, timeout=120):
+            kw = futures[fut]
+            try:
+                batch = fut.result()
+                added = 0
+                for job in batch:
+                    sid = job['source_id']
+                    if sid and sid not in seen_ids:
+                        seen_ids.add(sid)
+                        all_jobs.append(job)
+                        added += 1
+                logger.info(f"[Adzuna] '{kw}': +{added} new jobs (total {len(all_jobs)})")
+            except Exception as e:
+                logger.error(f"[Adzuna] Error fetching keyword '{kw}': {e}")
 
     logger.info(f"[Adzuna] Total: {len(all_jobs)} unique Indian jobs fetched")
     return all_jobs

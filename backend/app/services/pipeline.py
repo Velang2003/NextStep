@@ -93,7 +93,7 @@ def run_pipeline() -> dict:
     
     # 1. Concurrent Fetch (60s timeout per source to prevent hangs)
     _update_status(step='Fetching Data', total=len(fetchers), log=f"Fetching from {len(fetchers)} sources...")
-    with ThreadPoolExecutor(max_workers=5) as ex:
+    with ThreadPoolExecutor(max_workers=len(fetchers)) as ex:
         futures = {ex.submit(_fetch_with_ctx, func): name for name, func in fetchers}
         try:
             for i, fut in enumerate(as_completed(futures, timeout=300)):
@@ -591,21 +591,21 @@ def get_role_trends(sector: str = None, limit: int = 20) -> list[dict]:
     # Query live active jobs directly to ensure perfect consistency with Career Roadmap
     query = db.session.query(
         RoleTaxonomy.title,
+        SectorTaxonomy.name,
         func.count(JobListing.id).label('total_count')
     ).join(JobListing, JobListing.role_id == RoleTaxonomy.id)\
+     .outerjoin(SectorTaxonomy, RoleTaxonomy.sector_id == SectorTaxonomy.id)\
      .filter(JobListing.status == 'active')
 
     if sector:
-        # Filter by the Job's actual sector if requested
-        query = query.join(SectorTaxonomy, JobListing.sector_id == SectorTaxonomy.id)\
-                     .filter(SectorTaxonomy.name == sector)
+        query = query.filter(SectorTaxonomy.name == sector)
 
-    rows = query.group_by(RoleTaxonomy.title)\
+    rows = query.group_by(RoleTaxonomy.title, SectorTaxonomy.name)\
                 .order_by(func.count(JobListing.id).desc())\
                 .limit(limit).all()
 
     return [
-        {'role': r[0], 'count': int(r[1]), 'sector': sector or 'All Sectors', 'period': period}
+        {'role': r[0], 'count': int(r[2]), 'sector': r[1] or 'Other', 'period': period}
         for r in rows
     ]
 

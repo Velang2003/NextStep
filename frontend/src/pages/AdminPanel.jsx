@@ -72,15 +72,19 @@ export default function AdminPanel() {
   const [pendingRoles, setPendingRoles] = useState([]);
   const [roles, setRoles]               = useState([]);
   const [skills, setSkills]             = useState([]);
+  const [sectors, setSectors]           = useState([]);
   const [users, setUsers]               = useState([]);
-  const [tab, setTab]                   = useState('pending');     // pending | pending-roles | roles | skills | users
+  const [tab, setTab]                   = useState('pending');     // pending | pending-roles | sectors | roles | skills | users
   const [loading, setLoading]           = useState(false);
-  const [editingRole, setEditingRole]   = useState(null);          // {id, title, seniority, aliases: ""}
+  const [editingRole, setEditingRole]   = useState(null);          // {id, title, seniority, sector_id, aliases: ""}
   const [isCreatingRole, setIsCreatingRole] = useState(false);
-  const [newRole, setNewRole]           = useState({ title: '', seniority: '' });
-  const [editingSkill, setEditingSkill] = useState(null);
+  const [newRole, setNewRole]           = useState({ title: '', seniority: '', sector_id: '' });
+  const [editingSkill, setEditingSkill] = useState(null);          // {id, canonical_name, category, sector_id, aliases: ""}
   const [isCreatingSkill, setIsCreatingSkill] = useState(false);
-  const [newSkill, setNewSkill]         = useState({ canonical_name: '', category: 'Tool' });
+  const [newSkill, setNewSkill]         = useState({ canonical_name: '', category: 'Tool', sector_id: '' });
+  const [editingSector, setEditingSector] = useState(null);        // {id, name, aliases: ""}
+  const [isCreatingSector, setIsCreatingSector] = useState(false);
+  const [newSector, setNewSector]       = useState({ name: '' });
   const [msg, setMsg]                   = useState('');
   const [pendingFilter, setPendingFilter] = useState('pending');
 
@@ -105,6 +109,10 @@ export default function AdminPanel() {
     } catch {}
   }, [pendingFilter]);
 
+  const fetchSectors = useCallback(async () => {
+    try { const r = await api.get('/admin/taxonomy/sectors'); setSectors(r.data.sectors || []); } catch {}
+  }, []);
+
   const fetchRoles = useCallback(async () => {
     try { const r = await api.get('/admin/taxonomy/roles'); setRoles(r.data.roles || []); } catch {}
   }, []);
@@ -117,9 +125,10 @@ export default function AdminPanel() {
     try { const r = await api.get('/admin/users'); setUsers(r.data.users || []); } catch {}
   }, []);
 
-  useEffect(() => { fetchStats(); }, [fetchStats]);
+  useEffect(() => { fetchStats(); fetchSectors(); }, [fetchStats, fetchSectors]);
   useEffect(() => { if (tab === 'pending') fetchPending(); }, [tab, fetchPending]);
   useEffect(() => { if (tab === 'pending-roles') fetchPendingRoles(); }, [tab, fetchPendingRoles]);
+  useEffect(() => { if (tab === 'sectors') fetchSectors(); }, [tab, fetchSectors]);
   useEffect(() => { if (tab === 'roles')   fetchRoles();   }, [tab, fetchRoles]);
   useEffect(() => { if (tab === 'skills')  fetchSkills();  }, [tab, fetchSkills]);
   useEffect(() => { if (tab === 'users')   fetchUsers();   }, [tab, fetchUsers]);
@@ -144,6 +153,54 @@ export default function AdminPanel() {
     catch { flash('❌ Role discard failed.'); }
   };
 
+  // ── sector edit actions ──────────────────────────────────────
+  const saveSector = async () => {
+    if (!editingSector) return;
+    const aliases = editingSector.aliases.split(',').map(s => s.trim()).filter(Boolean);
+    try {
+      const res = await api.put(`/admin/taxonomy/sectors/${editingSector.id}`, {
+        name: editingSector.name,
+        aliases,
+      });
+      if (res.data.merged) {
+        flash(res.data.message);
+      } else {
+        flash('✅ Sector updated.');
+      }
+      setEditingSector(null);
+      fetchSectors();
+      fetchStats();
+    } catch (e) {
+      flash(e.response?.data?.error || '❌ Sector update failed.');
+    }
+  };
+
+  const createSector = async () => {
+    if (!newSector.name) return;
+    try {
+      await api.post('/admin/taxonomy/sectors', newSector);
+      flash('✅ New sector added.');
+      setIsCreatingSector(false);
+      setNewSector({ name: '' });
+      fetchSectors();
+      fetchStats();
+    } catch (e) {
+      flash(e.response?.data?.error || '❌ Failed to create sector.');
+    }
+  };
+
+  const deleteSector = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this sector? All associated roles, skills, and job listings will be set to NULL sector.")) return;
+    try {
+      await api.delete(`/admin/taxonomy/sectors/${id}`);
+      flash('✅ Sector deleted successfully.');
+      fetchSectors();
+      fetchStats();
+    } catch (e) {
+      flash(e.response?.data?.error || '❌ Failed to delete sector.');
+    }
+  };
+
   // ── role edit save ────────────────────────────────────────────
   const saveRole = async () => {
     if (!editingRole) return;
@@ -152,6 +209,7 @@ export default function AdminPanel() {
       await api.put(`/admin/taxonomy/roles/${editingRole.id}`, {
         title: editingRole.title,
         seniority: editingRole.seniority,
+        sector_id: editingRole.sector_id ? parseInt(editingRole.sector_id) : null,
         aliases,
       });
       flash('✅ Taxonomy entry updated.');
@@ -165,10 +223,14 @@ export default function AdminPanel() {
   const createRole = async () => {
     if (!newRole.title) return;
     try {
-      await api.post('/admin/taxonomy/roles', newRole);
+      await api.post('/admin/taxonomy/roles', {
+        title: newRole.title,
+        seniority: newRole.seniority,
+        sector_id: newRole.sector_id ? parseInt(newRole.sector_id) : null,
+      });
       flash('✅ New role added to taxonomy.');
       setIsCreatingRole(false);
-      setNewRole({ title: '', seniority: '' });
+      setNewRole({ title: '', seniority: '', sector_id: '' });
       fetchRoles();
       fetchStats();
     } catch (e) {
@@ -184,6 +246,7 @@ export default function AdminPanel() {
       await api.put(`/admin/taxonomy/skills/${editingSkill.id}`, {
         canonical_name: editingSkill.canonical_name,
         category: editingSkill.category,
+        sector_id: editingSkill.sector_id ? parseInt(editingSkill.sector_id) : null,
         aliases,
       });
       flash('✅ Skill entry updated.');
@@ -197,10 +260,14 @@ export default function AdminPanel() {
   const createSkill = async () => {
     if (!newSkill.canonical_name) return;
     try {
-      await api.post('/admin/taxonomy/skills', newSkill);
+      await api.post('/admin/taxonomy/skills', {
+        canonical_name: newSkill.canonical_name,
+        category: newSkill.category,
+        sector_id: newSkill.sector_id ? parseInt(newSkill.sector_id) : null,
+      });
       flash('✅ New skill added to taxonomy.');
       setIsCreatingSkill(false);
-      setNewSkill({ canonical_name: '', category: 'Tool' });
+      setNewSkill({ canonical_name: '', category: 'Tool', sector_id: '' });
       fetchSkills();
       fetchStats();
     } catch (e) {
@@ -247,10 +314,10 @@ export default function AdminPanel() {
     pollPipelineStatus();
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [pollPipelineStatus]);
-
   const TABS = [
     { id: 'pending',       label: 'Pending Skills', icon: ShieldCheck },
     { id: 'pending-roles', label: 'Pending Roles',  icon: Users },
+    { id: 'sectors',       label: 'Sectors / Industries', icon: Layout },
     { id: 'roles',         label: 'Roles & Aliases', icon: Database },
     { id: 'skills',        label: 'Skills & Aliases', icon: Award },
     { id: 'users',         label: 'Global Users',   icon: Lock },
@@ -467,6 +534,114 @@ export default function AdminPanel() {
             </Section>
           )}
 
+          {tab === 'sectors' && (
+            <Section title={`Verified Sectors / Industries (${sectors.length})`} icon={Layout}>
+              <div className="flex justify-end mb-6">
+                <button onClick={() => setIsCreatingSector(!isCreatingSector)} className="btn-primary h-12 px-6">
+                  {isCreatingSector ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                  {isCreatingSector ? 'Cancel' : 'Add New Sector'}
+                </button>
+              </div>
+
+              {isCreatingSector && (
+                <div className="surface-card p-8 mb-6 border-2 border-primary/20 space-y-6 animate-in-slide">
+                  <h3 className="text-xl font-bold font-outfit text-main">Create New Sector</h3>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector Name</label>
+                    <input 
+                      value={newSector.name} 
+                      onChange={e => setNewSector(p => ({ ...p, name: e.target.value }))} 
+                      className="input-field" 
+                      placeholder="e.g. Sales & Marketing"
+                    />
+                  </div>
+                  <div className="flex justify-end">
+                    <button onClick={createSector} className="btn-primary h-12 px-8">Save Sector</button>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-6">
+                {sectors.map(sec => {
+                  const isEditing = editingSector?.id === sec.id;
+                  return (
+                    <div key={sec.id} className={`surface-card overflow-hidden transition-all duration-500
+                      ${isEditing ? 'border-primary ring-4 ring-primary/5' : 'hover:border-primary/20'}`}>
+                      <div className="flex items-center justify-between gap-8 p-6">
+                        <div className="flex-1 min-w-0 flex items-center gap-6">
+                          <div className="w-12 h-12 rounded-2xl bg-subtle flex items-center justify-center text-xl shadow-inner font-black text-muted">
+                            {sec.name.charAt(0)}
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-xl font-black font-outfit text-main leading-tight">{sec.name}</p>
+                            <div className="flex items-center gap-4 text-[10px] font-black text-muted uppercase tracking-[0.2em]">
+                              <span className="text-primary">{sec.role_count} Roles</span>
+                              <div className="w-1.5 h-1.5 rounded-full bg-base" />
+                              <span className="text-secondary">{sec.skill_count} Skills</span>
+                              {sec.aliases && sec.aliases.length > 0 && (
+                                <>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-base" />
+                                  <span>Aliases: {sec.aliases.join(', ')}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button 
+                            onClick={() => setEditingSector(isEditing ? null : { id: sec.id, name: sec.name, aliases: (sec.aliases || []).join(', ') })}
+                            className={`p-4 rounded-2xl transition-all ${isEditing ? 'bg-primary text-white shadow-lg' : 'bg-subtle text-muted hover:text-primary hover:bg-primary/10'}`}
+                          >
+                            {isEditing ? <X className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
+                          </button>
+                          {sec.name !== 'Other' && (
+                            <button 
+                              onClick={() => deleteSector(sec.id)}
+                              className="p-4 rounded-2xl bg-subtle text-muted hover:text-error hover:bg-error/10 transition-all"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {isEditing && (
+                        <div className="p-8 bg-subtle/30 border-t border-base space-y-8 animate-in-slide">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector Name (Rename to merge)</label>
+                              <input 
+                                value={editingSector.name} 
+                                onChange={e => setEditingSector(p => ({ ...p, name: e.target.value }))} 
+                                className="input-field py-4" 
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Alternative Aliases (Comma Separated)</label>
+                              <textarea 
+                                rows={2} 
+                                value={editingSector.aliases} 
+                                onChange={e => setEditingSector(p => ({ ...p, aliases: e.target.value }))} 
+                                className="input-field py-4 resize-none" 
+                                placeholder="Alias A, Alias B..." 
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-end">
+                            <button onClick={saveSector} className="btn-primary h-14 px-10 shadow-xl shadow-primary/20">
+                              <Save className="w-5 h-5" />
+                              Save Sector Details
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </Section>
+          )}
+
           {tab === 'roles' && (
             <Section title={`Verified Taxonomy Ecosystem (${roles.length})`} icon={Database}>
               <div className="flex justify-end mb-6">
@@ -479,7 +654,7 @@ export default function AdminPanel() {
               {isCreatingRole && (
                 <div className="surface-card p-8 mb-6 border-2 border-primary/20 space-y-6 animate-in-slide">
                   <h3 className="text-xl font-bold font-outfit text-main">Create New Role</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Identity Title</label>
                       <input 
@@ -497,6 +672,19 @@ export default function AdminPanel() {
                         className="input-field" 
                         placeholder="e.g. Mid, Senior"
                       />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector</label>
+                      <select 
+                        value={newRole.sector_id} 
+                        onChange={e => setNewRole(p => ({ ...p, sector_id: e.target.value }))} 
+                        className="input-field bg-surface text-main"
+                      >
+                        <option value="">Unassigned</option>
+                        {sectors.map(s => (
+                          <option key={s.id} value={s.id}>{s.name}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className="flex justify-end">
@@ -525,7 +713,7 @@ export default function AdminPanel() {
                           </div>
                         </div>
                         <button 
-                          onClick={() => setEditingRole(isEditing ? null : { id: role.id, title: role.title, seniority: role.seniority || '', aliases: (role.aliases || []).join(', ') })}
+                          onClick={() => setEditingRole(isEditing ? null : { id: role.id, title: role.title, seniority: role.seniority || '', sector_id: role.sector_id || '', aliases: (role.aliases || []).join(', ') })}
                           className={`p-4 rounded-2xl transition-all ${isEditing ? 'bg-primary text-white shadow-lg' : 'bg-subtle text-muted hover:text-primary hover:bg-primary/10'}`}
                         >
                           {isEditing ? <X className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
@@ -534,7 +722,7 @@ export default function AdminPanel() {
                       
                       {isEditing && (
                         <div className="p-8 bg-subtle/30 border-t border-base space-y-8 animate-in-slide">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Identity Title</label>
                               <input 
@@ -542,6 +730,19 @@ export default function AdminPanel() {
                                 onChange={e => setEditingRole(p => ({ ...p, title: e.target.value }))} 
                                 className="input-field py-4" 
                               />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector / Industry</label>
+                              <select
+                                value={editingRole.sector_id || ''}
+                                onChange={e => setEditingRole(p => ({ ...p, sector_id: e.target.value }))}
+                                className="input-field py-4 bg-surface text-main"
+                              >
+                                <option value="">Unassigned</option>
+                                {sectors.map(s => (
+                                  <option key={s.id} value={s.id}>{s.name}</option>
+                                ))}
+                              </select>
                             </div>
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Alternative Aliases (Comma Separated)</label>
@@ -581,7 +782,7 @@ export default function AdminPanel() {
               {isCreatingSkill && (
                 <div className="surface-card p-8 mb-6 border-2 border-primary/20 space-y-6 animate-in-slide">
                   <h3 className="text-xl font-bold font-outfit text-main">Create New Skill</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Canonical Name</label>
                       <input 
@@ -606,6 +807,19 @@ export default function AdminPanel() {
                         <option value="Other">Other</option>
                       </select>
                     </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector</label>
+                      <select 
+                        value={newSkill.sector_id || ''} 
+                        onChange={e => setNewSkill(p => ({ ...p, sector_id: e.target.value }))} 
+                        className="input-field bg-surface text-main"
+                      >
+                        <option value="">Cross-sector / Unassigned</option>
+                        {sectors.map(s => (
+                          <option key={s.id} value={s.id}>{s.name}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button onClick={createSkill} className="btn-primary h-12 px-8">Save Skill</button>
@@ -628,11 +842,17 @@ export default function AdminPanel() {
                             <p className="text-xl font-black font-outfit text-main leading-tight">{skill.name}</p>
                             <div className="flex items-center gap-4">
                               <Badge color="violet">{skill.category}</Badge>
+                              {skill.sector && <Badge color="blue">{skill.sector}</Badge>}
+                              {skill.aliases && skill.aliases.length > 0 && (
+                                <span className="text-[10px] font-bold text-muted truncate max-w-[200px]">
+                                  Aliases: {skill.aliases.join(', ')}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
                         <button 
-                          onClick={() => setEditingSkill(isEditing ? null : { id: skill.id, canonical_name: skill.name, category: skill.category || 'Tool', aliases: (skill.aliases || []).join(', ') })}
+                          onClick={() => setEditingSkill(isEditing ? null : { id: skill.id, canonical_name: skill.name, category: skill.category || 'Tool', sector_id: skill.sector_id || '', aliases: (skill.aliases || []).join(', ') })}
                           className={`p-4 rounded-2xl transition-all ${isEditing ? 'bg-primary text-white shadow-lg' : 'bg-subtle text-muted hover:text-primary hover:bg-primary/10'}`}
                         >
                           {isEditing ? <X className="w-5 h-5" /> : <Edit2 className="w-5 h-5" />}
@@ -641,7 +861,7 @@ export default function AdminPanel() {
                       
                       {isEditing && (
                         <div className="p-8 bg-subtle/30 border-t border-base space-y-8 animate-in-slide">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Canonical Name</label>
                               <input 
@@ -649,6 +869,34 @@ export default function AdminPanel() {
                                 onChange={e => setEditingSkill(p => ({ ...p, canonical_name: e.target.value }))} 
                                 className="input-field py-4" 
                               />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Category</label>
+                              <select 
+                                value={editingSkill.category} 
+                                onChange={e => setEditingSkill(p => ({ ...p, category: e.target.value }))} 
+                                className="input-field py-4 bg-surface text-main" 
+                              >
+                                <option value="Language">Language</option>
+                                <option value="Framework">Framework</option>
+                                <option value="Tool">Tool</option>
+                                <option value="Cloud">Cloud</option>
+                                <option value="Database">Database</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Sector / Industry</label>
+                              <select
+                                value={editingSkill.sector_id || ''}
+                                onChange={e => setEditingSkill(p => ({ ...p, sector_id: e.target.value }))}
+                                className="input-field py-4 bg-surface text-main"
+                              >
+                                <option value="">Cross-sector / Unassigned</option>
+                                {sectors.map(s => (
+                                  <option key={s.id} value={s.id}>{s.name}</option>
+                                ))}
+                              </select>
                             </div>
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted uppercase tracking-widest ml-1">Alternative Aliases (Comma Separated)</label>

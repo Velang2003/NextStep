@@ -374,6 +374,8 @@ def update_skill(skill_id):
         skill.canonical_name = body['canonical_name'].strip()
     if 'category' in body:
         skill.category = body['category'].strip()
+    if 'sector_id' in body:
+        skill.sector_id = body['sector_id']
 
     if 'aliases' in body:
         raw_aliases = body['aliases']
@@ -397,6 +399,8 @@ def update_skill(skill_id):
             db.session.add(SkillAlias(name=alias_name, skill_id=skill_id))
 
     db.session.commit()
+    from app.services.data_normalizer import invalidate_cache
+    invalidate_cache()
     return jsonify({'message': 'Skill updated.', 'skill': skill.to_dict()}), 200
 
 
@@ -408,7 +412,144 @@ def delete_skill(skill_id):
     skill = SkillTaxonomy.query.get_or_404(skill_id)
     db.session.delete(skill)
     db.session.commit()
+    from app.services.data_normalizer import invalidate_cache
+    invalidate_cache()
     return jsonify({'message': f'Skill "{skill.canonical_name}" deleted.'}), 200
+
+
+# ─────────────────────────────────────────────────────────────
+# TAXONOMY MANAGEMENT — SECTORS
+# ─────────────────────────────────────────────────────────────
+
+@admin_bp.route('/taxonomy/sectors', methods=['GET'])
+@firebase_required
+@admin_required
+def list_admin_sectors():
+    """List all sectors with their aliases, roles count, and skills count."""
+    from app.models.taxonomy import SectorTaxonomy, RoleTaxonomy, SkillTaxonomy
+    sectors = SectorTaxonomy.query.order_by(SectorTaxonomy.name).all()
+    data = []
+    for s in sectors:
+        d = s.to_dict()
+        d['role_count'] = RoleTaxonomy.query.filter_by(sector_id=s.id).count()
+        d['skill_count'] = SkillTaxonomy.query.filter_by(sector_id=s.id).count()
+        data.append(d)
+    return jsonify({'sectors': data, 'total': len(data)}), 200
+
+
+@admin_bp.route('/taxonomy/sectors', methods=['POST'])
+@firebase_required
+@admin_required
+def create_sector():
+    """Manually create a new sector."""
+    body = request.get_json(silent=True) or {}
+    name = body.get('name')
+    if not name:
+        return jsonify({'error': 'Sector name is required'}), 400
+        
+    if SectorTaxonomy.query.filter(func.lower(SectorTaxonomy.name) == name.lower().strip()).first():
+        return jsonify({'error': 'Sector already exists'}), 409
+        
+    sector = SectorTaxonomy(name=name.strip())
+    db.session.add(sector)
+    db.session.commit()
+    from app.services.data_normalizer import invalidate_cache
+    invalidate_cache()
+    return jsonify({'message': 'Sector created.', 'sector': sector.to_dict()}), 201
+
+
+@admin_bp.route('/taxonomy/sectors/<int:sector_id>', methods=['PUT'])
+@firebase_required
+@admin_required
+def update_sector(sector_id):
+    """
+    Update a sector's name or aliases. Supports automatic merging of duplicate sectors!
+    """
+    sector = SectorTaxonomy.query.get_or_404(sector_id)
+    body = request.get_json(silent=True) or {}
+
+    if 'name' in body:
+        new_name = body['name'].strip()
+        if new_name and new_name.lower() != sector.name.lower():
+            target = SectorTaxonomy.query.filter(func.lower(SectorTaxonomy.name) == new_name.lower()).first()
+            if target:
+                # Merge Sector logic
+                from app.models.taxonomy import RoleTaxonomy, SkillTaxonomy, SectorAlias
+                from app.models.job import JobListing
+                
+                RoleTaxonomy.query.filter_by(sector_id=sector.id).update({RoleTaxonomy.sector_id: target.id})
+                SkillTaxonomy.query.filter_by(sector_id=sector.id).update({SkillTaxonomy.sector_id: target.id})
+                JobListing.query.filter_by(sector_id=sector.id).update({JobListing.sector_id: target.id})
+                
+                target_aliases = {a.name.lower() for a in target.aliases}
+                
+                # Add original sector name as alias of target sector
+                orig_name_lower = sector.name.lower()
+                if orig_name_lower not in target_aliases:
+                    db.session.add(SectorAlias(name=orig_name_lower, sector_id=target.id))
+                    target_aliases.add(orig_name_lower)
+                    
+                # Move aliases
+                for a in sector.aliases:
+                    if a.name.lower() not in target_aliases:
+                        a.sector_id = target.id
+                    else:
+                        db.session.delete(a)
+                        
+                db.session.delete(sector)
+                db.session.commit()
+                from app.services.data_normalizer import invalidate_cache
+                invalidate_cache()
+                return jsonify({'message': f'Sector merged into "{target.name}".', 'merged': True}), 200
+            else:
+                sector.name = new_name
+
+    if 'aliases' in body:
+        from app.models.taxonomy import SectorAlias
+        raw_aliases = body['aliases']
+        if isinstance(raw_aliases, str):
+            raw_aliases = [raw_aliases]
+        new_aliases = [a.strip().lower() for a in raw_aliases if a.strip()]
+
+        # Conflict check — alias must not belong to a different sector
+        conflicts = []
+        for alias_name in new_aliases:
+            existing = SectorAlias.query.filter(func.lower(SectorAlias.name) == alias_name).first()
+            if existing and existing.sector_id != sector_id:
+                conflicts.append(f"'{alias_name}' already belongs to sector '{existing.sector.name}'")
+        if conflicts:
+            return jsonify({'error': 'Alias conflicts detected', 'conflicts': conflicts}), 409
+
+        SectorAlias.query.filter_by(sector_id=sector_id).delete()
+        for alias_name in new_aliases:
+            db.session.add(SectorAlias(name=alias_name, sector_id=sector_id))
+
+    db.session.commit()
+    from app.services.data_normalizer import invalidate_cache
+    invalidate_cache()
+    return jsonify({'message': 'Sector updated.', 'sector': sector.to_dict()}), 200
+
+
+@admin_bp.route('/taxonomy/sectors/<int:sector_id>', methods=['DELETE'])
+@firebase_required
+@admin_required
+def delete_sector(sector_id):
+    """Permanently remove a sector."""
+    sector = SectorTaxonomy.query.get_or_404(sector_id)
+    if sector.name == 'Other':
+        return jsonify({'error': 'Cannot delete "Other" sector'}), 400
+
+    from app.models.taxonomy import RoleTaxonomy, SkillTaxonomy
+    from app.models.job import JobListing
+    RoleTaxonomy.query.filter_by(sector_id=sector_id).update({RoleTaxonomy.sector_id: None})
+    SkillTaxonomy.query.filter_by(sector_id=sector_id).update({SkillTaxonomy.sector_id: None})
+    JobListing.query.filter_by(sector_id=sector_id).update({JobListing.sector_id: None})
+
+    db.session.delete(sector)
+    db.session.commit()
+    from app.services.data_normalizer import invalidate_cache
+    invalidate_cache()
+    return jsonify({'message': f'Sector "{sector.name}" deleted.'}), 200
 
 
 # ─────────────────────────────────────────────────────────────
