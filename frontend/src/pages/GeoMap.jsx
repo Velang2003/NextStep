@@ -100,14 +100,30 @@ export default function GeoMap() {
   };
 
   const handleMouseMove = (e) => {
-    let x = e.clientX + 15;
-    let y = e.clientY - 30;
-    if (typeof window !== 'undefined') {
-      if (x + 280 > window.innerWidth) x = e.clientX - 280;
-      if (y + 220 > window.innerHeight) y = e.clientY - 220;
-      if (y < 10) y = 10;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Position tooltip offset from cursor
+    let posX = x + 15;
+    let posY = y - 10;
+    
+    const tooltipWidth = 280;
+    const tooltipHeight = 220;
+    
+    // Boundary collision checks relative to container dimensions
+    if (posX + tooltipWidth > rect.width) {
+      posX = x - tooltipWidth - 15;
     }
-    setTooltipPos({ x, y });
+    if (posY + tooltipHeight > rect.height) {
+      posY = y - tooltipHeight - 15;
+    }
+    
+    // Prevent going outside container bounds
+    if (posX < 10) posX = 10;
+    if (posY < 10) posY = 10;
+    
+    setTooltipPos({ x: posX, y: posY });
   };
 
   return (
@@ -183,7 +199,7 @@ export default function GeoMap() {
               {/* Enhanced Tooltip */}
               {tooltip && (
                 <div
-                  className="fixed z-50 surface-card p-5 border-primary/20 pointer-events-none w-[280px] shadow-2xl backdrop-blur-xl bg-surface/95 rounded-2xl animate-in-fade"
+                  className="absolute z-50 surface-card p-5 border-primary/20 pointer-events-none w-[280px] shadow-2xl backdrop-blur-xl bg-surface/95 rounded-2xl animate-in-fade"
                   style={{
                     left: 0,
                     top: 0,

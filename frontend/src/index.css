@@ -5,6 +5,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   :root {
     /* Light Theme - Refined Professional Palette */
     --bg-main:    210 40% 98%;
