@@ -6,11 +6,6 @@ import pytest
 from unittest.mock import patch, MagicMock
 
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-
 def _make_decoded_token(uid="firebase_uid_123", email="test@example.com", name="Test User"):
     return {'uid': uid, 'email': email, 'name': name}
 
